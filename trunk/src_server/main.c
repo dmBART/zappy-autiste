@@ -5,7 +5,7 @@
 ** Login   <milbau_a@epitech.net>
 ** 
 ** Started on  Sat May 22 02:33:22 2010 alexis milbault
-** Last update Tue May 25 16:18:00 2010 alexis milbault
+** Last update Wed May 26 14:45:12 2010 aime-bijou iniongo
 */
 
 #include <stdio.h>
@@ -42,5 +42,6 @@ int		main(int argc, char **argv)
   tzero_serv(&serv);
   get_param(&serv, argv, argc);
   print_desc(&serv);
+  start_server(&serv);
   return (0);
 }

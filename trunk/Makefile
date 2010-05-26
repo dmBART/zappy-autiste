@@ -5,7 +5,7 @@
 ## Login   <milbau_a@epitech.net>
 ## 
 ## Started on  Wed Apr 14 17:36:07 2010 alexis milbault
-## Last update Mon May 24 22:35:41 2010 alexis milbault
+## Last update Wed May 26 14:27:33 2010 aime-bijou iniongo
 ##
 
 NAME		=	serveur
@@ -13,10 +13,13 @@ NAME2		=	client
 
 SRC_SERVER	=	src_server/main.c		\
 			src_server/get_arg.c		\
-			src_server/get_params.c
+			src_server/get_params.c		\
+			src_server/do_server.c		\
+
 SRC_COMMON	=	common/utils.c 			\
 			common/xfunc.c			\
 			common/check_func.c
+
 SRC_CLIENT	=	src_client/main.c 		\
 
 OBJ_SERVER	=	$(SRC_SERVER:.c=.o)
@@ -27,7 +30,7 @@ CC		=	gcc
 
 
 INCLUDE		=	-I./includes
-CFLAGS		=	$(INCLCUDE)-W -Wall -pedantic -ansi
+CFLAGS		+=	$(INCLCUDE) -W -Wall -pedantic -ansi
 
 RM		=	rm -f
 

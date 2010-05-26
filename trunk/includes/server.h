@@ -5,7 +5,7 @@
 ** Login   <milbau_a@epitech.net>
 ** 
 ** Started on  Sat May 22 03:27:51 2010 alexis milbault
-** Last update Tue May 25 17:26:34 2010 alexis milbault
+** Last update Wed May 26 16:56:21 2010 aime-bijou iniongo
 */
 
 
@@ -19,8 +19,11 @@
 #define DEFAULT_TEAM1 "Team 1"
 #define DEFAULT_TEAM2 "Team 2"
 
+#include <netinet/in.h>
 #include <stdlib.h>
 #include <unistd.h>
+
+# define MAX_FD	30;
 
 typedef struct	s_desc
 {
@@ -44,9 +47,17 @@ typedef struct	s_play
   char		**inv;
 }		t_play;
 
+typedef	struct	s_env
+{
+  int		port;
+}		t_env;
+
 /*
 **----------> xfunc.c  <----------
 */
+int	xsocket(int domain, int type, int protocol);
+int	xlisten(int s, int backlog);
+void	xbind(int s, struct sockaddr_in addr);
 void	*xmalloc(size_t size);
 ssize_t	xread(int d, void *buf, size_t nbytes);
 
@@ -82,6 +93,11 @@ int	get_arg_teams_name(t_desc *serv, char **argv, int ac, int i);
 int	get_arg_nb_player(t_desc *serv, char **argv, int ac, int i);
 int	get_arg_time(t_desc *serv, char **argv, int ac, int i);
 
+/*
+**----------> do_server.c  <----------
+*/
+
+void	start_server(t_desc *serv);
 
 void	print_desc(t_desc *serv);
 

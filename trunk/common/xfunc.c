@@ -5,9 +5,12 @@
 ** Login   <milbau_a@epitech.net>
 ** 
 ** Started on  Wed Apr 28 23:26:09 2010 alexis milbault
-** Last update Mon May 24 14:02:49 2010 alexis milbault
+** Last update Wed May 26 15:39:39 2010 aime-bijou iniongo
 */
 
+#include <sys/socket.h>
+#include <sys/types.h>
+#include <stdio.h>
 #include "../includes/server.h"
 
 void	*xmalloc(size_t size)
@@ -27,6 +30,41 @@ ssize_t	xread(int d, void *buf, size_t nbytes)
   if (read(d, buf, nbytes) == -1)
     {
       write (2, "Can't read file.\n", 17);
+      exit(EXIT_FAILURE);
+    }
+  return (0);
+}
+
+int	xsocket(int domain, int type, int protocol)
+{
+  int	fd;
+
+  fd = socket(domain, type, protocol);
+  if (fd == -1)
+    {
+      perror("socket : ");
+      exit(EXIT_FAILURE);
+    }
+  return (fd);
+}
+
+void	xbind(int s, struct sockaddr_in addr)
+{
+  if (bind(s, (struct sockaddr*)&addr, sizeof(addr)) == -1)
+    {
+      perror("bind : ");
+      exit(EXIT_FAILURE);
+    }
+}
+
+int	xlisten(int s, int backlog)
+{
+  int	i;
+
+  i = listen(s, backlog);
+  if (i == -1)
+    {
+      perror("listen : ");
       exit(EXIT_FAILURE);
     }
   return (0);
