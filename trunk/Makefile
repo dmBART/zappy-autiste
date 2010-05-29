@@ -5,7 +5,7 @@
 ## Login   <milbau_a@epitech.net>
 ## 
 ## Started on  Wed Apr 14 17:36:07 2010 alexis milbault
-## Last update Wed May 26 14:27:33 2010 aime-bijou iniongo
+## Last update Sat May 29 23:00:42 2010 aime-bijou iniongo
 ##
 
 NAME		=	serveur
@@ -15,10 +15,14 @@ SRC_SERVER	=	src_server/main.c		\
 			src_server/get_arg.c		\
 			src_server/get_params.c		\
 			src_server/do_server.c		\
+			src_server/client_management.c	\
+			src_server/select_team.c	\
+			src_server/getion_timer.c	\
 
 SRC_COMMON	=	common/utils.c 			\
 			common/xfunc.c			\
-			common/check_func.c
+			common/check_func.c		\
+			common/utils_2.c		\
 
 SRC_CLIENT	=	src_client/main.c 		\
 
@@ -30,7 +34,7 @@ CC		=	gcc
 
 
 INCLUDE		=	-I./includes
-CFLAGS		+=	$(INCLCUDE) -W -Wall -pedantic -ansi
+CFLAGS		+=	$(INCLCUDE) -W -Wall -pedantic -ansi -g3
 
 RM		=	rm -f
 

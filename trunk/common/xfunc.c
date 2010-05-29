@@ -5,11 +5,12 @@
 ** Login   <milbau_a@epitech.net>
 ** 
 ** Started on  Wed Apr 28 23:26:09 2010 alexis milbault
-** Last update Wed May 26 15:39:39 2010 aime-bijou iniongo
+** Last update Sat May 29 15:43:25 2010 aime-bijou iniongo
 */
 
 #include <sys/socket.h>
 #include <sys/types.h>
+#include <sys/select.h>
 #include <stdio.h>
 #include "../includes/server.h"
 
@@ -27,12 +28,14 @@ void	*xmalloc(size_t size)
 
 ssize_t	xread(int d, void *buf, size_t nbytes)
 {
-  if (read(d, buf, nbytes) == -1)
+  int	n;
+
+  if ((n = read(d, buf, nbytes)) == -1)
     {
       write (2, "Can't read file.\n", 17);
       exit(EXIT_FAILURE);
     }
-  return (0);
+  return (n);
 }
 
 int	xsocket(int domain, int type, int protocol)
@@ -68,4 +71,17 @@ int	xlisten(int s, int backlog)
       exit(EXIT_FAILURE);
     }
   return (0);
+}
+
+int	xselect(int nfds, fd_set *readfds, fd_set *writefds, fd_set *exceptfds,
+		struct timeval *timeout)
+{
+  int	r;
+
+  if ((r = select(nfds, readfds, writefds, exceptfds, timeout)) == -1)
+    {
+      perror("select");
+      exit(EXIT_FAILURE);
+    }
+  return (r);
 }

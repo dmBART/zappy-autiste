@@ -5,7 +5,7 @@
 ** Login   <milbau_a@epitech.net>
 ** 
 ** Started on  Sat May 22 03:27:51 2010 alexis milbault
-** Last update Wed May 26 16:56:21 2010 aime-bijou iniongo
+** Last update Sat May 29 22:59:59 2010 aime-bijou iniongo
 */
 
 
@@ -23,18 +23,32 @@
 #include <stdlib.h>
 #include <unistd.h>
 
-# define MAX_FD	30;
+# define MAX_FD		30
+# define FD_FREE	0
+# define FD_CLIENT	1
+# define MAX_NB(a, b)	(a > b ? a : b)
 
 typedef struct	s_desc
 {
   int		x;
   int		y;
   int		t;
+  int		s;
   int		port;
   int		nb_sock;
   char		**team;
   char		**map;
 }		t_desc;
+
+typedef struct		s_timev
+{
+  int			p;
+  int			time;
+  /*int			count;*/
+  char			*action;
+  struct s_timev	*next;
+  struct s_timev	*prev;
+}			t_timev;
 
 typedef struct	s_play
 {
@@ -43,13 +57,18 @@ typedef struct	s_play
   int		lvl;
   int		dir;
   int		life;
+  int		cs;
   char		*team;
+  char		*ip;
   char		**inv;
+  char		type;
+  t_timev	*t;
 }		t_play;
 
 typedef	struct	s_env
 {
-  int		port;
+  int		cs;
+  int		fd_max;
 }		t_env;
 
 /*
@@ -57,6 +76,8 @@ typedef	struct	s_env
 */
 int	xsocket(int domain, int type, int protocol);
 int	xlisten(int s, int backlog);
+int	xselect(int nfds, fd_set *readfds, fd_set *writefds, fd_set *exceptfds,
+	       struct timeval *timeout);
 void	xbind(int s, struct sockaddr_in addr);
 void	*xmalloc(size_t size);
 ssize_t	xread(int d, void *buf, size_t nbytes);
@@ -96,8 +117,30 @@ int	get_arg_time(t_desc *serv, char **argv, int ac, int i);
 /*
 **----------> do_server.c  <----------
 */
-
 void	start_server(t_desc *serv);
+
+/*
+**----------> utils_2.c  <----------
+*/
+int	count_tab(char **tab);
+
+/*
+**----------> client_management.c  <----------
+*/
+void	add_players(int s, t_env *e, t_play *players);
+void	manage_client(t_desc *serv, t_play *players, fd_set readfs);
+void	close_client(t_play *player, int i);
+
+/*
+**----------> select_team.c  <----------
+*/
+void	choose_a_team(t_desc *serv, t_play *players, char *buff, int i);
+
+/*
+**----------> gestion_timer.c  <----------
+*/
+void	add_elem(t_timev **player, char *action);
+
 
 void	print_desc(t_desc *serv);
 
