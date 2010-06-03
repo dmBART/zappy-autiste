@@ -5,7 +5,7 @@
 ** Login   <milbau_a@epitech.net>
 ** 
 ** Started on  Mon May 24 00:16:58 2010 alexis milbault
-** Last update Mon May 24 15:19:29 2010 alexis milbault
+** Last update Thu Jun  3 15:03:46 2010 alexis milbault
 */
 
 #include "../includes/server.h"
@@ -24,7 +24,7 @@ int	check_is_num(char *str)
   return (0);
 }
 
-int	check_team_already_exist(char **argv, char **team, int i, int j)
+int	check_team_already_exist(char **argv, char **team, int i)
 {
   int	a;
 

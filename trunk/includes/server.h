@@ -5,7 +5,7 @@
 ** Login   <milbau_a@epitech.net>
 ** 
 ** Started on  Sat May 22 03:27:51 2010 alexis milbault
-** Last update Tue Jun  1 01:50:06 2010 aime-bijou iniongo
+** Last update Thu Jun  3 15:04:16 2010 alexis milbault
 */
 
 
@@ -28,6 +28,28 @@
 # define FD_CLIENT	1
 # define MAX_NB(a, b)	(a > b ? a : b)
 
+enum
+{
+  RIGHT,
+  LEFT,
+  UP,
+  DOWN
+};
+
+typedef struct	s_map
+{
+  int		x;
+  int		y;
+  unsigned int	food;
+  unsigned int	lin;
+  unsigned int	der;
+  unsigned int	sib;
+  unsigned int	men;
+  unsigned int	phi;
+  unsigned int	thy;
+  struct s_map	*next;
+}		t_map;
+
 typedef struct	s_desc
 {
   int		x;
@@ -37,7 +59,7 @@ typedef struct	s_desc
   int		port;
   int		nb_sock;
   char		**team;
-  char		**map;
+  t_map		*map;
 }		t_desc;
 
 typedef struct		s_timev
@@ -84,6 +106,8 @@ typedef	struct	s_env
   fd_set	readfs;
 }		t_env;
 
+
+
 /*
 **----------> xfunc.c  <----------
 */
@@ -108,7 +132,7 @@ void	my_putstr(char *str);
 */
 int	check_is_num(char *str);
 int	check_is_printable(char *str);
-int	check_team_already_exist(char **argv, char **team, int i, int j);
+int	check_team_already_exist(char **argv, char **team, int i);
 
 /*
 **----------> get_param.c  <----------
@@ -156,6 +180,12 @@ void	add_elem_in_team(t_desc *serv, t_team **team, int i);
 */
 void	add_elem(t_timev **player, char *action);
 
+/*
+**----------> Gestion map  <----------
+*/
+void	init_map(t_desc *serv);
+void	fill_map(t_map **map, int x, int y, int i);
+void	update_ressource(t_map *map, int i);
 
 void	print_desc(t_desc *serv);
 

@@ -5,7 +5,7 @@
 ** Login   <milbau_a@epitech.net>
 ** 
 ** Started on  Sat May 22 03:37:29 2010 alexis milbault
-** Last update Mon May 24 22:15:35 2010 alexis milbault
+** Last update Thu Jun  3 15:03:42 2010 alexis milbault
 */
 
 #include <stdio.h>
@@ -92,7 +92,7 @@ void	fill_team_name(t_desc *serv, char **argv, int i, int j)
   a = 0;
   while (i < j)
     {
-      if (check_team_already_exist(argv, serv->team, i, j) < 0)
+      if (check_team_already_exist(argv, serv->team, i) < 0)
 	serv->team[a++] = argv[i++];
       else
 	{

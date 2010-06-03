@@ -5,7 +5,7 @@
 ** Login   <milbau_a@epitech.net>
 ** 
 ** Started on  Sat May 22 02:33:22 2010 alexis milbault
-** Last update Fri May 28 20:07:50 2010 aime-bijou iniongo
+** Last update Thu Jun  3 15:09:18 2010 alexis milbault
 */
 
 #include <stdio.h>
@@ -21,6 +21,21 @@ void	print_desc(t_desc *serv)
   while (serv->team[i])
     printf("'%s' ", serv->team[i++]);
   printf("\n\n");
+}
+
+void	print_map(t_map *map)
+{
+  t_map	*tmp;
+
+  tmp = map;
+  while (tmp)
+    {
+      printf("x:%d - y:%d\n", tmp->x, tmp->y);
+      printf("food:%d\nlin:%d\nder:%d\nsib:%d\nmen:%d\nphi:%d\nthy:%d\n",
+	     tmp->food,tmp->lin,tmp->der,tmp->sib,tmp->men,tmp->phi,tmp->thy);
+      printf("##########\n");
+      tmp = tmp->next;
+    }
 }
 
 static void	tzero_serv(t_desc *serv)
@@ -42,6 +57,8 @@ int		main(int argc, char **argv)
   tzero_serv(&serv);
   get_param(&serv, argv, argc);
   print_desc(&serv);
+  init_map(&serv);
+  print_map(serv.map);
   start_server(&serv);
   return (0);
 }

@@ -5,7 +5,7 @@
 ## Login   <milbau_a@epitech.net>
 ## 
 ## Started on  Wed Apr 14 17:36:07 2010 alexis milbault
-## Last update Tue Jun  1 00:31:43 2010 aime-bijou iniongo
+## Last update Thu Jun  3 15:09:56 2010 alexis milbault
 ##
 
 NAME		=	serveur
@@ -18,6 +18,8 @@ SRC_SERVER	=	src_server/main.c		\
 			src_server/client_management.c	\
 			src_server/select_team.c	\
 			src_server/gestion_timer.c	\
+			src_server/init_map.c		\
+			src_server/map_func.c		\
 
 SRC_COMMON	=	common/utils.c 			\
 			common/xfunc.c			\
