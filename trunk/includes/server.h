@@ -5,6 +5,7 @@
 ** Login   <milbau_a@epitech.net>
 ** 
 ** Started on  Sat May 22 03:27:51 2010 alexis milbault
+** Last update Mon Jun  7 11:25:33 2010 aime-bijou iniongo
 ** Last update Thu Jun  3 15:04:16 2010 alexis milbault
 */
 
@@ -19,14 +20,27 @@
 #define DEFAULT_TEAM1 "Team 1"
 #define DEFAULT_TEAM2 "Team 2"
 
+#include <sys/time.h>
 #include <netinet/in.h>
 #include <stdlib.h>
 #include <unistd.h>
 
-# define MAX_FD		30
+# define MAX_FD		40
 # define FD_FREE	0
 # define FD_CLIENT	1
 # define MAX_NB(a, b)	(a > b ? a : b)
+# define MIN_NB(a, b)	(a < b ? a : b)
+
+typedef struct		s_timev
+{
+  int			d;
+  int			id;
+  int			time;
+  int			t_old;
+  int			t_new;
+  char			*action;
+  struct s_timev	*next;
+}			t_timev;
 
 enum
 {
@@ -60,51 +74,46 @@ typedef struct	s_desc
   int		nb_sock;
   char		**team;
   t_map		*map;
+  t_timev	*tv;
 }		t_desc;
-
-typedef struct		s_timev
-{
-  int			p;
-  int			time;
-  int			t_old;
-  int			t_new;
-  /*int			count;*/
-  char			*action;
-  struct s_timev	*next;
-  struct s_timev	*prev;
-}			t_timev;
 
 typedef struct	s_team
 {
   int		place;
+  int		fork;
   char		*name;
   struct s_team	*next;
-  struct s_team	*prev;
 }		t_team;
 
 typedef struct	s_play
 {
   int		x;
   int		y;
+  int		cs;
   int		lvl;
   int		dir;
   int		life;
-  int		cs;
+  int		begin;
+  int		end;
+  int		*inv;
   char		type;
   char		*team;
   char		*ip;
-  char		**inv;
+  char		*action[100];
   t_timev	*t;
 }		t_play;
 
-typedef	struct	s_env
+typedef	struct		s_env
 {
-  int		i;
-  int		cs;
-  int		fd_max;
-  t_team	*team;
-  fd_set	readfs;
-}		t_env;
+  int			i;
+  int			t;
+  int			cs;
+  int			fd_max;
+  t_team		*team;
+  fd_set		readfs;
+  struct timeval	tv;
+  struct timezone	ts;
+}			t_env;
 
 
 
@@ -165,7 +174,7 @@ int	count_tab(char **tab);
 **----------> client_management.c  <----------
 */
 void	add_players(int s, t_env *e, t_play *players);
-void	manage_client(t_desc *serv, t_play *players, t_env *e);
+void	manage_client(t_desc *serv, t_play *players, t_env *e, t_timev t);
 void	close_client(t_play *player, t_env *e);
 void	take_a_team(t_play *player, char *team, t_env *e, t_team **myteam);
 
@@ -178,7 +187,9 @@ void	add_elem_in_team(t_desc *serv, t_team **team, int i);
 /*
 **----------> gestion_timer.c  <----------
 */
-void	add_elem(t_timev **player, char *action);
+void	add_elem(t_timev **player, char *action, int id, int ti);
+void	manage_time_in_select(t_timev t, struct timeval *tv);
+t_timev	manage_time(t_timev *time);
 
 /*
 **----------> Gestion map  <----------

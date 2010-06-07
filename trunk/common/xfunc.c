@@ -5,7 +5,7 @@
 ** Login   <milbau_a@epitech.net>
 ** 
 ** Started on  Wed Apr 28 23:26:09 2010 alexis milbault
-** Last update Sat May 29 15:43:25 2010 aime-bijou iniongo
+** Last update Sun Jun  6 23:48:56 2010 aime-bijou iniongo
 */
 
 #include <sys/socket.h>
@@ -20,7 +20,8 @@ void	*xmalloc(size_t size)
 
   if ((ptr = malloc(size)) == 0)
     {
-      write (2, "Can't malloc.\n", 14);
+      perror("malloc");
+/*       write (2, "Can't malloc.\n", 14); */
       exit(EXIT_FAILURE);
     }
   return (ptr);

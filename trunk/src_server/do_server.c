@@ -5,7 +5,7 @@
 ** Login   <iniong_a@epitech.net>
 ** 
 ** Started on  Wed May 26 14:14:09 2010 aime-bijou iniongo
-** Last update Thu Jun  3 15:11:31 2010 alexis milbault
+   Last update Mon Jun  7 11:22:36 2010 aime-bijou iniongo
 */
 
 #include <sys/select.h>
@@ -15,14 +15,6 @@
 #include <stdio.h>
 #include "../includes/server.h"
 
-
-int			manage_time(t_desc *serv, t_play *players)
-{
-  int			t;
-
-  t = 0;
-  return (t);
-}
 
 int	search_max_fd(t_play *players, int fd_max)
 {
@@ -38,31 +30,39 @@ int	search_max_fd(t_play *players, int fd_max)
   return (fd_max);
 }
 
-void			manage_serveur(t_desc *serv, t_env *e, t_play *players)
+int	check_fd(t_play	*players)
 {
-  int			t;
-  int			i;
-  fd_set		readfs;
-  struct timeval	tv;
+  int	i;
 
-  t = manage_time(serv, players);
-  tv.tv_sec = 0;
-  tv.tv_usec = t;
-  FD_ZERO(&e->readfs);
-  i = 0;
-  FD_SET(serv->s, &e->readfs);
-  while (i < MAX_FD)
+  i = -1;
+  while (i++ < MAX_FD)
     {
       if (players[i].type != FD_FREE)
-	FD_SET(players[i].cs, &e->readfs);
-      i++;
+	return (1);
     }
+  return (0);
+}
+
+void			manage_serveur(t_desc *serv, t_env *e, t_play *players)
+{
+  int			i;
+  t_timev		t;
+  struct timeval	tv;
+
+  FD_ZERO(&e->readfs);
+  i = -1;
+  FD_SET(serv->s, &e->readfs);
+  t = manage_time(serv->tv);
+  while (++i < MAX_FD)
+    if (players[i].type != FD_FREE)
+      FD_SET(players[i].cs, &e->readfs);
   e->fd_max = search_max_fd(players, e->fd_max);
+  manage_time_in_select(t, &tv);
   xselect(e->fd_max + 1, &e->readfs, NULL, NULL, &tv);
   if (FD_ISSET(serv->s, &e->readfs))
     add_players(serv->s, e, players);
   else
-    manage_client(serv, players, e);
+    manage_client(serv, players, e, t);
 }
 
 int			init_serveur(t_desc *serv)
@@ -91,6 +91,8 @@ void			start_server(t_desc *serv)
   x = i;
   e.fd_max = serv->s;
   e.team = NULL;
+  e.t = 0;
+  serv->tv = NULL;
   while (serv->team[x] != NULL)
     add_elem_in_team(serv, &e.team, x++);
   while (i < MAX_FD)

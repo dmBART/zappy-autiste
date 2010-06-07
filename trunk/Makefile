@@ -5,7 +5,7 @@
 ## Login   <milbau_a@epitech.net>
 ## 
 ## Started on  Wed Apr 14 17:36:07 2010 alexis milbault
-## Last update Thu Jun  3 15:09:56 2010 alexis milbault
+   Last update Mon Jun  7 11:23:30 2010 aime-bijou iniongo
 ##
 
 NAME		=	serveur
@@ -50,6 +50,7 @@ all: 	$(OBJ_SERVER) $(OBJ_CLIENT) $(OBJ_COMMON)
 	@echo -e $(SRC_CLIENT) $(OBJ_COMMON) "\033[32m==> Compilation sucess\033[00m"
 
 clean:
+	clean
 	@echo -e "\033[31m=== Clean mode ===\033[00m"
 	@$(RM) $(OBJ_SERVER) $(OBJ_CLIENT) $(OBJ_COMMON)
 	@echo -e $(OBJ_SERVER) $(OBJ_CLIENT) $(OBJ_COMMON) "\033[32m==> Delete sucess\033[00m"
