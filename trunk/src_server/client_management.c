@@ -5,7 +5,7 @@
 ** Login   <iniong_a@epitech.net>
 ** 
 ** Started on  Fri May 28 00:49:11 2010 aime-bijou iniongo
-** Last update Wed Jun  9 04:54:12 2010 aime-bijou iniongo
+** Last update Thu Jun 10 04:05:17 2010 aime-bijou iniongo
 */
 
 #include <sys/socket.h>
@@ -79,6 +79,20 @@ void		show_all_timer(t_timev *timer)
   my_putstr("####################\n#################\n############\n\n");
 }
 
+void		client_write(t_desc *serv, t_play *players, t_env *e, t_timev t, int n)
+{
+  int		x;
+
+  x = players[e->i].end - 1;
+  if (players[e->i].team == NULL && n > 1)
+    {
+      choose_a_team(serv, players, players[e->i].action[0], e);
+      players[e->i].begin = players[e->i].end;
+    }
+  else
+    add_elem(&serv->tv, players[e->i].action[x], players[e->i].cs, serv->t);
+}
+
 void		manage_client(t_desc *serv, t_play *players, t_env *e, t_timev t)
 {
   int		n;
@@ -96,19 +110,27 @@ void		manage_client(t_desc *serv, t_play *players, t_env *e, t_timev t)
 	else
 	  {
 	    manage_buff(&players[e->i], buff, n);
-	    x = players[e->i].end - 1;
- 	    gettimeofday(&e->tv, &e->ts);
-	    if (t.cs == players[e->i].cs &&
-		e->tv.tv_sec >= t.t_old.tv_sec &&  e->tv.tv_usec >= t.t_old.tv_usec)
-		printf("time of execution = %ld\n", t.t);
-	    if (players[e->i].team == NULL && n > 1)
-	      {
-		choose_a_team(serv, players, players[e->i].action[0], e);
-		players[e->i].begin = players[e->i].end;
-	      }
-	    else
-	      add_elem(&serv->tv, players[e->i].action[x], players[e->i].cs, serv->t);
+	    client_write(serv, players, e, t, n);
 	  }
+      }
+  gettimeofday(&e->tv, &e->ts);
+  x = -1;
+  while(x++ < MAX_FD)
+      if (players[x].cs == t.cs)
+	break;
+  if (e->tv.tv_sec >= t.t_old.tv_sec &&  e->tv.tv_usec >= t.t_old.tv_usec)
+    {
+      if (players[x].type == FD_CLIENT)
+	{
+	  write(t.cs, "Ok\n", 3);
+	  printf("time of execution = %ld\n", t.t);
+ 	  del_elem_to_queu(&serv->t, t);
+	}
+    }
+  else
+    {
+      printf("execution dans ... %d\n", t.t);
+      update_time_struct(serv->tv, e);
       }
 }
 

@@ -5,7 +5,7 @@
 ** Login   <iniong_a@epitech.net>
 ** 
 ** Started on  Sat May 29 22:35:24 2010 aime-bijou iniongo
-** Last update Wed Jun  9 05:29:19 2010 aime-bijou iniongo
+** Last update Thu Jun 10 04:00:44 2010 aime-bijou iniongo
 */
 
 #include <sys/time.h>
@@ -39,22 +39,61 @@ void			add_elem(t_timev **player, char *action, int id, int ti)
   else if (my_strcmp(action, "inventaire") == 0)
     new->t = 1 * 1000000 / ti;
   else
-    new->t = 1 * 1000000 / ti;
+    new->t = 7 * 1000000 / ti;
   new->t_old.tv_sec = (new->t / 1000000) + new->t_new.tv_sec;
   new->t_old.tv_usec = (new->t % 1000000) + new->t_new.tv_usec;
   new->next = *player;
   *player = new;
 }
 
+void	del_elem_to_queu(t_timev **time, t_timev t)
+{
+  int	cpt;
+  int	i;
+  void	*save;
+  void	*tmp;
+
+  cpt = 0;
+  tmp = *time;
+  save = *time;
+/*   printf((*time)->action); */
+  while (my_strcmp((*time)->action, t.action) != 0 && (*time)->cs != t.cs &&
+	 (*time)->t_new.tv_sec != t.t_new.tv_sec &&
+	 (*time)->t_new.tv_usec != t.t_new.tv_usec && *time)
+    {
+      *time = (*time)->next;
+      cpt++;
+    }
+  if (cpt == 0)
+    {
+      free((*time)->action);
+      free(t.action);
+      *time = (*time)->next;
+      free(save);
+    }
+  else
+    {
+      *time = save;
+      i = -1;
+      cpt--;
+      while (i++ < cpt)
+	*time = (*time)->next;
+      free((*time)->action);
+      free(t.action);
+      (*time)->next = (*time)->next->next;
+      free(tmp);
+      *time = save;
+    }
+}
 
 void	get_small_time(t_timev *t, t_timev *id)
 {
   int	i;
 
   i = -1;
-  t->t = 100000000;
+  t->t = 600000000;
   while (i++ < MAX_FD)
-    if (id[i].t != 10000000)
+    if (id[i].t != 60000000)
       {
 	t->t = MIN_NB(id[i].t, t->t);
 	t->cs = id[i].cs;
@@ -81,7 +120,7 @@ t_timev		take_first_action(t_timev *time, t_timev *id)
 
   x = -1;
   while (x++ < MAX_FD)
-    id[x].t = 10000000;
+    id[x].t = 60000000;
   while (time)
     {
       x = time->cs;
@@ -109,18 +148,16 @@ void		manage_time_in_select(t_timev t, struct timeval *tv)
   tv->tv_usec = t.t % 1000000;
 }
 
-void		update_time_struct(t_timev t, t_timev **time, int new_t)
+void		update_time_struct(t_timev *time, t_env *e)
 {
-  /*  while (*time)
+  while (time)
     {
-      if (my_strcmp(t.action, (*time)->action) == 0
-	  && t.t_new == (*time)->t_new)
-	{
-	  (*time)->d = 0;
-	  (*time)->t_new = new_t;
-	}
-      *time = (*time)->next;
-      }*/
+      time->t = (time->t_old.tv_sec - e->tv.tv_sec) * 1000000;
+      time->t += time->t_old.tv_usec - e->tv.tv_usec;
+      if (time->t < 0)
+	time->t = 0;
+      time = time->next;
+    }
 }
 
 t_timev		manage_time(t_desc *serv)
