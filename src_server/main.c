@@ -5,7 +5,7 @@
 ** Login   <milbau_a@epitech.net>
 ** 
 ** Started on  Sat May 22 02:33:22 2010 alexis milbault
-** Last update Thu Jun  3 15:09:18 2010 alexis milbault
+** Last update Thu Jun 10 18:38:49 2010 alexis milbault
 */
 
 #include <stdio.h>
@@ -32,7 +32,7 @@ void	print_map(t_map *map)
     {
       printf("x:%d - y:%d\n", tmp->x, tmp->y);
       printf("food:%d\nlin:%d\nder:%d\nsib:%d\nmen:%d\nphi:%d\nthy:%d\n",
-	     tmp->food,tmp->lin,tmp->der,tmp->sib,tmp->men,tmp->phi,tmp->thy);
+	     tmp->res[0],tmp->res[1],tmp->res[2],tmp->res[3],tmp->res[4],tmp->res[5],tmp->res[6]);
       printf("##########\n");
       tmp = tmp->next;
     }

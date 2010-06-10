@@ -5,12 +5,12 @@
 ** Login   <milbau_a@epitech.net>
 ** 
 ** Started on  Tue Jun  1 12:05:51 2010 alexis milbault
-** Last update Wed Jun  2 15:06:55 2010 alexis milbault
+** Last update Thu Jun 10 18:56:09 2010 alexis milbault
 */
 
 #include "../includes/server.h"
 
-void	see_on_right(t_desc *serv, t_play *player)
+static void	see_on_right(t_desc *serv, t_play *player)
 {
   int	x;
   int	y;
@@ -39,7 +39,7 @@ void	see_on_right(t_desc *serv, t_play *player)
     }
 }
 
-void	see_on_left(t_desc *serv, t_play *player)
+static void	see_on_left(t_desc *serv, t_play *player)
 {
   int	x;
   int	y;
@@ -63,13 +63,13 @@ void	see_on_left(t_desc *serv, t_play *player)
 	    y = serv->y;
 	}
       if (x-- < 0)
-	x = serv->x
+	x = serv->x;
       check += 2;
       dep = (dep + 1) % serv->y;
     }
 }
 
-void	see_on_up(t_desc *serv, t_play *player)
+static void	see_on_up(t_desc *serv, t_play *player)
 {
   int	x;
   int	y;
@@ -92,14 +92,14 @@ void	see_on_up(t_desc *serv, t_play *player)
 	  x = (x + 1) % serv->x;
 	}
       if (y-- < 0)
-	y = serv->y
+	y = serv->y;
       check += 2;
       if (dep-- < 0)
 	dep = serv->x;
     }
 }
 
-void	see_on_down(t_desc *serv, t_play *player)
+static void	see_on_down(t_desc *serv, t_play *player)
 {
   int	x;
   int	y;
@@ -128,14 +128,17 @@ void	see_on_down(t_desc *serv, t_play *player)
     }
 }
 
-void	see(t_desc *serv, t_play *player)
+void	see(t_desc *serv, t_play *player, char **cmd)
 {
-  if (player->dir == RIGHT)
-    see_on_right(serv, player);
-  if (player->dir == LEFT)
-    see_on_left(serv, player);
-  if (player->dir == UP)
-    see_on_up(serv, player);
-  if (player->dir == DOWN)
-    see_on_down(serv, player);
+  if (cmd[0])
+  {
+    if (player->dir == RIGHT)
+      see_on_right(serv, player);
+    if (player->dir == LEFT)
+      see_on_left(serv, player);
+    if (player->dir == UP)
+      see_on_up(serv, player);
+    if (player->dir == DOWN)
+      see_on_down(serv, player);
+  }
 }

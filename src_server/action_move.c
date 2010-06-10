@@ -5,81 +5,84 @@
 ** Login   <milbau_a@epitech.net>
 ** 
 ** Started on  Tue Jun  1 11:24:02 2010 alexis milbault
-** Last update Tue Jun  1 12:05:22 2010 alexis milbault
+** Last update Thu Jun 10 18:56:40 2010 alexis milbault
 */
 
 #include "../includes/server.h"
 
 static void	move_on_x(t_desc *serv, t_play *player)
 {
-  if (play->dir == RIGHT)
+  if (player->dir == RIGHT)
     {
-      if ((play->x + 1) == (serv->x - 1))
-	play->x = 0;
+      if ((player->x + 1) == (serv->x - 1))
+	player->x = 0;
       else
-	play->x++;
+	player->x++;
     }
   else
     {
-      if (play->x == 0)
-	play->x = serv->x - 1;
+      if (player->x == 0)
+	player->x = serv->x - 1;
       else
-	play->x--;
+	player->x--;
     }
 }
 
 static void	move_on_y(t_desc *serv, t_play *player)
 {
-  if (play->dir == UP)
+  if (player->dir == UP)
     {
-      if (play->y == 0)
-	play->y = serv->y - 1;
+      if (player->y == 0)
+	player->y = serv->y - 1;
       else
-	play->y--;
+	player->y--;
     }
   else
     {
-      if ((play->y + 1) == (serv->y - 1))
-	play->y = 0;
+      if ((player->y + 1) == (serv->y - 1))
+	player->y = 0;
       else
-	play->y++;
+	player->y++;
     }
 }
 
-void	move_forward(t_desc *serv, t_play *player)
+void	move_forward(t_desc *serv, t_play *player, char **cmd)
 {
-  if ((play->dir == RIGHT) || (play->dir == LEFT))
-    move_on_x(serv, player);
-  else
-    move_on_y(serv, player);
-}
-
-void	turn_right(t_desc *serv, t_play *player)
-{
-  if (serv->map)
+  if (cmd[0])
     {
-      if (play->dir == RIGHT)
-	play->dir == DOWN;
-      else if (play->dir == LEFT)
-	play->dir == UP;
-      else if (play->dir == UP)
-	play->dir == LEFT;
+      if ((player->dir == RIGHT) || (player->dir == LEFT))
+	move_on_x(serv, player);
       else
-	play->dir = RIGHT;
+	move_on_y(serv, player);
     }
 }
 
-void	turn_left(t_desc *serv, t_play *player)
+void	turn_right(t_desc *serv, t_play *player, char **cmd)
 {
-  if (serv->map)
+  if (serv->map && cmd[0])
     {
-      if (play->dir == RIGHT)
-	play->dir == UP;
-      else if (play->dir == LEFT)
-	play->dir == DOWN;
-      else if (play->dir == UP)
-	play->dir == RIGHT;
+      if (player->dir == RIGHT)
+	player->dir = DOWN;
+      else if (player->dir == LEFT)
+	player->dir = UP;
+      else if (player->dir == UP)
+	player->dir = LEFT;
       else
-	play->dir = LEFT;
+	player->dir = RIGHT;
+    }
+}
+
+void	turn_left(t_desc *serv, t_play *player, char **cmd)
+{
+  if (serv->map && cmd[0])
+    {
+      if (player->dir == RIGHT)
+	player->dir = UP;
+      else if (player->dir == LEFT)
+	player->dir = DOWN;
+      else if (player->dir == UP)
+	player->dir = RIGHT;
+      else
+	player->dir = LEFT;
     }
 }

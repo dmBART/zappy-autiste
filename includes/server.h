@@ -5,7 +5,8 @@
 ** Login   <milbau_a@epitech.net>
 ** 
 ** Started on  Sat May 22 03:27:51 2010 alexis milbault
-** Last update Thu Jun 10 10:55:46 2010 aime-bijou iniongo
+** Last update Thu Jun 10 18:57:20 2010 alexis milbault
+** Last update Thu Jun  3 15:04:16 2010 alexis milbault
 */
 
 
@@ -18,18 +19,17 @@
 #define DEFAULT_TIME 100
 #define DEFAULT_TEAM1 "Team 1"
 #define DEFAULT_TEAM2 "Team 2"
-# define MAX_FD		40
-# define FD_FREE	0
-# define FD_CLIENT	1
-# define MAX_IN		200
-# define MAX_NB(a, b)	(a > b ? a : b)
-# define MIN_NB(a, b)	(a < b ? a : b)
-
 
 #include <sys/time.h>
 #include <netinet/in.h>
 #include <stdlib.h>
 #include <unistd.h>
+
+# define MAX_FD		40
+# define FD_FREE	0
+# define FD_CLIENT	1
+# define MAX_NB(a, b)	(a > b ? a : b)
+# define MIN_NB(a, b)	(a < b ? a : b)
 
 enum
 {
@@ -54,13 +54,7 @@ typedef struct	s_map
 {
   int		x;
   int		y;
-  unsigned int	food;
-  unsigned int	lin;
-  unsigned int	der;
-  unsigned int	sib;
-  unsigned int	men;
-  unsigned int	phi;
-  unsigned int	thy;
+  int		res[7];
   struct s_map	*next;
 }		t_map;
 
@@ -170,6 +164,7 @@ void	start_server(t_desc *serv);
 **----------> utils_2.c  <----------
 */
 int	count_tab(char **tab);
+char	**my_str_to_wordtab(char *str);
 
 /*
 **----------> client_management.c  <----------
@@ -199,7 +194,20 @@ t_timev	manage_time(t_desc *serv);
 */
 void	init_map(t_desc *serv);
 void	fill_map(t_map **map, int x, int y, int i);
-void	update_ressource(t_map *map, int i);
+int	get_ressource_id(char *res);
+int	update_exist_case(t_map *map, int x, int y, int id);
+int	take_ressource_on_map(t_map *map, int x, int y, int id);
+
+/*
+**----------> Action Function  <----------
+*/
+void	see(t_desc *serv, t_play *player, char **cmd);
+void	move_forward(t_desc *serv, t_play *player, char **cmd);
+void	turn_right(t_desc *serv, t_play *player, char **cmd);
+void	turn_left(t_desc *serv, t_play *player, char **cmd);
+void	inventory(t_desc *serv, t_play *player, char **cmd);
+void	take_object(t_desc *serv, t_play *player, char **cmd);
+void	drop_object(t_desc *serv, t_play *player, char **cmd);
 
 void	print_desc(t_desc *serv);
 

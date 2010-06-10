@@ -5,41 +5,89 @@
 ** Login   <milbau_a@epitech.net>
 ** 
 ** Started on  Thu Jun  3 14:49:09 2010 alexis milbault
-** Last update Thu Jun  3 15:02:37 2010 alexis milbault
+** Last update Tue Jun  8 15:50:27 2010 alexis milbault
 */
 
 #include "../includes/server.h"
 
-void	update_ressource(t_map *map, int i)
+typedef struct	s_res
 {
-  if (i == 0)
-    map->food++;
-  if (i == 1)
-    map->lin++;
-  if (i == 2)
-    map->der++;
-  if (i == 3)
-    map->sib++;
-  if (i == 4)
-    map->men++;
-  if (i == 5)
-    map->phi++;
-  if (i == 6)
-    map->thy++;
+  char		*res;
+  int		id;
+}		t_res;
+
+t_res	res_tab[]= {
+  {"nourriture", 0},
+  {"linemate", 1},
+  {"deraumere", 2},
+  {"sibur", 3},
+  {"mendiane", 4},
+  {"phiras", 5},
+  {"thystame", 6},
+};
+
+int	get_ressource_id(char *res)
+{
+  int	i;
+
+  i = 0;
+  while (i < 7)
+    {
+      if (my_strcmp(res_tab[i].res, res) == 0)
+	return (res_tab[i].id);
+      i++;
+    }
+  return (-1);
+}
+
+int	take_ressource_on_map(t_map *map, int x, int y, int id)
+{
+  t_map	*tmp;
+
+  tmp = map;
+  while (tmp)
+    {
+      if ((tmp->x == x) && (tmp->y == y))
+	{
+	  if (tmp->res[id] > 0)
+	    {
+	      tmp->res[id]--;
+	      return (0);
+	    }
+	  return (-1);
+	}
+      tmp = tmp->next;
+    }
+  return (-1);
+}
+
+int	update_exist_case(t_map *map, int x, int y, int id)
+{
+  t_map	*tmp;
+
+  tmp = map;
+  while (tmp)
+    {
+      if ((tmp->x == x) && (tmp->y == y))
+	{
+	  tmp->res[id]++;
+	  return (0);
+	}
+      tmp = tmp->next;
+    }
+  return (-1);
 }
 
 void	tzero_map(t_map *new)
 {
-  new->food = 0;
-  new->lin = 0;
-  new->der = 0;
-  new->sib = 0;
-  new->men = 0;
-  new->phi = 0;
-  new->thy = 0;
+  int	i;
+
+  i = 0;
+  while (i < 7)
+    new->res[i++] = 0;
 }
 
-void	fill_map(t_map **map, int x, int y, int i)
+void	fill_map(t_map **map, int x, int y, int id)
 {
   t_map		*new;
 
@@ -47,7 +95,7 @@ void	fill_map(t_map **map, int x, int y, int i)
   tzero_map(new);
   new->x = x;
   new->y = y;
-  update_ressource(new, i);
+  new->res[id]++;
   new->next = *map;
   *map = new;
 }
