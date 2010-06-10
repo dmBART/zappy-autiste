@@ -5,7 +5,7 @@
 ** Login   <milbau_a@epitech.net>
 ** 
 ** Started on  Sat May 22 03:27:51 2010 alexis milbault
-** Last update Wed Jun  9 04:30:33 2010 aime-bijou iniongo
+** Last update Thu Jun 10 03:46:16 2010 aime-bijou iniongo
 ** Last update Thu Jun  3 15:04:16 2010 alexis milbault
 */
 
@@ -42,13 +42,12 @@ enum
 typedef struct		s_timev
 {
   int			d;
-  long			t;
+  int			t;
   int			cs;
   char			*action;
   struct timeval	t_new;
   struct timeval	t_old;
   struct s_timev	*next;
-  struct s_timev	*prev;
 }			t_timev;
 
 typedef struct	s_map
@@ -191,6 +190,8 @@ void	add_elem_in_team(t_desc *serv, t_team **team, int i);
 */
 void	add_elem(t_timev **player, char *action, int id, int ti);
 void	manage_time_in_select(t_timev t, struct timeval *tv);
+void	update_time_struct(t_timev *time, t_env *e);
+void	del_elem_to_queu(t_timev **time, t_timev t);
 t_timev	manage_time(t_desc *serv);
 
 /*
