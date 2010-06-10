@@ -5,7 +5,7 @@
 ** Login   <iniong_a@epitech.net>
 ** 
 ** Started on  Fri May 28 00:49:11 2010 aime-bijou iniongo
-** Last update Thu Jun 10 04:05:17 2010 aime-bijou iniongo
+** Last update Thu Jun 10 15:41:49 2010 aime-bijou iniongo
 */
 
 #include <sys/socket.h>
@@ -122,9 +122,9 @@ void		manage_client(t_desc *serv, t_play *players, t_env *e, t_timev t)
     {
       if (players[x].type == FD_CLIENT)
 	{
-	  write(t.cs, "Ok\n", 3);
+/* 	  write(t.cs, "Ok\n", 3); */
 	  printf("time of execution = %ld\n", t.t);
- 	  del_elem_to_queu(&serv->t, t);
+/*  	  del_elem_to_queu(&serv->tv, t); */
 	}
     }
   else
