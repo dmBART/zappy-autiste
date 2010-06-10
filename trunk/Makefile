@@ -5,26 +5,31 @@
 ## Login   <milbau_a@epitech.net>
 ## 
 ## Started on  Wed Apr 14 17:36:07 2010 alexis milbault
-## Last update Mon Jun  7 20:40:46 2010 aime-bijou iniongo
+## Last update Thu Jun 10 18:42:54 2010 alexis milbault
 ##
 
 NAME		=	serveur
 NAME2		=	client
 
-SRC_SERVER	=	src_server/main.c		\
-			src_server/get_arg.c		\
-			src_server/get_params.c		\
-			src_server/do_server.c		\
-			src_server/client_management.c	\
-			src_server/select_team.c	\
-			src_server/gestion_timer.c	\
-			src_server/init_map.c		\
-			src_server/map_func.c		\
+SRC_SERVER	=	src_server/main.c			\
+			src_server/get_arg.c			\
+			src_server/get_params.c			\
+			src_server/do_server.c			\
+			src_server/client_management.c		\
+			src_server/select_team.c		\
+			src_server/gestion_timer.c		\
+			src_server/init_map.c			\
+			src_server/map_func.c			\
+			src_server/action_move.c		\
+			src_server/action_see.c			\
+			src_server/action_objects.c		\
+			src_server/commande_management.c	\
 
 SRC_COMMON	=	common/utils.c 			\
 			common/xfunc.c			\
 			common/check_func.c		\
 			common/utils_2.c		\
+			common/my_str_to_wordtab.c	\
 
 SRC_CLIENT	=	src_client/main.c 		\
 

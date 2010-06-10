@@ -5,7 +5,7 @@
 ** Login   <iniong_a@epitech.net>
 ** 
 ** Started on  Wed May 26 14:14:09 2010 aime-bijou iniongo
-** Last update Thu Jun 10 11:01:21 2010 aime-bijou iniongo
+** Last update Thu Jun 10 04:00:03 2010 aime-bijou iniongo
 */
 
 #include <sys/select.h>
@@ -62,11 +62,6 @@ void			manage_serveur(t_desc *serv, t_env *e, t_play *players)
   if (FD_ISSET(serv->s, &e->readfs))
     add_players(serv->s, e, players);
   manage_client(serv, players, e, t);
-/*   if (t.action != NULL) */
-/*     { */
-/*       free(t.action); */
-/*       t.t = 0; */
-/*     } */
 }
 
 int			init_serveur(t_desc *serv)

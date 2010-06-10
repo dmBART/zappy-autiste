@@ -5,7 +5,7 @@
 ** Login   <milbau_a@epitech.net>
 ** 
 ** Started on  Wed Jun  2 15:56:44 2010 alexis milbault
-** Last update Thu Jun  3 15:01:16 2010 alexis milbault
+** Last update Thu Jun 10 18:40:32 2010 alexis milbault
 */
 
 #include <time.h>
@@ -46,24 +46,6 @@ int	*get_quota(t_desc *serv, int *quota)
   return (quota);
 }
 
-int	check_case_exist(t_map *map, int x, int y, int i)
-{
-  t_map		*tmp;
-
-  tmp = map;
-  while (tmp)
-    {
-      if ((tmp->x == x) && (tmp->y == y))
-	{
-	  update_ressource(tmp, i);
-	  return (0);
-	}
-      tmp = tmp->next;
-    }
-  return (-1);
-}
-
-
 /*
 ** Un quota de ressources doit etre trouver en fonction
 ** du nombre de joueurs ainsi que la taille de la map.
@@ -87,7 +69,7 @@ void	init_map(t_desc *serv)
 	{
 	  x = rand() % serv->x;
 	  y = rand() % serv->y;
-	  if (check_case_exist(serv->map, x, y, i) < 0)
+	  if (update_exist_case(serv->map, x, y, i) < 0)
 	    fill_map(&serv->map, x, y, i);
 	}
       if (quota[i]-- <= 0)
