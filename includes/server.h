@@ -5,7 +5,7 @@
 ** Login   <milbau_a@epitech.net>
 ** 
 ** Started on  Sat May 22 03:27:51 2010 alexis milbault
-** Last update Thu Jun 10 18:57:20 2010 alexis milbault
+** Last update Fri Jun 11 03:30:22 2010 aime-bijou iniongo
 ** Last update Thu Jun  3 15:04:16 2010 alexis milbault
 */
 
@@ -20,16 +20,17 @@
 #define DEFAULT_TEAM1 "Team 1"
 #define DEFAULT_TEAM2 "Team 2"
 
+# define MAX_FD		40
+# define FD_FREE	0
+# define FD_CLIENT	1
+# define MAX_IN		200
+# define MAX_NB(a, b)	(a > b ? a : b)
+# define MIN_NB(a, b)	(a < b ? a : b)
+
 #include <sys/time.h>
 #include <netinet/in.h>
 #include <stdlib.h>
 #include <unistd.h>
-
-# define MAX_FD		40
-# define FD_FREE	0
-# define FD_CLIENT	1
-# define MAX_NB(a, b)	(a > b ? a : b)
-# define MIN_NB(a, b)	(a < b ? a : b)
 
 enum
 {

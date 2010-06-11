@@ -5,7 +5,7 @@
 ** Login   <iniong_a@epitech.net>
 ** 
 ** Started on  Sat May 29 22:35:24 2010 aime-bijou iniongo
-** Last update Thu Jun 10 04:00:44 2010 aime-bijou iniongo
+** Last update Fri Jun 11 03:26:10 2010 aime-bijou iniongo
 */
 
 #include <sys/time.h>
@@ -48,42 +48,45 @@ void			add_elem(t_timev **player, char *action, int id, int ti)
 
 void	del_elem_to_queu(t_timev **time, t_timev t)
 {
-  int	cpt;
-  int	i;
   void	*save;
   void	*tmp;
+  int	cpt;
+  int	i;
 
-  cpt = 0;
-  tmp = *time;
+  i = 0;
   save = *time;
-/*   printf((*time)->action); */
-  while (my_strcmp((*time)->action, t.action) != 0 && (*time)->cs != t.cs &&
-	 (*time)->t_new.tv_sec != t.t_new.tv_sec &&
-	 (*time)->t_new.tv_usec != t.t_new.tv_usec && *time)
+  while (*time)
     {
+      if (my_strcmp((*time)->action, t.action) == 0 &&
+	  (*time)->t_new.tv_sec == t.t_new.tv_sec &&
+	  (*time)->t_new.tv_usec == t.t_new.tv_usec)
+	{
+	  printf("in del struct timer and action = %s \n", (*time)->action);
+	  cpt = i;
+	  break;
+	}
       *time = (*time)->next;
-      cpt++;
+      i++;
     }
   if (cpt == 0)
     {
       free((*time)->action);
-      free(t.action);
       *time = (*time)->next;
-      free(save);
     }
   else
     {
       *time = save;
-      i = -1;
-      cpt--;
-      while (i++ < cpt)
-	*time = (*time)->next;
+      i = 0;
+      while (i < (cpt - 1))
+	{
+	  *time = (*time)->next;
+	  i++;
+	}
       free((*time)->action);
-      free(t.action);
       (*time)->next = (*time)->next->next;
-      free(tmp);
       *time = save;
     }
+  t.t = 0;
 }
 
 void	get_small_time(t_timev *t, t_timev *id)
@@ -92,16 +95,15 @@ void	get_small_time(t_timev *t, t_timev *id)
 
   i = -1;
   t->t = 600000000;
-  while (i++ < MAX_FD)
+  while (i++ < MAX_IN)
     if (id[i].t != 60000000)
       {
 	t->t = MIN_NB(id[i].t, t->t);
 	t->cs = id[i].cs;
 	t->t_new = id[i].t_new;
-	t->d = 0;
+	t->t_old = id[i].t_old;
+	t->d = 1;
       }
-  t->t_old.tv_sec = (t->t / 1000000) + t->t_new.tv_sec;
-  t->t_old.tv_usec = (t->t % 1000000) + t->t_new.tv_usec;
   if (t->action == NULL)
     t->action = xmalloc(sizeof(t->action) * my_strlen(id[t->cs].action));
   else
@@ -115,31 +117,66 @@ void	get_small_time(t_timev *t, t_timev *id)
 
 t_timev		take_first_action(t_timev *time, t_timev *id)
 {
-  int		x;
+   int		x;
+  void		*save;
   t_timev	t;
 
-  x = -1;
-  while (x++ < MAX_FD)
-    id[x].t = 60000000;
+  get_small_time(&t, id);
+  return (t);
+}
+
+void	exec_action(t_timev *id, t_timev *time)
+{
+  int	x;
+
   while (time)
     {
       x = time->cs;
-      if (id[x].action == NULL)
-	id[x].action = xmalloc(sizeof(id[x].action) * my_strlen(time->action));
-      else
+      if (id[x].t_new.tv_sec == time->t_new.tv_sec
+	  && id[x].t_new.tv_usec == time->t_new.tv_usec)
 	{
-	  free(id[x].action);
-	  id[x].action = xmalloc(sizeof(id[x].action) * my_strlen(time->action));
+	  id[x].t = time->t;
+	  id[x].t_old = time->t_old;
+	  id[x].action = xmalloc(sizeof(char *) * my_strlen(time->action));
+	  strcpy(id[x].action, time->action);
 	}
-      strcpy(id[x].action, time->action);
-      id[x].t = time->t;
-      id[x].cs = x;
-      id[x].t_new.tv_sec = MIN_NB(id[x].t_new.tv_sec, time->t_new.tv_sec);
-      id[x].t_new.tv_usec = MIN_NB(id[x].t_new.tv_usec, time->t_new.tv_usec);
       time = time->next;
     }
-    get_small_time(&t, id);
-  return (t);
+}
+
+void	get_time_exec_2(t_timev *id, t_timev *time)
+{
+  int	x;
+
+  while (time)
+    {
+      x = time->cs;
+      if (id[x].t_new.tv_sec == time->t_new.tv_sec)
+	{
+	  id[x].t_new.tv_usec = MIN_NB(id[x].t_new.tv_usec, time->t_new.tv_usec);
+	}
+      time = time->next;
+    }
+}
+
+void	get_time_exec(t_timev *id, t_timev *time)
+{
+  int	x;
+
+  x = -1;
+  while (x++ < MAX_IN)
+    {
+      id[x].t = 60000000;
+      id[x].t_new.tv_sec = 2000000000;
+      id[x].t_new.tv_usec = 2000000000;
+    }
+  while (time)
+    {
+      x = time->cs;
+      id[x].cs = x;
+      id[x].t_new.tv_sec = MIN_NB(id[x].t_new.tv_sec, time->t_new.tv_sec);
+      time = time->next;
+    }
 }
 
 void		manage_time_in_select(t_timev t, struct timeval *tv)
@@ -163,7 +200,7 @@ void		update_time_struct(t_timev *time, t_env *e)
 t_timev		manage_time(t_desc *serv)
 {
   t_timev	t;
-  t_timev	id[MAX_FD];
+  t_timev	id[MAX_IN];
 
   if (serv->tv == NULL)
     {
@@ -171,6 +208,11 @@ t_timev		manage_time(t_desc *serv)
       t.t = 0;
     }
   else
-    t = take_first_action(serv->tv, id);
+    {
+      get_time_exec(id, serv->tv);
+      get_time_exec_2(id, serv->tv);
+      exec_action(id, serv->tv);
+     t = take_first_action(serv->tv, id);
+    }
   return (t);
 }
