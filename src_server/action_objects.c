@@ -5,7 +5,7 @@
 ** Login   <milbau_a@epitech.net>
 ** 
 ** Started on  Wed Jun  2 15:06:26 2010 alexis milbault
-** Last update Thu Jun 10 18:57:22 2010 alexis milbault
+** Last update Sat Jun 12 21:02:48 2010 aime-bijou iniongo
 */
 
 #include "../includes/server.h"
@@ -34,15 +34,18 @@ void	take_object(t_desc *serv, t_play *player, char **cmd)
 	{
 	  player->inv[id]++;
 	  /*return OK to client*/
+	  write(player->cs, "ok\n", 3);
 	}
       else
 	{
 	  /*return KO to client*/
+	  write(player->cs, "ok\n", 3);
 	}
     }
   else
     {
       /*return KO to client*/
+      write(player->cs, "ko\n", 3);
     }
 }
 
@@ -58,14 +61,17 @@ void	drop_object(t_desc *serv, t_play *player, char **cmd)
 	  if (update_exist_case(serv->map, player->x, player->y, id) < 0)
 	    fill_map(&serv->map, player->x, player->y, id);
 	  /*return OK to client*/
+	  write(player->cs, "ok\n", 3);
 	}
       else
 	{	
 	  /*return KO to client*/
+	  write(player->cs, "ko\n", 3);
 	}
     }
   else
     {
       /*return KO to client*/
+      write(player->cs, "ko\n", 3);
     }
 }

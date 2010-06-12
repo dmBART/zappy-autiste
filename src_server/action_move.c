@@ -5,7 +5,7 @@
 ** Login   <milbau_a@epitech.net>
 ** 
 ** Started on  Tue Jun  1 11:24:02 2010 alexis milbault
-** Last update Thu Jun 10 18:56:40 2010 alexis milbault
+** Last update Sat Jun 12 20:54:06 2010 aime-bijou iniongo
 */
 
 #include "../includes/server.h"
@@ -54,6 +54,7 @@ void	move_forward(t_desc *serv, t_play *player, char **cmd)
 	move_on_x(serv, player);
       else
 	move_on_y(serv, player);
+      write(player->cs, "ok\n", 3);
     }
 }
 
@@ -69,6 +70,7 @@ void	turn_right(t_desc *serv, t_play *player, char **cmd)
 	player->dir = LEFT;
       else
 	player->dir = RIGHT;
+      write(player->cs, "ok\n", 3);
     }
 }
 
@@ -84,5 +86,6 @@ void	turn_left(t_desc *serv, t_play *player, char **cmd)
 	player->dir = RIGHT;
       else
 	player->dir = LEFT;
+      write(player->cs, "ok\n", 3);
     }
 }

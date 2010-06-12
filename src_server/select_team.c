@@ -5,27 +5,27 @@
 ** Login   <iniong_a@epitech.net>
 ** 
 ** Started on  Sat May 29 21:29:53 2010 aime-bijou iniongo
-** Last update Mon Jun  7 02:08:33 2010 aime-bijou iniongo
+** Last update Fri Jun 11 16:35:33 2010 aime-bijou iniongo
 */
 
 #include <stdio.h>
 #include <string.h>
 #include "../includes/server.h"
 
-void		take_a_team(t_play *player, char *team, t_env *e, t_team **myteam)
+void		take_a_team(t_play *player, char *team, t_env *e, t_team *myteam)
 {
   int		len;
 
   len = my_strlen(team);
-  while (*myteam)
+  while (myteam)
     {
-      if (my_strcmp((*myteam)->name, team) == 0)
+      if (my_strcmp(myteam->name, team) == 0)
 	{
-	  if ((*myteam)->place > 0)
+	  if (myteam->place > 0)
 	    {
 	      player[e->i].team = xmalloc(sizeof(char*) * len);
 	      strcpy(player[e->i].team, team);
-	      (*myteam)->place--;
+	      myteam->place--;
 	      write(player[e->i].cs, "ok\n", 3);
 	      printf("client %d choose ' %s ' as his team\n", player[e->i].cs, team);
 	      break;
@@ -37,7 +37,7 @@ void		take_a_team(t_play *player, char *team, t_env *e, t_team **myteam)
 	      break;
 	    }
 	}
-      *myteam = (*myteam)->next;
+      myteam = myteam->next;
     }
 }
 
@@ -64,7 +64,7 @@ void		choose_a_team(t_desc *serv, t_play *players, char *buff, t_env *e)
   if (flags == 0)
     close_client(players, e);
   else
-    take_a_team(players, serv->team[t], e, &e->team);
+    take_a_team(players, serv->team[t], e, e->team);
 }
 
 void		add_elem_in_team(t_desc *serv, t_team **team, int i)

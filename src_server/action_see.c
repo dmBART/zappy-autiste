@@ -5,7 +5,7 @@
 ** Login   <milbau_a@epitech.net>
 ** 
 ** Started on  Tue Jun  1 12:05:51 2010 alexis milbault
-** Last update Thu Jun 10 18:56:09 2010 alexis milbault
+** Last update Sat Jun 12 20:54:34 2010 aime-bijou iniongo
 */
 
 #include "../includes/server.h"
@@ -140,5 +140,6 @@ void	see(t_desc *serv, t_play *player, char **cmd)
       see_on_up(serv, player);
     if (player->dir == DOWN)
       see_on_down(serv, player);
+      write(player->cs, "ok\n", 3);
   }
 }

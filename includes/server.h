@@ -5,7 +5,7 @@
 ** Login   <milbau_a@epitech.net>
 ** 
 ** Started on  Sat May 22 03:27:51 2010 alexis milbault
-** Last update Fri Jun 11 03:30:22 2010 aime-bijou iniongo
+** Last update Sat Jun 12 22:03:47 2010 aime-bijou iniongo
 ** Last update Thu Jun  3 15:04:16 2010 alexis milbault
 */
 
@@ -43,7 +43,7 @@ enum
 typedef struct		s_timev
 {
   int			d;
-  int			t;
+  struct timeval	t;
   int			cs;
   char			*action;
   struct timeval	t_new;
@@ -88,6 +88,7 @@ typedef struct	s_play
   int		lvl;
   int		dir;
   int		life;
+  int		state;
   int		begin;
   int		end;
   int		*inv;
@@ -102,7 +103,9 @@ typedef	struct		s_env
 {
   int			i;
   int			t;
+  int			end;
   int			cs;
+  int			state;
   int			fd_max;
   t_team		*team;
   fd_set		readfs;
@@ -173,7 +176,7 @@ char	**my_str_to_wordtab(char *str);
 void	add_players(int s, t_env *e, t_play *players);
 void	manage_client(t_desc *serv, t_play *players, t_env *e, t_timev t);
 void	close_client(t_play *player, t_env *e);
-void	take_a_team(t_play *player, char *team, t_env *e, t_team **myteam);
+void	take_a_team(t_play *player, char *team, t_env *e, t_team *myteam);
 
 /*
 **----------> select_team.c  <----------
@@ -184,7 +187,7 @@ void	add_elem_in_team(t_desc *serv, t_team **team, int i);
 /*
 **----------> gestion_timer.c  <----------
 */
-void	add_elem(t_timev **player, char *action, int id, int ti);
+void	add_elem(t_timev **player, char *action, int id, t_env *e);
 void	manage_time_in_select(t_timev t, struct timeval *tv);
 void	update_time_struct(t_timev *time, t_env *e);
 void	del_elem_to_queu(t_timev **time, t_timev t);
@@ -208,7 +211,9 @@ void	turn_right(t_desc *serv, t_play *player, char **cmd);
 void	turn_left(t_desc *serv, t_play *player, char **cmd);
 void	inventory(t_desc *serv, t_play *player, char **cmd);
 void	take_object(t_desc *serv, t_play *player, char **cmd);
+void	check_life(t_desc *serv, t_play *player, char **cmd);
 void	drop_object(t_desc *serv, t_play *player, char **cmd);
+void	manage_commande(t_desc *serv, t_play *player, char *cmd);
 
 void	print_desc(t_desc *serv);
 
