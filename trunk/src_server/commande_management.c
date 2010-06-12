@@ -5,7 +5,7 @@
 ** Login   <milbau_a@epitech.net>
 ** 
 ** Started on  Thu Jun  3 16:15:08 2010 alexis milbault
-** Last update Thu Jun 10 18:53:52 2010 alexis milbault
+** Last update Sat Jun 12 21:27:31 2010 aime-bijou iniongo
 */
 
 #include "../includes/commandes.h"
@@ -29,5 +29,6 @@ void	manage_commande(t_desc *serv, t_play *player, char *cmd)
   if (cmd_tab[i].cmd == NULL)
     {
       /*return KO to client*/
+      write(player->cs, "ko\n", 3);
     }
 }

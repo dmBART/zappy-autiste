@@ -5,7 +5,7 @@
 ## Login   <milbau_a@epitech.net>
 ## 
 ## Started on  Wed Apr 14 17:36:07 2010 alexis milbault
-## Last update Thu Jun 10 18:42:54 2010 alexis milbault
+## Last update Sat Jun 12 21:25:27 2010 aime-bijou iniongo
 ##
 
 NAME		=	serveur
@@ -24,6 +24,7 @@ SRC_SERVER	=	src_server/main.c			\
 			src_server/action_see.c			\
 			src_server/action_objects.c		\
 			src_server/commande_management.c	\
+
 
 SRC_COMMON	=	common/utils.c 			\
 			common/xfunc.c			\
