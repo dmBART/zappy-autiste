@@ -5,7 +5,7 @@
 ## Login   <milbau_a@epitech.net>
 ## 
 ## Started on  Wed Apr 14 17:36:07 2010 alexis milbault
-## Last update Sat Jun 12 21:25:27 2010 aime-bijou iniongo
+## Last update Mon Jun 14 17:39:46 2010 aime-bijou iniongo
 ##
 
 NAME		=	serveur
@@ -24,6 +24,10 @@ SRC_SERVER	=	src_server/main.c			\
 			src_server/action_see.c			\
 			src_server/action_objects.c		\
 			src_server/commande_management.c	\
+			src_server/init_client.c		\
+			src_server/elem_timer.c			\
+			src_server/annexe.c			\
+			src_server/print_func.c			\
 
 
 SRC_COMMON	=	common/utils.c 			\
