@@ -5,119 +5,13 @@
 ** Login   <iniong_a@epitech.net>
 ** 
 ** Started on  Sat May 29 22:35:24 2010 aime-bijou iniongo
-** Last update Sat Jun 12 22:27:29 2010 aime-bijou iniongo
+** Last update Mon Jun 14 17:25:55 2010 aime-bijou iniongo
 */
 
 #include <sys/time.h>
 #include <string.h>
 #include <stdio.h>
 #include "../includes/server.h"
-
-typedef struct	s_str
-{
-  char		*str;
-  int		time;
-}		t_str;
-
-t_str	str_tab[]= {
-  {"inventaire", 1},
-  {"avance", 7},
-  {"droite", 7},
-  {"gauche", 7},
-  {"voir", 7},
-  {"prend", 7},
-  {"pose", 7},
-  {NULL, 0}
-};
-
-void		add_elem(t_timev **player, char *action, int id, t_env *e)
-{
-  int		i;
-  double	inc;
-  t_timev	*new;
-
-  i = 0;
-  new = xmalloc(sizeof(*new));
-  new->action = strdup(action);
-  new->d = e->end;
-  printf("%d\n", new->d);
-  new->cs = id;
-  gettimeofday(&new->t_new, NULL);
-  while (str_tab[i].str != NULL)
-    {
-      if (e->state == 0 && strcmp(action, "life") == 0)
-	{
-	  inc = 1260 /e->t * 1000000;
-	  new->t.tv_sec = (long)inc / 1000000;
-	  new->t.tv_usec = (long)inc % 1000000;
-	  break;
-	}
-      else if (my_strcmp(str_tab[i].str, action) == 0)
-	{
-	  inc = (double)((str_tab[i].time / e->t) * 1000000);
-	  new->t.tv_sec = (long)inc / 1000000;
-	  new->t.tv_usec = (long)inc % 1000000;
-	  break;
-	}
-      i++;
-    }
-  if (i == 7)
-    {
-      new->t.tv_sec = 0;
-      new->t.tv_usec = 0;
-    }
-  new->t_old.tv_sec = new->t.tv_sec + new->t_new.tv_sec;
-  new->t_old.tv_usec = new->t.tv_usec + new->t_new.tv_usec;
-  new->next = *player;
-  *player = new;
-}
-
-void	del_elem_to_queu(t_timev **time, t_timev t)
-{
-  void	*save;
-  void	*tmp;
-  int	cpt;
-  int	i;
-
-  i = 0;
-  cpt = i;
-  save = *time;
-  while (*time)
-    {
-      if (my_strcmp((*time)->action, t.action) == 0 &&
-	  (*time)->t_new.tv_sec == t.t_new.tv_sec &&
-	  (*time)->t_new.tv_usec == t.t_new.tv_usec)
-	{
-	  printf("in del struct timer and action = %s \n", t.action);
-	  cpt = i;
-	  break;
-	}
-      *time = (*time)->next;
-      i++;
-    }
-  tmp = *time;
-  if (cpt == 0)
-    {
-      free((*time)->action);
-      *time = (*time)->next;
-      free(save);
-    }
-  else
-    {
-      *time = save;
-      i = 0;
-      while (i < (cpt - 1))
-	{
-	  *time = (*time)->next;
-	  i++;
-	}
-      free((*time)->action);
-      (*time)->next = (*time)->next->next;
-      free(tmp);
-      *time = save;
-    }
-/*   t.t = 0; */
-}
 
 void	get_small_time(t_timev *t, t_timev *id, int i)
 {

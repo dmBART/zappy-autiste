@@ -5,12 +5,40 @@
 ** Login   <iniong_a@epitech.net>
 ** 
 ** Started on  Sat May 29 21:29:53 2010 aime-bijou iniongo
-** Last update Fri Jun 11 16:35:33 2010 aime-bijou iniongo
+** Last update Mon Jun 14 17:42:51 2010 aime-bijou iniongo
 */
 
 #include <stdio.h>
 #include <string.h>
 #include "../includes/server.h"
+
+void		return_place_on_team(t_play *player, t_team *team)
+{
+  void		*save;
+
+  save = team;
+  while (team)
+    {
+      if (my_strcmp(team->name, player->team) == 0)
+	team->place++;
+      team = team->next;
+    }
+  team = save;
+}
+
+int	place_in_the_team(t_team *team, char *team_name)
+{
+  int	place;
+
+  place = 0;
+  while (team)
+    {
+      if (my_strcmp(team_name, team->name) == 0)
+	place = team->place;
+      team = team->next;
+    }
+  return (place);
+}
 
 void		take_a_team(t_play *player, char *team, t_env *e, t_team *myteam)
 {
@@ -32,7 +60,6 @@ void		take_a_team(t_play *player, char *team, t_env *e, t_team *myteam)
 	    }
 	  else
 	    {
-	      write(player[e->i].cs, "ko\n", 3);
 	      close_client(player, e);
 	      break;
 	    }

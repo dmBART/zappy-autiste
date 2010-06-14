@@ -5,7 +5,7 @@
 ** Login   <milbau_a@epitech.net>
 ** 
 ** Started on  Thu Jun  3 14:49:09 2010 alexis milbault
-** Last update Tue Jun  8 15:50:27 2010 alexis milbault
+** Last update Mon Jun 14 18:16:09 2010 aime-bijou iniongo
 */
 
 #include "../includes/server.h"
@@ -25,6 +25,11 @@ t_res	res_tab[]= {
   {"phiras", 5},
   {"thystame", 6},
 };
+
+char	*get_ressource_name(int id)
+{
+  return(res_tab[id].res);
+}
 
 int	get_ressource_id(char *res)
 {

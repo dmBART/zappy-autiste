@@ -5,7 +5,7 @@
 ** Login   <milbau_a@epitech.net>
 ** 
 ** Started on  Sat May 22 03:27:51 2010 alexis milbault
-** Last update Sat Jun 12 22:03:47 2010 aime-bijou iniongo
+** Last update Mon Jun 14 18:16:24 2010 aime-bijou iniongo
 ** Last update Thu Jun  3 15:04:16 2010 alexis milbault
 */
 
@@ -43,9 +43,9 @@ enum
 typedef struct		s_timev
 {
   int			d;
-  struct timeval	t;
   int			cs;
   char			*action;
+  struct timeval	t;
   struct timeval	t_new;
   struct timeval	t_old;
   struct s_timev	*next;
@@ -169,6 +169,8 @@ void	start_server(t_desc *serv);
 */
 int	count_tab(char **tab);
 char	**my_str_to_wordtab(char *str);
+void	my_putchar_fd(int fd, char c);
+void	my_putnbr_fd(int fd, int nbr);
 
 /*
 **----------> client_management.c  <----------
@@ -178,11 +180,16 @@ void	manage_client(t_desc *serv, t_play *players, t_env *e, t_timev t);
 void	close_client(t_play *player, t_env *e);
 void	take_a_team(t_play *player, char *team, t_env *e, t_team *myteam);
 
+void	init_client(t_play *player, int fd, char *ip);
+
+
 /*
 **----------> select_team.c  <----------
 */
+int	place_in_the_team(t_team *team, char *team_name);
 void	choose_a_team(t_desc *serv, t_play *players, char *buff, t_env *e);
 void	add_elem_in_team(t_desc *serv, t_team **team, int i);
+void	return_place_on_team(t_play *player, t_team *team);
 
 /*
 **----------> gestion_timer.c  <----------
@@ -196,6 +203,7 @@ t_timev	manage_time(t_desc *serv);
 /*
 **----------> Gestion map  <----------
 */
+char	*get_ressource_name(int id);
 void	init_map(t_desc *serv);
 void	fill_map(t_map **map, int x, int y, int i);
 int	get_ressource_id(char *res);
@@ -214,6 +222,19 @@ void	take_object(t_desc *serv, t_play *player, char **cmd);
 void	check_life(t_desc *serv, t_play *player, char **cmd);
 void	drop_object(t_desc *serv, t_play *player, char **cmd);
 void	manage_commande(t_desc *serv, t_play *player, char *cmd);
+
+/*
+**----------> annexe.c  <----------
+*/
+void	manage_buff(t_play *player, char *buffer, int len);
+
+/*
+**----------> print_func.c  <----------
+*/
+void	show_all_timer(t_timev *timer);
+void	show_player_buffer(char **buffer);
+
+
 
 void	print_desc(t_desc *serv);
 

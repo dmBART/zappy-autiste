@@ -5,7 +5,7 @@
 ** Login   <milbau_a@epitech.net>
 ** 
 ** Started on  Wed Jun  2 15:06:26 2010 alexis milbault
-** Last update Sat Jun 12 21:02:48 2010 aime-bijou iniongo
+** Last update Mon Jun 14 18:14:43 2010 aime-bijou iniongo
 */
 
 #include "../includes/server.h"
@@ -13,14 +13,34 @@
 void	inventory(t_desc *serv, t_play *player, char **cmd)
 {
   int	i;
+  int	len;
+  int	start;
 
   i = -1;
+  start = 0;
   if (serv && (cmd[0] != NULL))
     {
       while (++i < 7)
 	{
+	  len = my_strlen(get_ressource_name(i));
 	  /*recuperation des ressources et mise dans le buffer*/
-	}    
+	  if (i == 6)
+	    {
+	      write(player->cs, (char *)get_ressource_name(i), len);
+	      write(player->cs, " ", 1);
+	      my_putnbr_fd(player->cs, player->inv[i]);
+	      write(player->cs, "}\n", 2);
+	    }
+	  else
+	    {
+	      if (i == 0)
+		write(player->cs, "{ ", 2);
+	      write(player->cs, (char *)get_ressource_name(i), len);
+	      write(player->cs, " ", 1);
+	      my_putnbr_fd(player->cs, player->inv[i]);
+	      write(player->cs, ", ", 2);
+	    }
+	}
     }
 }
 

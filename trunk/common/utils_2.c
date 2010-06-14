@@ -5,10 +5,11 @@
 ** Login   <iniong_a@epitech.net>
 ** 
 ** Started on  Thu May 27 20:03:17 2010 aime-bijou iniongo
-** Last update Thu May 27 20:05:39 2010 aime-bijou iniongo
+** Last update Mon Jun 14 00:20:46 2010 aime-bijou iniongo
 */
 
 #include <stdio.h>
+#include <unistd.h>
 
 int	count_tab(char **tab)
 {
@@ -23,4 +24,30 @@ int	count_tab(char **tab)
   while (tab[nb] != NULL)
     nb++;
   return (nb);
+}
+
+void	my_putchar_fd(int fd, char c)
+{
+  write(fd, &c, 1);
+}
+
+void	my_putnbr_fd(int fd, int nbr)
+{
+  int	beg;
+  int	end;
+
+  if (nbr < 0)
+    {
+      my_putchar_fd(fd, '-');
+      my_putnbr_fd(fd, -nbr);
+    }
+  else
+    {
+      beg = nbr / 10;
+      end = nbr % 10;
+      if (beg != 0)
+	my_putnbr_fd(fd, beg);
+      my_putchar_fd(fd, end + '0');
+    }
+
 }
