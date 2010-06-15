@@ -5,7 +5,7 @@
 ** Login   <milbau_a@epitech.net>
 ** 
 ** Started on  Sat May 22 03:27:51 2010 alexis milbault
-** Last update Mon Jun 14 18:16:24 2010 aime-bijou iniongo
+** Last update Tue Jun 15 15:50:38 2010 aime-bijou iniongo
 ** Last update Thu Jun  3 15:04:16 2010 alexis milbault
 */
 
@@ -59,19 +59,6 @@ typedef struct	s_map
   struct s_map	*next;
 }		t_map;
 
-typedef struct	s_desc
-{
-  int		x;
-  int		y;
-  int		t;
-  int		s;
-  int		port;
-  int		nb_sock;
-  char		**team;
-  t_map		*map;
-  t_timev	*tv;
-}		t_desc;
-
 typedef struct	s_team
 {
   int		place;
@@ -98,6 +85,20 @@ typedef struct	s_play
   char		*action[100];
   t_timev	*t;
 }		t_play;
+
+typedef struct	s_desc
+{
+  int		x;
+  int		y;
+  int		t;
+  int		s;
+  int		port;
+  int		nb_sock;
+  char		**team;
+  t_map		*map;
+  t_play	players[MAX_FD];
+  t_timev	*tv;
+}		t_desc;
 
 typedef	struct		s_env
 {

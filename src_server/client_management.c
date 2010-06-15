@@ -5,7 +5,7 @@
 ** Login   <iniong_a@epitech.net>
 ** 
 ** Started on  Fri May 28 00:49:11 2010 aime-bijou iniongo
-** Last update Mon Jun 14 18:24:25 2010 aime-bijou iniongo
+** Last update Tue Jun 15 15:53:45 2010 aime-bijou iniongo
 */
 
 #include <sys/socket.h>
@@ -108,25 +108,27 @@ void	transfert(t_desc *serv, t_play *players, t_env *e, t_timev t)
 void	manage_client(t_desc *serv, t_play *players, t_env *e, t_timev t)
 {
   int	n;
+  int	x;
   char	buff[4091];
 
   e->i = -1;
   while (e->i++ < MAX_FD)
-    {
-      if (players[e->i].type == FD_CLIENT && FD_ISSET(players[e->i].cs, &e->readfs))
-	{
-	  n = xread(players[e->i].cs, buff, 4090);
-	  if (n == 0)
-	    close_client(players, e);
-	  else
-	    {
-	      manage_buff(&players[e->i], buff, n);
-	      client_write(serv, players, e, n);
-	    }
-	  /* 	  show_player_buffer(players[e->i].action); */
-	  memset(buff, 0, 4091);
-	}
-    }
+    if (players[e->i].type == FD_CLIENT && FD_ISSET(players[e->i].cs, &e->readfs))
+      {
+	n = xread(players[e->i].cs, buff, 4090);
+	if (n == 0)
+	  close_client(players, e);
+	else
+	  {
+	    manage_buff(&players[e->i], buff, n);
+	    client_write(serv, players, e, n);
+	  }
+	/* 	  show_player_buffer(players[e->i].action); */
+	memset(buff, 0, 4091);
+      }
+  x = -1;
+  while (++x < MAX_FD)
+    serv->players[x] = players[x];
   transfert(serv, players, e, t);
 }
 
