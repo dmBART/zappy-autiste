@@ -5,7 +5,7 @@
 ** Login   <iniong_a@epitech.net>
 ** 
 ** Started on  Fri May 28 00:49:11 2010 aime-bijou iniongo
-** Last update Wed Jun 16 01:57:10 2010 aime-bijou iniongo
+** Last update Wed Jun 16 22:57:59 2010 aime-bijou iniongo
 */
 
 #include <sys/socket.h>
@@ -56,6 +56,7 @@ void		client_write(t_desc *serv, t_play *players, t_env *e, int n)
       my_putnbr_fd(players[e->i].cs, serv->y);
       my_putchar_fd(players[e->i].cs,'\n');
       add_elem(&serv->tv, "vie", players[e->i].cs, e);
+      players[e->i].state = 1;
     }
   else
     add_elem(&serv->tv, players[e->i].action[x], players[e->i].cs, e);
@@ -75,15 +76,22 @@ void	treat_command(t_desc *serv, t_env *e, t_play *player, t_timev t)
 	if (player->type == FD_CLIENT)
 	  {
  	    t.d = 0;
-	    printf("action = %s\n", t.action);
 	    if (my_strcmp(t.action, "vie") == 0)
 	      {
-		printf("I' here\n");
-/* 		if (player->inv[0] > 0) */
-/* 		    player->inv[0]--; */
-/*  		write(player->cs, "mort\n", 5); */
-/*  		close_client(player, e); */
-		}
+		if (player->inv[0] > 0)
+		  {
+  		    player->inv[0]--;
+  		    e->end = 1;
+ 		    e->state  = 0;
+  		    add_elem(&serv->tv, "vie", player->cs, e);
+		    printf("state in elem = %d\n", e->state);
+		  }
+		else
+		  {
+		    write(player->cs, "mort\n", 5);
+		    close_client(player, e);
+		  }
+	      }
  	    else
 	      {
 		my_putstr("executing commande \" ");
@@ -92,8 +100,8 @@ void	treat_command(t_desc *serv, t_env *e, t_play *player, t_timev t)
 		my_putnbr_fd(1, t.cs);
 		my_putstr("\n");
 		manage_commande(serv, player, t.action);
-		del_elem_to_queu(&serv->tv, t);
 	      }
+	    del_elem_to_queu(&serv->tv, t);
 	  }
     }
 }
