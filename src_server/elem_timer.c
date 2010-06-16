@@ -5,7 +5,7 @@
 ** Login   <iniong_a@epitech.net>
 ** 
 ** Started on  Mon Jun 14 17:19:31 2010 aime-bijou iniongo
-** Last update Mon Jun 14 18:18:41 2010 aime-bijou iniongo
+** Last update Tue Jun 15 16:22:10 2010 aime-bijou iniongo
 */
 
 #include <sys/time.h>
@@ -60,6 +60,7 @@ void		time_of_execution(t_timev *new, char *action, int t)
 void		add_elem(t_timev **player, char *action, int id, t_env *e)
 {
   int		i;
+  double	inc;
   t_timev	*new;
 
   i = 0;
@@ -68,15 +69,17 @@ void		add_elem(t_timev **player, char *action, int id, t_env *e)
   new->d = e->end;
   new->cs = id;
   gettimeofday(&new->t_new, NULL);
-  /*   if (e->state == 0 && strcmp(action, "life") == 0) */
-  /*     { */
-  /*       inc = 1200 / e->t * 1000000; */
-  /*       printf("vie = %f\n", inc); */
-  /*       new->t.tv_sec = (long)inc / 1000000; */
-  /*       new->t.tv_usec = (long)inc % 1000000; */
-  /*     } */
-  /*   else */
-  time_of_execution(new, action, e->t);
+  printf("nbr = %d\n", new->d);
+  if (e->state == 0 && strcmp(action, "vie") == 0)
+    {
+      inc = (double)(126 / e->t * 1000000);
+      printf("vie = %f\n", inc);
+      new->t.tv_sec = (long)inc / 1000000;
+      new->t.tv_usec = (long)inc % 1000000;
+      e->state = 1;
+    }
+  else
+    time_of_execution(new, action, e->t);
   new->t_old.tv_sec = new->t.tv_sec + new->t_new.tv_sec;
   new->t_old.tv_usec = new->t.tv_usec + new->t_new.tv_usec;
   new->next = *player;
