@@ -5,7 +5,7 @@
 ** Login   <iniong_a@epitech.net>
 ** 
 ** Started on  Mon Jun 14 17:19:31 2010 aime-bijou iniongo
-** Last update Tue Jun 15 16:22:10 2010 aime-bijou iniongo
+** Last update Wed Jun 16 22:39:12 2010 aime-bijou iniongo
 */
 
 #include <sys/time.h>
@@ -73,7 +73,6 @@ void		add_elem(t_timev **player, char *action, int id, t_env *e)
   if (e->state == 0 && strcmp(action, "vie") == 0)
     {
       inc = (double)(126 / e->t * 1000000);
-      printf("vie = %f\n", inc);
       new->t.tv_sec = (long)inc / 1000000;
       new->t.tv_usec = (long)inc % 1000000;
       e->state = 1;
@@ -111,6 +110,7 @@ void	del_elem_to_queu(t_timev **time, t_timev t)
   tmp = *time;
   if (cpt == 0)
     {
+      printf("in del struct action = %s\n", (*time)->action);
       free((*time)->action);
       *time = (*time)->next;
       free(save);
@@ -124,10 +124,13 @@ void	del_elem_to_queu(t_timev **time, t_timev t)
 	  *time = (*time)->next;
 	  i++;
 	}
-      free((*time)->action);
-      (*time)->next = (*time)->next->next;
-      free(tmp);
-      *time = save;
+      if (*time != NULL)
+	{
+	  free((*time)->action);
+	  (*time)->next = (*time)->next->next;
+	  free(tmp);
+	  *time = save;
+	}
     }
 /*   t.t = 0; */
 }
