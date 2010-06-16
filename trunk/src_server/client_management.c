@@ -5,7 +5,7 @@
 ** Login   <iniong_a@epitech.net>
 ** 
 ** Started on  Fri May 28 00:49:11 2010 aime-bijou iniongo
-** Last update Tue Jun 15 15:53:45 2010 aime-bijou iniongo
+** Last update Wed Jun 16 01:57:10 2010 aime-bijou iniongo
 */
 
 #include <sys/socket.h>
@@ -55,6 +55,7 @@ void		client_write(t_desc *serv, t_play *players, t_env *e, int n)
       my_putchar_fd(players[e->i].cs,' ');
       my_putnbr_fd(players[e->i].cs, serv->y);
       my_putchar_fd(players[e->i].cs,'\n');
+      add_elem(&serv->tv, "vie", players[e->i].cs, e);
     }
   else
     add_elem(&serv->tv, players[e->i].action[x], players[e->i].cs, e);
@@ -74,11 +75,15 @@ void	treat_command(t_desc *serv, t_env *e, t_play *player, t_timev t)
 	if (player->type == FD_CLIENT)
 	  {
  	    t.d = 0;
- 	    if (my_strcmp(t.action, "life") == 0)
+	    printf("action = %s\n", t.action);
+	    if (my_strcmp(t.action, "vie") == 0)
 	      {
- 		write(player->cs, "mort\n", 5);
- 		close_client(player, e);
- 	      }
+		printf("I' here\n");
+/* 		if (player->inv[0] > 0) */
+/* 		    player->inv[0]--; */
+/*  		write(player->cs, "mort\n", 5); */
+/*  		close_client(player, e); */
+		}
  	    else
 	      {
 		my_putstr("executing commande \" ");
