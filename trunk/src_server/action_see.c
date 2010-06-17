@@ -5,21 +5,40 @@
 ** Login   <milbau_a@epitech.net>
 ** 
 ** Started on  Tue Jun  1 12:05:51 2010 alexis milbault
-** Last update Thu Jun 17 05:13:38 2010 alexis milbault
+** Last update Thu Jun 17 07:40:30 2010 alexis milbault
 */
 
 #include "../includes/server.h"
 
-static void	aff_player_on_case(t_play *players, t_play *cur, int x, int y)
+int	get_players_on_map(t_play *players, int x, int y)
 {
   int	i;
+  int	count;
 
   i = 0;
+  count = 0;
   while (players[i].team != NULL)
     {
       if ((players[i].x == x) && (players[i].y == y))
-	write(cur->cs, "joueur ", 7);
+	count++;
       i++;
+    }
+  return (count);
+}
+
+static void	aff_player_on_case(t_play *players, t_play *cur, int x, int y)
+{
+  int	i;
+  int	flag;
+
+  flag = 0;
+  i = get_players_on_map(players, x, y) + 1;
+  while (--i > 0)
+    {
+      if (flag == 1)
+	write(cur->cs, " ", 1);
+      write(cur->cs, "joueur", 6);
+      flag = 1;
     }
 }
 
@@ -34,17 +53,15 @@ static void	aff_ressources_on_case(t_map *map, t_play *cur, int x, int y)
   while (tmp)
     {
       if ((tmp->x == x) && (tmp->y == y))
-	{
-	  while (++i < 7)
-	    {
-	      j = tmp->res[i] + 1;
-	      while (--j > 0)
-		{
-		  write(cur->cs, (char *)get_ressource_name(i), my_strlen(get_ressource_name(i)));
-		  write(cur->cs, " ", 1);
-		}
-	    }
-	}
+	while (++i < 7)
+	  {
+	    j = tmp->res[i] + 1;
+	    while (--j > 0)
+	      {
+		write(cur->cs, " ", 1);
+		write(cur->cs, (char *)get_ressource_name(i), my_strlen(get_ressource_name(i)));
+	      }
+	  }
       tmp = tmp->next;
     }
 }
@@ -52,13 +69,9 @@ static void	aff_ressources_on_case(t_map *map, t_play *cur, int x, int y)
 static void	aff_case(t_desc *serv, t_play *cur, int x, int y, int count)
 {
   if (count == 0)
-    write(cur->cs, "{ ", 2);
+    write(cur->cs, "{", 1);
   aff_player_on_case(serv->players, cur, x, y);
   aff_ressources_on_case(serv->map, cur, x, y);
-  if (count <= cur->lvl)
-    write(cur->cs, ", ", 2);
-  else
-    write(cur->cs, "}\n", 2);
 }
 
 static void	see_on_right(t_desc *serv, t_play *player)
@@ -82,6 +95,10 @@ static void	see_on_right(t_desc *serv, t_play *player)
 	{
 	  /*recuperation du contenu de la case*/
 	  aff_case(serv, player, x, y, count);
+	  if ((count == player->lvl) && ((count2 + 1) == check))
+	    write(player->cs, "}\n", 2);
+	  else
+	    write(player->cs, ",", 1);
 	  y = (y + 1) % serv->y;
 	}
       x = (x + 1) % serv->x;
@@ -112,6 +129,10 @@ static void	see_on_left(t_desc *serv, t_play *player)
 	{
 	  /*recuperation du contenu de la case*/
 	  aff_case(serv, player, x, y, count);
+	  if ((count == player->lvl) && ((count2 + 1) == check))
+	    write(player->cs, "}\n", 2);
+	  else
+	    write(player->cs, ",", 1);
 	  if (--y < 0)
 	    y = serv->y - 1;
 	}
@@ -143,6 +164,10 @@ static void	see_on_up(t_desc *serv, t_play *player)
 	{
 	  /*recuperation du contenu de la case*/
 	  aff_case(serv, player, x, y, count);
+	  if ((count == player->lvl) && ((count2 + 1) == check))
+	    write(player->cs, "}\n", 2);
+	  else
+	    write(player->cs, ",", 1);
 	  x = (x + 1) % serv->x;
 	}
       if (--y < 0)
@@ -174,6 +199,10 @@ static void	see_on_down(t_desc *serv, t_play *player)
 	{
 	  /*recuperation du contenu de la case*/
 	  aff_case(serv, player, x, y, count);
+	  if ((count == player->lvl) && ((count2 + 1) == check))
+	    write(player->cs, "}\n", 2);
+	  else
+	    write(player->cs, ",", 1);
 	  if (--x < 0)
 	    x = serv->x - 1;
 	}
