@@ -5,7 +5,7 @@
 ** Login   <milbau_a@epitech.net>
 ** 
 ** Started on  Sat May 22 03:27:51 2010 alexis milbault
-** Last update Tue Jun 15 15:50:38 2010 aime-bijou iniongo
+** Last update Thu Jun 17 03:04:44 2010 alexis milbault
 ** Last update Thu Jun  3 15:04:16 2010 alexis milbault
 */
 
@@ -214,15 +214,15 @@ int	take_ressource_on_map(t_map *map, int x, int y, int id);
 /*
 **----------> Action Function  <----------
 */
-void	see(t_desc *serv, t_play *player, char **cmd);
-void	move_forward(t_desc *serv, t_play *player, char **cmd);
-void	turn_right(t_desc *serv, t_play *player, char **cmd);
-void	turn_left(t_desc *serv, t_play *player, char **cmd);
-void	inventory(t_desc *serv, t_play *player, char **cmd);
-void	take_object(t_desc *serv, t_play *player, char **cmd);
-void	check_life(t_desc *serv, t_play *player, char **cmd);
-void	drop_object(t_desc *serv, t_play *player, char **cmd);
-void	manage_commande(t_desc *serv, t_play *player, char *cmd);
+void	see(t_desc *serv, t_play *player, t_env *e, char **cmd);
+void	move_forward(t_desc *serv, t_play *player, t_env *e, char **cmd);
+void	turn_right(t_desc *serv, t_play *player, t_env *e, char **cmd);
+void	turn_left(t_desc *serv, t_play *player, t_env *e, char **cmd);
+void	inventory(t_desc *serv, t_play *player, t_env *e, char **cmd);
+void	take_object(t_desc *serv, t_play *player, t_env *e, char **cmd);
+void	check_life(t_desc *serv, t_play *player, t_env *e, char **cmd);
+void	drop_object(t_desc *serv, t_play *player, t_env *e, char **cmd);
+void	manage_commande(t_desc *serv, t_play *player, t_env *e, char *cmd);
 
 /*
 **----------> annexe.c  <----------

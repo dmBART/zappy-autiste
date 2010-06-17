@@ -5,7 +5,7 @@
 ** Login   <iniong_a@epitech.net>
 ** 
 ** Started on  Fri May 28 00:49:11 2010 aime-bijou iniongo
-** Last update Wed Jun 16 22:57:59 2010 aime-bijou iniongo
+** Last update Thu Jun 17 03:03:08 2010 alexis milbault
 */
 
 #include <sys/socket.h>
@@ -99,7 +99,7 @@ void	treat_command(t_desc *serv, t_env *e, t_play *player, t_timev t)
 		my_putstr(" \" from player : ");
 		my_putnbr_fd(1, t.cs);
 		my_putstr("\n");
-		manage_commande(serv, player, t.action);
+		manage_commande(serv, player, e, t.action);
 	      }
 	    del_elem_to_queu(&serv->tv, t);
 	  }

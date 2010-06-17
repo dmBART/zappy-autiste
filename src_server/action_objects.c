@@ -5,12 +5,12 @@
 ** Login   <milbau_a@epitech.net>
 ** 
 ** Started on  Wed Jun  2 15:06:26 2010 alexis milbault
-** Last update Mon Jun 14 18:14:43 2010 aime-bijou iniongo
+** Last update Thu Jun 17 03:15:39 2010 alexis milbault
 */
 
 #include "../includes/server.h"
 
-void	inventory(t_desc *serv, t_play *player, char **cmd)
+void	inventory(t_desc *serv, t_play *player, t_env *e, char **cmd)
 {
   int	i;
   int	len;
@@ -18,7 +18,7 @@ void	inventory(t_desc *serv, t_play *player, char **cmd)
 
   i = -1;
   start = 0;
-  if (serv && (cmd[0] != NULL))
+  if (serv && (cmd[0] != NULL) && e->team)
     {
       while (++i < 7)
 	{
@@ -44,54 +44,40 @@ void	inventory(t_desc *serv, t_play *player, char **cmd)
     }
 }
 
-void	take_object(t_desc *serv, t_play *player, char **cmd)
+void	take_object(t_desc *serv, t_play *player, t_env *e, char **cmd)
 {
   int	id;
 
-  if ((cmd[1] != NULL) && ((id = get_ressource_id(cmd[1])) >= 0))
+  if ((cmd[1] != NULL) && ((id = get_ressource_id(cmd[1])) >= 0) && e->team)
     {
       if (take_ressource_on_map(serv->map, player->x, player->y, id) == 0)
 	{
 	  player->inv[id]++;
-	  /*return OK to client*/
 	  write(player->cs, "ok\n", 3);
 	}
       else
-	{
-	  /*return KO to client*/
-	  write(player->cs, "ok\n", 3);
-	}
+	write(player->cs, "ko\n", 3);
     }
   else
-    {
-      /*return KO to client*/
-      write(player->cs, "ko\n", 3);
-    }
+    write(player->cs, "ko\n", 3);
 }
 
-void	drop_object(t_desc *serv, t_play *player, char **cmd)
+void	drop_object(t_desc *serv, t_play *player, t_env *e, char **cmd)
 {
   int	id;
 
-  if ((cmd[1] != NULL) && ((id = get_ressource_id(cmd[1]) >= 0)))
+  if ((cmd[1] != NULL) && ((id = get_ressource_id(cmd[1])) >= 0) && e->team)
     {
       if (player->inv[id] > 0)
 	{
 	  player->inv[id]--;
 	  if (update_exist_case(serv->map, player->x, player->y, id) < 0)
 	    fill_map(&serv->map, player->x, player->y, id);
-	  /*return OK to client*/
 	  write(player->cs, "ok\n", 3);
 	}
       else
-	{	
-	  /*return KO to client*/
-	  write(player->cs, "ko\n", 3);
-	}
+	write(player->cs, "ko\n", 3);
     }
   else
-    {
-      /*return KO to client*/
-      write(player->cs, "ko\n", 3);
-    }
+    write(player->cs, "ko\n", 3);
 }
