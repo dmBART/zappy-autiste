@@ -5,7 +5,7 @@
 ** Login   <iniong_a@epitech.net>
 ** 
 ** Started on  Mon Jun 14 17:33:41 2010 aime-bijou iniongo
-** Last update Thu Jun 17 23:42:22 2010 aime-bijou iniongo
+** Last update Fri Jun 18 10:21:57 2010 aime-bijou iniongo
 */
 
 #include <stdio.h>
@@ -39,8 +39,11 @@ void		manage_buff(t_play *player, char *buffer, int len)
 	buffer[l] = '\0';
       l++;
     }
-  if (player->end > 100)
-    free_tab(player->action);
+  if (player->action[i] != NULL)
+    {
+      free(player->action[i]);
+      player->action[i] = NULL;
+    }
   if (buffer[0] == '\0')
     {
       player->action[i] = xmalloc(sizeof(char *) * my_strlen("empty"));
@@ -50,7 +53,7 @@ void		manage_buff(t_play *player, char *buffer, int len)
     {
       player->action[i] = xmalloc(sizeof(char *) * my_strlen(buffer));
       strcpy(player->action[i], buffer);
+      printf("client %d send : ' %s'\n", player->cs, player->action[i]);
     }
-  printf("client %d send : ' %s'\n", player->cs, player->action[i]);
   player->end++;
 }
