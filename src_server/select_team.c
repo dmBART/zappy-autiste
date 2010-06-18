@@ -5,7 +5,7 @@
 ** Login   <iniong_a@epitech.net>
 ** 
 ** Started on  Sat May 29 21:29:53 2010 aime-bijou iniongo
-** Last update Mon Jun 14 17:42:51 2010 aime-bijou iniongo
+** Last update Fri Jun 18 02:07:36 2010 aime-bijou iniongo
 */
 
 #include <stdio.h>
@@ -40,32 +40,55 @@ int	place_in_the_team(t_team *team, char *team_name)
   return (place);
 }
 
+int		ghost_player(t_play *players, char *team_name)
+{
+  int		ghost;
+
+  ghost = 0;
+  while (ghost < MAX_FD)
+    {
+      if (players[ghost].type == FD_GHOST)
+	if (my_strcmp(players[ghost].team, team_name) == 0)
+	  return (ghost);
+      ghost++;
+    }
+  return (-1);
+}
+
 void		take_a_team(t_play *player, char *team, t_env *e, t_team *myteam)
 {
   int		len;
+  int		ghost;
 
   len = my_strlen(team);
-  while (myteam)
-    {
-      if (my_strcmp(myteam->name, team) == 0)
-	{
-	  if (myteam->place > 0)
-	    {
-	      player[e->i].team = xmalloc(sizeof(char*) * len);
-	      strcpy(player[e->i].team, team);
-	      myteam->place--;
-	      write(player[e->i].cs, "ok\n", 3);
-	      printf("client %d choose ' %s ' as his team\n", player[e->i].cs, team);
-	      break;
-	    }
-	  else
-	    {
-	      close_client(player, e);
-	      break;
-	    }
-	}
-      myteam = myteam->next;
-    }
+   if ((ghost = ghost_player(player, team)) == -1)
+    while (myteam)
+      {
+	if (my_strcmp(myteam->name, team) == 0)
+	  {
+	    if (myteam->place > 0)
+	      {
+		player[e->i].team = xmalloc(sizeof(char*) * len);
+		strcpy(player[e->i].team, team);
+		myteam->place--;
+		printf("client %d choose ' %s ' as his team\n", player[e->i].cs, team);
+		break;
+	      }
+	    else
+	      {
+		close_client(player, e);
+		break;
+	      }
+	  }
+	myteam = myteam->next;
+      }
+   else
+     {
+       printf("in the ghost\n");
+       player[ghost].cs = player[e->i].cs;
+       player[e->i].type = FD_FREE;
+       player[ghost].type = FD_CLIENT;
+     }
 }
 
 void		choose_a_team(t_desc *serv, t_play *players, char *buff, t_env *e)
@@ -98,7 +121,7 @@ void		add_elem_in_team(t_desc *serv, t_team **team, int i)
 {
   t_team	*new;
 
-  new = xmalloc(sizeof(new));
+  new = xmalloc(sizeof(*new));
   new->name = strdup(serv->team[i]);
   new->place = serv->nb_sock;
   new->next = *team;

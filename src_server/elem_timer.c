@@ -5,7 +5,7 @@
 ** Login   <iniong_a@epitech.net>
 ** 
 ** Started on  Mon Jun 14 17:19:31 2010 aime-bijou iniongo
-** Last update Wed Jun 16 22:39:12 2010 aime-bijou iniongo
+** Last update Thu Jun 17 23:38:05 2010 aime-bijou iniongo
 */
 
 #include <sys/time.h>
@@ -64,8 +64,10 @@ void		add_elem(t_timev **player, char *action, int id, t_env *e)
   t_timev	*new;
 
   i = 0;
+  printf("action in add = %s\n", action);
   new = xmalloc(sizeof(*new));
-  new->action = strdup(action);
+  new->action = xmalloc(sizeof(char *) * my_strlen(action));
+  new->action = strcpy(new->action, action);
   new->d = e->end;
   new->cs = id;
   gettimeofday(&new->t_new, NULL);
@@ -98,8 +100,8 @@ void	del_elem_to_queu(t_timev **time, t_timev t)
   while (*time)
     {
       if (my_strcmp((*time)->action, t.action) == 0 &&
-	  (*time)->t_new.tv_sec == t.t_new.tv_sec &&
-	  (*time)->t_new.tv_usec == t.t_new.tv_usec)
+	  (*time)->t_old.tv_sec == t.t_old.tv_sec &&
+	  (*time)->t_old.tv_usec == t.t_old.tv_usec)
 	{
 	  cpt = i;
 	  break;
@@ -108,6 +110,7 @@ void	del_elem_to_queu(t_timev **time, t_timev t)
       i++;
     }
   tmp = *time;
+  *time = save;
   if (cpt == 0)
     {
       printf("in del struct action = %s\n", (*time)->action);

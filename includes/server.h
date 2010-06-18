@@ -5,7 +5,7 @@
 ** Login   <milbau_a@epitech.net>
 ** 
 ** Started on  Sat May 22 03:27:51 2010 alexis milbault
-** Last update Thu Jun 17 03:04:44 2010 alexis milbault
+** Last update Thu Jun 17 19:24:40 2010 aime-bijou iniongo
 ** Last update Thu Jun  3 15:04:16 2010 alexis milbault
 */
 
@@ -21,8 +21,8 @@
 #define DEFAULT_TEAM2 "Team 2"
 
 # define MAX_FD		40
-# define FD_FREE	0
-# define FD_CLIENT	1
+/* # define FD_FREE	0 */
+/* # define FD_CLIENT	1 */
 # define MAX_IN		200
 # define MAX_NB(a, b)	(a > b ? a : b)
 # define MIN_NB(a, b)	(a < b ? a : b)
@@ -37,7 +37,10 @@ enum
   RIGHT,
   LEFT,
   UP,
-  DOWN
+  DOWN,
+  FD_CLIENT,
+  FD_FREE,
+  FD_GHOST
 };
 
 typedef struct		s_timev
@@ -110,6 +113,7 @@ typedef	struct		s_env
   int			fd_max;
   t_team		*team;
   fd_set		readfs;
+  fd_set		wrtefs;
   struct timeval	tv;
   struct timezone	ts;
 }			t_env;
