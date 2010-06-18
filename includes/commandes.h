@@ -5,7 +5,7 @@
 ** Login   <milbau_a@epitech.net>
 ** 
 ** Started on  Thu Jun  3 16:27:34 2010 alexis milbault
-** Last update Thu Jun 17 03:06:04 2010 alexis milbault
+** Last update Thu Jun 17 17:14:07 2010 alexis milbault
 */
 #ifndef _COMMANDES_H_
 #define _COMMANDES_H_
@@ -26,10 +26,11 @@ t_cmd	cmd_tab[]= {
   {"inventaire", inventory},
   {"prend", take_object},
   {"pose", drop_object},
+  {"connect_nbr", connect_nbr},
+  {"incantation", lvl_up},
   /*  {"expulse", },
   {"broadcast", },
-  {"fork", },
-  {"connect_nbr", },*/
+  {"fork", },*/
   {NULL, NULL},
 };
 
