@@ -214,6 +214,7 @@ void	fill_map(t_map **map, int x, int y, int i);
 int	get_ressource_id(char *res);
 int	update_exist_case(t_map *map, int x, int y, int id);
 int	take_ressource_on_map(t_map *map, int x, int y, int id);
+int	get_players_on_map(t_play *players, int x, int y);
 
 /*
 **----------> Action Function  <----------
@@ -227,6 +228,8 @@ void	take_object(t_desc *serv, t_play *player, t_env *e, char **cmd);
 void	check_life(t_desc *serv, t_play *player, t_env *e, char **cmd);
 void	drop_object(t_desc *serv, t_play *player, t_env *e, char **cmd);
 void	manage_commande(t_desc *serv, t_play *player, t_env *e, char *cmd);
+void	connect_nbr(t_desc *serv, t_play *player, t_env *e, char **cmd);
+void	lvl_up(t_desc *serv, t_play *player, t_env *e, char **cmd);
 
 /*
 **----------> annexe.c  <----------

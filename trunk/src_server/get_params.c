@@ -5,7 +5,7 @@
 ** Login   <milbau_a@epitech.net>
 ** 
 ** Started on  Mon May 24 22:30:45 2010 alexis milbault
-** Last update Tue May 25 16:17:32 2010 alexis milbault
+** Last update Fri Jun 18 02:59:12 2010 alexis milbault
 */
 
 #include <stdio.h>
