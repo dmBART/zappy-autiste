@@ -5,7 +5,7 @@
 ** Login   <iniong_a@epitech.net>
 ** 
 ** Started on  Sat May 29 21:29:53 2010 aime-bijou iniongo
-** Last update Fri Jun 18 02:07:36 2010 aime-bijou iniongo
+** Last update Fri Jun 18 13:52:20 2010 aime-bijou iniongo
 */
 
 #include <stdio.h>
@@ -91,7 +91,7 @@ void		take_a_team(t_play *player, char *team, t_env *e, t_team *myteam)
      }
 }
 
-void		choose_a_team(t_desc *serv, t_play *players, char *buff, t_env *e)
+int		choose_a_team(t_desc *serv, t_play *players, char *buff, t_env *e)
 {
   int		flags;
   int		x;
@@ -112,9 +112,13 @@ void		choose_a_team(t_desc *serv, t_play *players, char *buff, t_env *e)
 	x++;
       }
   if (flags == 0)
-    close_client(players, e);
+    {
+      close_client(players, e);
+      return (-1);
+    }
   else
     take_a_team(players, serv->team[t], e, e->team);
+  return (0);
 }
 
 void		add_elem_in_team(t_desc *serv, t_team **team, int i)

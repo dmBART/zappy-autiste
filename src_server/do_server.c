@@ -5,7 +5,7 @@
 ** Login   <iniong_a@epitech.net>
 ** 
 ** Started on  Wed May 26 14:14:09 2010 aime-bijou iniongo
-** Last update Fri Jun 18 02:05:25 2010 aime-bijou iniongo
+** Last update Fri Jun 18 13:54:33 2010 aime-bijou iniongo
 */
 
 #include <sys/select.h>
@@ -64,7 +64,7 @@ void			manage_serveur(t_desc *serv, t_env *e, t_play *players)
   manage_time_in_select(t, &tv);
   xselect(e->fd_max + 1, &e->readfs, &e->wrtefs, NULL, &tv);
   if (FD_ISSET(serv->s, &e->readfs))
-    add_players(serv->s, e, players);
+    add_players(serv, e, players);
   manage_client(serv, players, e, t);
 }
 

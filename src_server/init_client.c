@@ -5,13 +5,31 @@
 ** Login   <iniong_a@epitech.net>
 ** 
 ** Started on  Mon Jun 14 16:53:09 2010 aime-bijou iniongo
-** Last update Mon Jun 14 18:15:09 2010 aime-bijou iniongo
+** Last update Fri Jun 18 14:11:48 2010 aime-bijou iniongo
 */
 
 #include <stdio.h>
+#include <time.h>
 #include "../includes/server.h"
 
-void	init_client(t_play *player, int fd, char *ip)
+void	place_joueur_on_the_map(t_play *player, t_desc *serv)
+{
+  int	tmp;
+
+  player->x = rand() % serv->x;
+  player->y = rand() % serv->y;
+  tmp = rand() % 4;
+  if (tmp == 0)
+    player->dir = RIGHT;
+  else if (tmp == 1)
+    player->dir = LEFT;
+  else if (tmp == 2)
+    player->dir = UP;
+  else
+    player->dir = DOWN;
+}
+
+void	init_client(t_play *player, int fd, char *ip, t_desc *serv)
 {
   int	i;
 
@@ -26,6 +44,7 @@ void	init_client(t_play *player, int fd, char *ip)
   player->state = 0;
   player->begin = 0;
   player->lvl = 1;
+  place_joueur_on_the_map(player, serv);
   player->inv = xmalloc(sizeof(int *) * 7);
   while (i < 7)
     {

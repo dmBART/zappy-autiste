@@ -5,7 +5,7 @@
 ** Login   <milbau_a@epitech.net>
 ** 
 ** Started on  Sat May 22 03:27:51 2010 alexis milbault
-** Last update Thu Jun 17 19:24:40 2010 aime-bijou iniongo
+** Last update Fri Jun 18 13:58:15 2010 aime-bijou iniongo
 ** Last update Thu Jun  3 15:04:16 2010 alexis milbault
 */
 
@@ -180,19 +180,19 @@ void	my_putnbr_fd(int fd, int nbr);
 /*
 **----------> client_management.c  <----------
 */
-void	add_players(int s, t_env *e, t_play *players);
+void	add_players(t_desc *serv, t_env *e, t_play *players);
 void	manage_client(t_desc *serv, t_play *players, t_env *e, t_timev t);
 void	close_client(t_play *player, t_env *e);
 void	take_a_team(t_play *player, char *team, t_env *e, t_team *myteam);
 
-void	init_client(t_play *player, int fd, char *ip);
+void	init_client(t_play *player, int fd, char *ip, t_desc *serv);
 
 
 /*
 **----------> select_team.c  <----------
 */
 int	place_in_the_team(t_team *team, char *team_name);
-void	choose_a_team(t_desc *serv, t_play *players, char *buff, t_env *e);
+int	choose_a_team(t_desc *serv, t_play *players, char *buff, t_env *e);
 void	add_elem_in_team(t_desc *serv, t_team **team, int i);
 void	return_place_on_team(t_play *player, t_team *team);
 

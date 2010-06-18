@@ -5,7 +5,7 @@
 ** Login   <iniong_a@epitech.net>
 ** 
 ** Started on  Fri May 28 00:49:11 2010 aime-bijou iniongo
-** Last update Fri Jun 18 11:32:17 2010 aime-bijou iniongo
+** Last update Fri Jun 18 15:30:37 2010 aime-bijou iniongo
 */
 
 #include <sys/socket.h>
@@ -56,16 +56,18 @@ void		client_write(t_desc *serv, t_play *players, t_env *e, int n)
   e->end = players[e->i].end;
   if (players[e->i].team == NULL && n > 1)
     {
-      choose_a_team(serv, players, players[e->i].action[0], e);
-      nbr = place_in_the_team(e->team, players[e->i].action[0]);
-      my_putnbr_fd(players[e->i].cs, nbr);
-      my_putchar_fd(players[e->i].cs, '\n');
-      my_putnbr_fd(players[e->i].cs, serv->x);
-      my_putchar_fd(players[e->i].cs,' ');
-      my_putnbr_fd(players[e->i].cs, serv->y);
-      my_putchar_fd(players[e->i].cs,'\n');
-      add_elem(&serv->tv, "vie", players[e->i].cs, e);
-      players[e->i].state = 1;
+      if (choose_a_team(serv, players, players[e->i].action[0], e) == 0)
+	{
+	  nbr = place_in_the_team(e->team, players[e->i].action[0]);
+	  my_putnbr_fd(players[e->i].cs, nbr);
+	  my_putchar_fd(players[e->i].cs, '\n');
+	  my_putnbr_fd(players[e->i].cs, serv->x);
+	  my_putchar_fd(players[e->i].cs,' ');
+	  my_putnbr_fd(players[e->i].cs, serv->y);
+	  my_putchar_fd(players[e->i].cs,'\n');
+	  add_elem(&serv->tv, "vie", players[e->i].cs, e);
+	  players[e->i].state = 1;
+	}
     }
   else
     {
@@ -88,6 +90,37 @@ void	manage_life(t_play *player, t_env *e, t_desc *serv, t_timev t)
       close_client(player, e);
     }
   del_elem_to_queu(&serv->tv, t);
+}
+
+void	temp_life(t_play *player, t_env *e, t_desc *serv, t_timev t)
+{
+  double time1;
+  double time2;
+
+  gettimeofday(&e->tv, NULL);
+  if (serv->tv != NULL && t.d == 1)
+    {
+      time1 = (double)e->tv.tv_sec + (double)e->tv.tv_usec / 1000000;
+      time2 = (double)t.t_old.tv_sec + (double)t.t_old.tv_usec / 1000000;
+      if (player->inv[0] > 0)
+	{
+	  player->inv[0]--;
+	  e->end = 1;
+	  e->state  = 0;
+	  add_elem(&serv->tv, "vie", player->cs, e);
+	}
+      else
+	{
+	  if (player[e->i].team != NULL)
+	    {
+	      return_place_on_team(&player[e->i], e->team);
+	      free(player[e->i].team);
+	    }
+	  player[e->i].team = NULL;
+	  printf("deleting client %d\n", player[e->i].cs);
+	}
+      del_elem_to_queu(&serv->tv, t);
+    }
 }
 
 void	treat_command(t_desc *serv, t_env *e, t_play *player, t_timev t)
@@ -122,18 +155,6 @@ void	treat_command(t_desc *serv, t_env *e, t_play *player, t_timev t)
     }
 }
 
-void	transfert(t_desc *serv, t_play *players, t_env *e, t_timev t)
-{
-  int	x;
-
-  x = -1;
-  while (x++ < MAX_FD)
-    if (players[x].cs == t.cs)
-      break;
-  e->i = x;
-  treat_command(serv, e, &players[x], t);
-}
-
 void	manage_client(t_desc *serv, t_play *players, t_env *e, t_timev t)
 {
   int	n;
@@ -147,13 +168,16 @@ void	manage_client(t_desc *serv, t_play *players, t_env *e, t_timev t)
 	  n = xread(players[e->i].cs, buff, 4090);
 	  if (n == 0)
 	    {
-  	      if (players[e->i].inv[0] > 0)
-  		{
- 		  ghost_mode(players, e);
-  		  printf("client in ghost mode\n");
-  		}
-  	      else
-		close_client(players, e);
+/*    	      if (players[e->i].inv[0] > 0) */
+/*    		{ */
+/*   		  ghost_mode(players, e); */
+/*    		  printf("client in ghost mode\n"); */
+/*    		} */
+/*    	      else */
+/*  		{ */
+		  close_client(players, e);
+		  printf("deleting client %d\n", players[e->i].cs);
+/*  		} */
 	    }
 	  else
 	    {
@@ -166,11 +190,11 @@ void	manage_client(t_desc *serv, t_play *players, t_env *e, t_timev t)
 	if (players[e->i].cs == t.cs && FD_ISSET(t.cs, &e->wrtefs))
 	  treat_command(serv, e, &players[e->i], t);
 /*       if (players[e->i].type == FD_GHOST) */
-/* 	treat_command(serv, e, &players[e->i], t); */
+/*   	temp_life(&players[e->i],  e, serv, t); */
     }
 }
 
-void			add_players(int s, t_env *e, t_play *players)
+void			add_players(t_desc *serv, t_env *e, t_play *players)
 {
   int			x;
   int			i;
@@ -180,12 +204,12 @@ void			add_players(int s, t_env *e, t_play *players)
   x = 0;
   i = 0;
   len = sizeof(client);
-  if ((e->cs = accept(s, (struct sockaddr*)&client, &len)) != -1)
+  if ((e->cs = accept(serv->s, (struct sockaddr*)&client, &len)) != -1)
     while (x < MAX_FD)
       {
 	if (players[x].type == FD_FREE)
 	  {
-	    init_client(&players[x], e->cs, inet_ntoa(client.sin_addr));
+	    init_client(&players[x], e->cs, inet_ntoa(client.sin_addr), serv);
 	    break;
 	  }
 	x++;
