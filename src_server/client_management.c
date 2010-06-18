@@ -5,7 +5,7 @@
 ** Login   <iniong_a@epitech.net>
 ** 
 ** Started on  Fri May 28 00:49:11 2010 aime-bijou iniongo
-** Last update Fri Jun 18 02:31:39 2010 aime-bijou iniongo
+** Last update Fri Jun 18 11:32:17 2010 aime-bijou iniongo
 */
 
 #include <sys/socket.h>
@@ -23,9 +23,9 @@ void		my_putchar(char c)
 void		ghost_mode(t_play *player, t_env *e)
 {
   player[e->i].type = FD_GHOST;
+  close(player[e->i].cs);
   FD_CLR(player[e->i].cs, &e->readfs);
   FD_CLR(player[e->i].cs, &e->wrtefs);
-  close(player[e->i].cs);
 }
 
 void		close_client(t_play *player, t_env *e)
@@ -69,35 +69,25 @@ void		client_write(t_desc *serv, t_play *players, t_env *e, int n)
     }
   else
     {
-      if (players[e->i].end == 99)
-	{
-	  players[e->i].end += 3;
-	  printf("end = %d\n",players[e->i].end);
-	}
       add_elem(&serv->tv, players[e->i].action[x], players[e->i].cs, e);
     }
 }
 
 void	manage_life(t_play *player, t_env *e, t_desc *serv, t_timev t)
 {
-  double time1;
-  double time2;
-
-  gettimeofday(&e->tv, NULL);
   if (player->inv[0] > 0)
     {
       player->inv[0]--;
       e->end = 1;
       e->state  = 0;
-      del_elem_to_queu(&serv->tv, t);
       add_elem(&serv->tv, "vie", player->cs, e);
-      printf("state in elem = %d\n", e->state);
     }
   else
     {
       write(player->cs, "mort\n", 5);
       close_client(player, e);
     }
+  del_elem_to_queu(&serv->tv, t);
 }
 
 void	treat_command(t_desc *serv, t_env *e, t_play *player, t_timev t)

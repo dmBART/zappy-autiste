@@ -5,7 +5,7 @@
 ** Login   <iniong_a@epitech.net>
 ** 
 ** Started on  Sat May 29 22:35:24 2010 aime-bijou iniongo
-** Last update Thu Jun 17 23:48:25 2010 aime-bijou iniongo
+** Last update Fri Jun 18 11:23:28 2010 aime-bijou iniongo
 */
 
 #include <sys/time.h>
@@ -107,7 +107,7 @@ void	get_time_exec_2(t_timev *id, t_timev *time)
   while (time)
     {
       x = time->cs;
-      if (id[x].d > 0)
+      if (id[x].d != 1)
 	if (id[x].d == time->d)
 	  {
 	    id[x].t_new = time->t_new;
@@ -168,8 +168,10 @@ void		update_time_struct(t_timev *time, t_env *e)
 void		get_life(t_timev *life, t_timev *time)
 {
   int		x;
+  void		*save;
 
   x = 0;
+/*   save = time; */
   while (time)
     {
       x = time->cs;
@@ -185,6 +187,7 @@ void		get_life(t_timev *life, t_timev *time)
 	}
       time = time->next;
     }
+/*   time = save; */
 }
 
 void		free_time(t_timev *life, t_timev *id)
