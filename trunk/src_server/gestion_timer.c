@@ -5,7 +5,7 @@
 ** Login   <iniong_a@epitech.net>
 ** 
 ** Started on  Sat May 29 22:35:24 2010 aime-bijou iniongo
-** Last update Wed Jun 16 22:49:40 2010 aime-bijou iniongo
+** Last update Thu Jun 17 23:48:25 2010 aime-bijou iniongo
 */
 
 #include <sys/time.h>
@@ -120,7 +120,7 @@ void	get_time_exec_2(t_timev *id, t_timev *time)
     }
 }
 
-void	get_time_exec(t_timev *id, t_timev *time, t_timev *life)
+void	get_time_exec(t_timev *id, t_timev *time)
 {
   int	x;
 
@@ -136,7 +136,7 @@ void	get_time_exec(t_timev *id, t_timev *time, t_timev *life)
   while (time)
     {
       x = time->cs;
-      if (time->d != 1/* life[x].d */)
+      if (time->d != 1)
 	{
 	  id[x].cs = x;
 	  id[x].d = MIN_NB(id[x].d, time->d);
@@ -195,9 +195,15 @@ void		free_time(t_timev *life, t_timev *id)
   while (x++ < MAX_IN)
     {
       if(id[x].action != NULL)
-	free(id[x].action);
+	{
+	  free(id[x].action);
+	  id[x].action = NULL;
+	}
       if(life[x].action != NULL)
-	free(life[x].action);
+	{
+	  free(life[x].action);
+	  life[x].action = NULL;
+	}
     }
 }
 
@@ -232,6 +238,7 @@ t_timev		manage_time(t_desc *serv)
   t_timev	life[MAX_IN];
   t_timev	id[MAX_IN];
 
+  t.t_old.tv_sec = 0;
   if (serv->tv == NULL)
     {
       t.d = 0;
@@ -242,7 +249,7 @@ t_timev		manage_time(t_desc *serv)
     {
       init_struct(life, id);
       get_life(life, serv->tv);
-      get_time_exec(id, serv->tv, life);
+      get_time_exec(id, serv->tv);
       get_time_exec_2(id, serv->tv);
       t = take_first_action(id, life);
       free_time(life, id);

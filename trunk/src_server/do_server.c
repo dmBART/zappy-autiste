@@ -5,7 +5,7 @@
 ** Login   <iniong_a@epitech.net>
 ** 
 ** Started on  Wed May 26 14:14:09 2010 aime-bijou iniongo
-** Last update Sat Jun 12 19:13:31 2010 aime-bijou iniongo
+** Last update Fri Jun 18 02:05:25 2010 aime-bijou iniongo
 */
 
 #include <sys/select.h>
@@ -50,15 +50,19 @@ void			manage_serveur(t_desc *serv, t_env *e, t_play *players)
   struct timeval	tv;
 
   FD_ZERO(&e->readfs);
+  FD_ZERO(&e->wrtefs);
   i = -1;
   FD_SET(serv->s, &e->readfs);
   t = manage_time(serv);
   while (++i < MAX_FD)
-    if (players[i].type != FD_FREE)
-      FD_SET(players[i].cs, &e->readfs);
+    if (players[i].type != FD_FREE && players[i].type != FD_GHOST)
+      {
+	FD_SET(players[i].cs, &e->readfs);
+	FD_SET(players[i].cs, &e->wrtefs);
+      }
   e->fd_max = search_max_fd(players, e->fd_max);
   manage_time_in_select(t, &tv);
-  xselect(e->fd_max + 1, &e->readfs, NULL, NULL, &tv);
+  xselect(e->fd_max + 1, &e->readfs, &e->wrtefs, NULL, &tv);
   if (FD_ISSET(serv->s, &e->readfs))
     add_players(serv->s, e, players);
   manage_client(serv, players, e, t);
