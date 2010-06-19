@@ -5,7 +5,7 @@
 ** Login   <iniong_a@epitech.net>
 ** 
 ** Started on  Fri May 28 00:49:11 2010 aime-bijou iniongo
-** Last update Sat Jun 19 11:51:53 2010 alexandra ekra
+** Last update Sat Jun 19 15:26:02 2010 aime-bijou iniongo
 */
 
 #include <sys/socket.h>
@@ -44,7 +44,7 @@ void		close_client(t_play *player, t_env *e)
   FD_CLR(player[e->i].cs, &e->wrtefs);
 }
 
-void		client_write(t_desc *serv/* , t_play *players */, t_env *e, int n)
+void		client_write(t_desc *serv, t_env *e, int n)
 {
   int		x;
   int		nbr;
