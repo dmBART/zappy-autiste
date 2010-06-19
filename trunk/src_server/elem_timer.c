@@ -5,7 +5,7 @@
 ** Login   <iniong_a@epitech.net>
 ** 
 ** Started on  Mon Jun 14 17:19:31 2010 aime-bijou iniongo
-** Last update Fri Jun 18 10:42:17 2010 aime-bijou iniongo
+** Last update Sat Jun 19 03:56:20 2010 aime-bijou iniongo
 */
 
 #include <sys/time.h>
@@ -66,7 +66,7 @@ void		add_elem(t_timev **player, char *action, int id, t_env *e)
   i = 0;
   new = xmalloc(sizeof(*new));
   new->action = xmalloc(sizeof(char *) * my_strlen(action));
-  strcpy(new->action, action);
+  new->action = strcpy(new->action, action);
   new->d = e->end;
   new->cs = id;
   gettimeofday(&new->t_new, NULL);

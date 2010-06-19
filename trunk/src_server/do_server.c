@@ -5,7 +5,7 @@
 ** Login   <iniong_a@epitech.net>
 ** 
 ** Started on  Wed May 26 14:14:09 2010 aime-bijou iniongo
-** Last update Fri Jun 18 13:54:33 2010 aime-bijou iniongo
+** Last update Sat Jun 19 05:30:30 2010 aime-bijou iniongo
 */
 
 #include <sys/select.h>
@@ -43,7 +43,7 @@ int	check_fd(t_play	*players)
   return (0);
 }
 
-void			manage_serveur(t_desc *serv, t_env *e, t_play *players)
+void			manage_serveur(t_desc *serv, t_env *e)
 {
   int			i;
   t_timev		t;
@@ -55,17 +55,17 @@ void			manage_serveur(t_desc *serv, t_env *e, t_play *players)
   FD_SET(serv->s, &e->readfs);
   t = manage_time(serv);
   while (++i < MAX_FD)
-    if (players[i].type != FD_FREE && players[i].type != FD_GHOST)
+    if (serv->players[i].type == FD_CLIENT)
       {
-	FD_SET(players[i].cs, &e->readfs);
-	FD_SET(players[i].cs, &e->wrtefs);
+	FD_SET(serv->players[i].cs, &e->readfs);
+	FD_SET(serv->players[i].cs, &e->wrtefs);
       }
-  e->fd_max = search_max_fd(players, e->fd_max);
+  e->fd_max = search_max_fd(serv->players, e->fd_max);
   manage_time_in_select(t, &tv);
   xselect(e->fd_max + 1, &e->readfs, &e->wrtefs, NULL, &tv);
   if (FD_ISSET(serv->s, &e->readfs))
-    add_players(serv, e, players);
-  manage_client(serv, players, e, t);
+    add_players(serv, e);
+  manage_client(serv, e, t);
 }
 
 int			init_serveur(t_desc *serv)
@@ -100,10 +100,10 @@ void			start_server(t_desc *serv)
     add_elem_in_team(serv, &e.team, x++);
   while (i < MAX_FD)
     {
-      players[i].type = FD_FREE;
-      players[i].cs = 0;
+      serv->players[i].type = FD_FREE;
+      serv->players[i].cs = 0;
       i++;
     }
   while (1)
-    manage_serveur(serv, &e, players);
+    manage_serveur(serv, &e);
 }
