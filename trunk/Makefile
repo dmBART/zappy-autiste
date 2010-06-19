@@ -5,7 +5,7 @@
 ## Login   <milbau_a@epitech.net>
 ## 
 ## Started on  Wed Apr 14 17:36:07 2010 alexis milbault
-## Last update Sat Jun 19 11:48:33 2010 alexandra ekra
+## Last update Sat Jun 19 18:18:52 2010 aime-bijou iniongo
 ##
 
 NAME		=	serveur
@@ -30,6 +30,9 @@ SRC_SERVER	=	src_server/main.c			\
 			src_server/print_func.c			\
 			src_server/action_others.c		\
 			src_server/msg_to_graph1.c		\
+			src_server/ghost_mode.c			\
+			src_server/client_state.c		\
+
 
 SRC_COMMON	=	common/utils.c 			\
 			common/xfunc.c			\

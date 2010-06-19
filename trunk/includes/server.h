@@ -5,7 +5,7 @@
 ** Login   <milbau_a@epitech.net>
 ** 
 ** Started on  Sat May 22 03:27:51 2010 alexis milbault
-** Last update Sat Jun 19 11:49:49 2010 alexandra ekra
+** Last update Sat Jun 19 18:25:51 2010 aime-bijou iniongo
 ** Last update Thu Jun  3 15:04:16 2010 alexis milbault
 */
 
@@ -21,8 +21,6 @@
 #define DEFAULT_TEAM2 "Team 2"
 
 # define MAX_FD		40
-/* # define FD_FREE	0 */
-/* # define FD_CLIENT	1 */
 # define MAX_IN		200
 # define MAX_NB(a, b)	(a > b ? a : b)
 # define MIN_NB(a, b)	(a < b ? a : b)
@@ -169,6 +167,20 @@ int	get_arg_time(t_desc *serv, char **argv, int ac, int i);
 **----------> do_server.c  <----------
 */
 void	start_server(t_desc *serv);
+
+/*
+**----------> ghost_mode.c  <----------
+*/
+void	ghost_mode(t_play *player, t_env *e);
+void	temp_life(t_play *player, t_env *e, t_desc *serv, t_timev t);
+
+
+/*
+**----------> client_state.c  <----------
+*/
+ void	welcome_client(t_desc *serv, t_env *e, char *team_name);
+void	client_write(t_desc *serv, t_env *e, int n);
+
 
 /*
 **----------> utils_2.c  <----------
