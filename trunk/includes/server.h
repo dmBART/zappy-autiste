@@ -5,7 +5,7 @@
 ** Login   <milbau_a@epitech.net>
 ** 
 ** Started on  Sat May 22 03:27:51 2010 alexis milbault
-** Last update Sat Jun 19 04:39:07 2010 aime-bijou iniongo
+** Last update Sat Jun 19 11:49:49 2010 alexandra ekra
 ** Last update Thu Jun  3 15:04:16 2010 alexis milbault
 */
 
@@ -40,7 +40,8 @@ enum
   DOWN,
   FD_CLIENT,
   FD_FREE,
-  FD_GHOST
+  FD_GHOST,
+  FD_GRAPHIC
 };
 
 typedef struct		s_timev
@@ -245,5 +246,7 @@ void	show_player_buffer(char **buffer);
 
 
 void	print_desc(t_desc *serv);
+
+void	graphic_write(t_desc *serv, t_play *players, t_env *e);
 
 #endif /*_SERVER_H_*/
