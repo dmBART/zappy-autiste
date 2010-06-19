@@ -5,7 +5,7 @@
 ** Login   <iniong_a@epitech.net>
 ** 
 ** Started on  Sat May 29 21:29:53 2010 aime-bijou iniongo
-** Last update Fri Jun 18 13:52:20 2010 aime-bijou iniongo
+** Last update Sat Jun 19 05:27:19 2010 aime-bijou iniongo
 */
 
 #include <stdio.h>
@@ -85,9 +85,10 @@ void		take_a_team(t_play *player, char *team, t_env *e, t_team *myteam)
    else
      {
        printf("in the ghost\n");
-       player[ghost].cs = player[e->i].cs;
        player[e->i].type = FD_FREE;
-       player[ghost].type = FD_CLIENT;
+       player[ghost].type = FD_FREE;
+       player[e->i].team = xmalloc(sizeof(char*) * my_strlen(team));
+       strcpy(player[e->i].team, team);
      }
 }
 

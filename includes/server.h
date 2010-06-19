@@ -5,7 +5,7 @@
 ** Login   <milbau_a@epitech.net>
 ** 
 ** Started on  Sat May 22 03:27:51 2010 alexis milbault
-** Last update Fri Jun 18 13:58:15 2010 aime-bijou iniongo
+** Last update Sat Jun 19 04:39:07 2010 aime-bijou iniongo
 ** Last update Thu Jun  3 15:04:16 2010 alexis milbault
 */
 
@@ -180,8 +180,8 @@ void	my_putnbr_fd(int fd, int nbr);
 /*
 **----------> client_management.c  <----------
 */
-void	add_players(t_desc *serv, t_env *e, t_play *players);
-void	manage_client(t_desc *serv, t_play *players, t_env *e, t_timev t);
+void	add_players(t_desc *serv, t_env *e);
+void	manage_client(t_desc *serv, t_env *e, t_timev t);
 void	close_client(t_play *player, t_env *e);
 void	take_a_team(t_play *player, char *team, t_env *e, t_team *myteam);
 
