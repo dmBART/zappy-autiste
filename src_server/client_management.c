@@ -5,7 +5,7 @@
 ** Login   <iniong_a@epitech.net>
 ** 
 ** Started on  Fri May 28 00:49:11 2010 aime-bijou iniongo
-** Last update Sat Jun 19 15:26:02 2010 aime-bijou iniongo
+** Last update Sat Jun 19 22:21:05 2010 aime-bijou iniongo
 */
 
 #include <sys/socket.h>
@@ -18,112 +18,6 @@
 void		my_putchar(char c)
 {
   write(1, &c, 1);
-}
-
-void		ghost_mode(t_play *player, t_env *e)
-{
-  close(player[e->i].cs);
-  player[e->i].type = FD_GHOST;
-  FD_CLR(player[e->i].cs, &e->readfs);
-  FD_CLR(player[e->i].cs, &e->wrtefs);
-}
-
-void		close_client(t_play *player, t_env *e)
-{
-  player[e->i].type = FD_FREE;
-  write(player[e->i].cs, "ko\n", 3);
-  close(player[e->i].cs);
-  if (player[e->i].team != NULL)
-    {
-      return_place_on_team(&player[e->i], e->team);
-      free(player[e->i].team);
-    }
-  player[e->i].team = NULL;
-  printf("client %d disconnected\n", player[e->i].cs);
-  FD_CLR(player[e->i].cs, &e->readfs);
-  FD_CLR(player[e->i].cs, &e->wrtefs);
-}
-
-void		client_write(t_desc *serv, t_env *e, int n)
-{
-  int		x;
-  int		nbr;
-
-  serv->players[e->i].begin = serv->players[e->i].end;
-  e->t = serv->t;
-  e->state = serv->players[e->i].state;
-  x = (serv->players[e->i].end  % 100) - 1;
-  e->end = serv->players[e->i].end;
-  if (serv->players[e->i].team == NULL && n > 1)
-    {
-      if (choose_a_team(serv, serv->players, serv->players[e->i].action[0], e) == 0)
-	{
-	  nbr = place_in_the_team(e->team, serv->players[e->i].action[0]);
-	  my_putnbr_fd(serv->players[e->i].cs, nbr);
-	  my_putchar_fd(serv->players[e->i].cs, '\n');
-	  my_putnbr_fd(serv->players[e->i].cs, serv->x);
-	  my_putchar_fd(serv->players[e->i].cs,' ');
-	  my_putnbr_fd(serv->players[e->i].cs, serv->y);
-	  my_putchar_fd(serv->players[e->i].cs,'\n');
-	  add_elem(&serv->tv, "vie", serv->players[e->i].cs, e);
-	  serv->players[e->i].state = 1;
-	}
-    }
-  else
-    {
-      add_elem(&serv->tv, serv->players[e->i].action[x], serv->players[e->i].cs, e);
-    }
-}
-
-void	manage_life(t_play *player, t_env *e, t_desc *serv, t_timev t)
-{
-  if (player->inv[0] > 0)
-    {
-      player->inv[0]--;
-      e->end = 1;
-      e->state  = 0;
-      del_elem_to_queu(&serv->tv, t);
-      add_elem(&serv->tv, "vie", player->cs, e);
-    }
-  else
-    {
-      del_elem_to_queu(&serv->tv, t);
-      write(player->cs, "mort\n", 5);
-      close_client(player, e);
-    }
-}
-
-void	temp_life(t_play *player, t_env *e, t_desc *serv, t_timev t)
-{
-  double time1;
-  double time2;
-
-  gettimeofday(&e->tv, NULL);
-  time1 = (double)e->tv.tv_sec + (double)e->tv.tv_usec / 1000000;
-  time2 = (double)t.t_old.tv_sec + (double)t.t_old.tv_usec / 1000000;
-  if (serv->tv != NULL && t.d == 1)
-    if (my_strcmp(t.action, "vie") == 0 && time1 >= time2)
-      {
-	if (player->inv[0] > 0)
-	  {
-	    player->inv[0]--;
-	    e->end = 1;
-	    e->state  = 0;
-	    del_elem_to_queu(&serv->tv, t);
-	    add_elem(&serv->tv, "vie", player->cs, e);
-	  }
-	else
-	  {
-	    player->type = FD_FREE;
-	    if (player[e->i].team != NULL)
-	      {
-		return_place_on_team(&player[e->i], e->team);
-		free(player[e->i].team);
-		player[e->i].team = NULL;
-	      }
-	    printf("deleting client %d\n", player[e->i].cs);
-	  }
-      }
 }
 
 void	treat_command(t_desc *serv, t_env *e, t_play *player, t_timev t)
@@ -175,7 +69,7 @@ void	manage_client(t_desc *serv, t_env *e, t_timev t)
 	    {
 	      if (serv->players[e->i].inv[0] > 0)
 		{
-		  ghost_mode(serv->players, e);
+ 		  ghost_mode(serv->players, e);
 		  printf("client in ghost mode\n");
 		}
 	      else
