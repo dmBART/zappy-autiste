@@ -5,7 +5,7 @@
 ** Login   <iniong_a@epitech.net>
 ** 
 ** Started on  Fri May 28 00:49:11 2010 aime-bijou iniongo
-** Last update Sun Jun 20 22:50:42 2010 aime-bijou iniongo
+** Last update Sun Jun 20 23:49:21 2010 aime-bijou iniongo
 */
 
 #include <sys/socket.h>
@@ -98,14 +98,11 @@ void	treat_command(t_desc *serv, t_env *e, t_play *player, t_timev t)
     {
       time1 = (double)e->tv.tv_sec + (double)e->tv.tv_usec / 1000000;
       time2 = (double)t.t_old.tv_sec + (double)t.t_old.tv_usec / 1000000;
-      if (time1 >= time2)
-	if (player->type == FD_CLIENT)
-	  {
+      if (time1 >= time2 && player->type == FD_CLIENT)
+	{
  	    t.d = 0;
 	    if (my_strcmp(t.action, "vie") == 0)
-	      {
-		manage_life(player, e, serv, t);
-	      }
+	      manage_life(player, e, serv, t);
  	    else
 	      {
 		my_putstr("executing commande \" ");
@@ -122,15 +119,28 @@ void	treat_command(t_desc *serv, t_env *e, t_play *player, t_timev t)
 
 void	first_read(t_timev *eve, t_play *players, t_env *e, int now)
 {
-  if (players[e->i].inv[0] > 0)
-    {
-      ghost_mode(eve, players, e);
-      printf("client in ghost mode\n");
-    }
-  else
-    {
       close_client(eve, &players[now],  e);
       printf("deleting client %d\n", players[now].cs);
+}
+
+void	treat_temp(t_desc *serv, t_env *e, int n, char *buff)
+{
+  if (n == 0)
+    first_read(serv->tv, serv->players, e, e->i);
+  else if (n > 0)
+    {
+      manage_buff(&serv->players[e->i], buff, n);
+      if (!my_strcmp(serv->players[e->i].action, "GRAPHIC"))
+	{
+	  serv->players[e->i].type = FD_GRAPHIC;
+	  graphic_write(serv, serv->players, e);
+	}
+      else
+	{
+	  if ((serv->players[e->i].end % 100) == 0)
+	    serv->players[e->i].end++;
+	  client_write(serv, e, n);
+	}
     }
 }
 
@@ -148,23 +158,7 @@ void	manage_client(t_desc *serv, t_env *e, t_timev t)
 	  FD_ISSET(serv->players[e->i].cs, &e->readfs))
 	{
 	  n = xrecv(serv->players[e->i].cs, buff, 4090, 0);
-	  if (n == 0)
-	    first_read(serv->tv, serv->players, e, e->i);
-	  else if (n > 0)
-	    {
-	      manage_buff(&serv->players[e->i], buff, n);
-	      if (!my_strcmp(serv->players[e->i].action, "GRAPHIC"))
-		{
-		  serv->players[e->i].type = FD_GRAPHIC;
-		  graphic_write(serv, serv->players, e);
-		}
-	      else
-		{
- 		  if ((serv->players[e->i].end % 100) == 0)
- 		    serv->players[e->i].end++;
-		  client_write(serv, e, n);
-		}
-	    }
+	  treat_temp(serv, e, n, buff);
 	  memset(buff, 0, 4091);
 	}
       if (serv->players[e->i].type == FD_CLIENT)
@@ -175,11 +169,6 @@ void	manage_client(t_desc *serv, t_env *e, t_timev t)
       else if (serv->players[e->i].type == FD_GRAPHIC)
 	read_graph(serv, serv->players, e);
     }
-  while (i++ < MAX_GHOST)
-    if (serv->players[i].type == FD_GHOST)
-      {
-	temp_life(&serv->players[e->i],  e, serv, t);
-      }
 }
 
 void			add_players(t_desc *serv, t_env *e)

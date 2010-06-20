@@ -5,7 +5,7 @@
 ** Login   <iniong_a@epitech.net>
 ** 
 ** Started on  Sat Jun 19 18:11:37 2010 aime-bijou iniongo
-** Last update Sun Jun 20 18:41:17 2010 aime-bijou iniongo
+** Last update Mon Jun 21 00:00:27 2010 aime-bijou iniongo
 ** Last update Sun Jun 20 16:39:20 2010 alexandra ekra
 */
 
@@ -27,7 +27,6 @@ void		welcome_client(t_desc *serv, t_env *e, char *team_name)
 void		client_write(t_desc *serv, t_env *e, int n)
 {
   int		x;
-  int		nbr;
 
   serv->players[e->i].begin = serv->players[e->i].end;
   e->t = serv->t;

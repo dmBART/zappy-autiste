@@ -5,7 +5,7 @@
 ** Login   <iniong_a@epitech.net>
 ** 
 ** Started on  Sat Jun 19 18:02:32 2010 aime-bijou iniongo
-** Last update Sun Jun 20 22:24:27 2010 aime-bijou iniongo
+** Last update Sun Jun 20 23:51:07 2010 aime-bijou iniongo
 */
 
 #include <stdio.h>
@@ -30,17 +30,6 @@ void	temp_life(t_play *player, t_env *e, t_desc *serv, t_timev t)
 	      e->state  = 0;
 	      del_elem_to_queu(&serv->tv, t);
 	      add_elem(&serv->tv, "vie", player->cs, e);
-	    }
-	  else
-	    {
-	      player->type = FD_FREE;
-	      if (player[e->i].team != NULL)
-		{
-		  return_place_on_team(&player[e->i], e->team);
-		  free(player[e->i].team);
-		  player[e->i].team = NULL;
-		}
-	      printf("deleting client %d\n", player[e->i].cs);
 	    }
 	}
     }

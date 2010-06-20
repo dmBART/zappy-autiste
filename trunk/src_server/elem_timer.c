@@ -5,7 +5,7 @@
 ** Login   <iniong_a@epitech.net>
 ** 
 ** Started on  Mon Jun 14 17:19:31 2010 aime-bijou iniongo
-** Last update Sun Jun 20 19:59:02 2010 aime-bijou iniongo
+** Last update Sun Jun 20 23:41:53 2010 aime-bijou iniongo
 */
 
 #include <sys/time.h>
@@ -72,7 +72,6 @@ void		add_elem(t_timev **player, char *action, int id, t_env *e)
   new->d = e->end;
   new->cs = id;
   gettimeofday(&new->t_new, NULL);
-  printf("nbr = %d\n", new->d);
   if (e->state == 0 && strcmp(action, "vie") == 0)
     {
       inc = (double)(126 / e->t * 1000000);
@@ -86,12 +85,6 @@ void		add_elem(t_timev **player, char *action, int id, t_env *e)
   new->t_old.tv_usec = new->t.tv_usec + new->t_new.tv_usec;
   new->next = *player;
   *player = new;
-  printf("action in add = %s\n", (*player)->action);
-
-}
-
-void	del_elem_zero(void *save, t_timev **time)
-{
 }
 
 void	del_elem_other(int cpt, void *save, void *tmp, t_timev **time)
@@ -101,7 +94,6 @@ void	del_elem_other(int cpt, void *save, void *tmp, t_timev **time)
   i = 0;
   tmp = *time;
   *time = save;
-  printf("in del struct action = %s\n", (*time)->action);
   if (cpt == 0)
     {
       free((*time)->action);
@@ -117,7 +109,6 @@ void	del_elem_other(int cpt, void *save, void *tmp, t_timev **time)
 	}
       if (*time != NULL)
 	{
-/* 	  if ((*time)->action != NULL) */
 	  free((*time)->action);
 	  (*time)->next = (*time)->next->next;
 	  *time = save;
