@@ -6,7 +6,7 @@
 ** 
 ** Started on  Sat May 22 03:27:51 2010 alexis milbault
 <<<<<<< .mine
-** Last update Sun Jun 20 19:28:51 2010 aime-bijou iniongo
+** Last update Sun Jun 20 22:42:56 2010 aime-bijou iniongo
 =======
 ** Last update Sun Jun 20 16:50:41 2010 alexandra ekra
 >>>>>>> .r61
@@ -85,11 +85,10 @@ typedef struct	s_play
   int		begin;
   int		end;
   int		*inv;
-  char		type;
+  int		type;
   char		*team;
   char		*ip;
   char		*action;
-  t_timev	*t;
 }		t_play;
 
 typedef struct	s_desc
@@ -181,7 +180,7 @@ void	start_server(t_desc *serv);
 /*
 **----------> ghost_mode.c  <----------
 */
-void	ghost_mode(t_play *player, t_env *e);
+void	ghost_mode(t_timev *eve, t_play *player, t_env *e);
 void	temp_life(t_play *player, t_env *e, t_desc *serv, t_timev t);
 
 
@@ -264,6 +263,7 @@ void	lvl_up(t_desc *serv, t_play *player, t_env *e, char **cmd);
 **----------> annexe.c  <----------
 */
 void	manage_buff(t_play *player, char *buffer, int len);
+int	count_elem_timer(t_timev *eve, int fd);
 
 /*
 **----------> print_func.c  <----------

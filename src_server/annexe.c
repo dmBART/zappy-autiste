@@ -5,12 +5,27 @@
 ** Login   <iniong_a@epitech.net>
 ** 
 ** Started on  Mon Jun 14 17:33:41 2010 aime-bijou iniongo
-** Last update Sun Jun 20 19:52:11 2010 aime-bijou iniongo
+** Last update Sun Jun 20 20:58:11 2010 aime-bijou iniongo
 */
 
 #include <stdio.h>
 #include <string.h>
 #include "../includes/server.h"
+
+int	count_elem_timer(t_timev *eve, int fd)
+{
+  int	count;
+
+  count = 0;
+  while (eve)
+    {
+      if (eve->cs == fd)
+	if (my_strcmp(eve->action, "vie") != 0)
+	  count++;
+      eve = eve->next;
+    }
+  return (count);
+}
 
 char		*get_buf(char *buffer, int len, t_play *player)
 {

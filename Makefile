@@ -5,7 +5,7 @@
 ## Login   <milbau_a@epitech.net>
 ## 
 ## Started on  Wed Apr 14 17:36:07 2010 alexis milbault
-## Last update Sun Jun 20 16:08:28 2010 alexandra ekra
+## Last update Sun Jun 20 22:26:37 2010 aime-bijou iniongo
 ##
 
 NAME		=	serveur
@@ -55,7 +55,7 @@ CC		=	gcc
 
 
 INCLUDE		=	-I./includes
-CFLAGS		+=	$(INCLCUDE) -W -Wall -pedantic -ansi -g3
+CFLAGS		+=	$(INCLCUDE) -g3 -W -Wall -pedantic -ansi
 
 RM		=	rm -f
 

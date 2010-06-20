@@ -5,7 +5,7 @@
 ** Login   <iniong_a@epitech.net>
 ** 
 ** Started on  Wed May 26 14:14:09 2010 aime-bijou iniongo
-** Last update Sun Jun 20 18:35:35 2010 aime-bijou iniongo
+** Last update Sun Jun 20 22:46:37 2010 aime-bijou iniongo
 */
 
 #include <sys/select.h>
@@ -81,13 +81,15 @@ int			init_serveur(t_desc *serv)
   return (s);
 }
 
-void		init_struct_player(t_play *players, int flags, int limit, int start)
+void		init_struct_player(t_play *players)
 {
-  while (start < limit)
+  int		i;
+
+  i = -1;
+  while (++i < MAX_GHOST)
     {
-      players[start].type = flags;
-      players[start].cs = 0;
-      start++;
+      players[i].type = FD_FREE;
+      players[i].cs = 0;
     }
 
 }
@@ -108,8 +110,8 @@ void			start_server(t_desc *serv)
   serv->tv = NULL;
   while (serv->team[x] != NULL)
     add_elem_in_team(serv, &e.team, x++);
-  init_struct_player(serv->players, FD_FREE, MAX_FD, 0);
-  init_struct_player(serv->players, FD_GHOST, MAX_GHOST, MAX_FD + 1);
+  init_struct_player(serv->players);
+/*   init_struct_player(serv->players, FD_GHOST, MAX_GHOST, MAX_FD + 1); */
   while (1)
     manage_serveur(serv, &e);
 }
