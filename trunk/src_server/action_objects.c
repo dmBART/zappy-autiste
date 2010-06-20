@@ -5,7 +5,7 @@
 ** Login   <milbau_a@epitech.net>
 ** 
 ** Started on  Wed Jun  2 15:06:26 2010 alexis milbault
-** Last update Thu Jun 17 03:15:39 2010 alexis milbault
+** Last update Mon Jun 21 00:03:45 2010 alexandra ekra
 */
 
 #include "../includes/server.h"
@@ -54,6 +54,8 @@ void	take_object(t_desc *serv, t_play *player, t_env *e, char **cmd)
 	{
 	  player->inv[id]++;
 	  write(player->cs, "ok\n", 3);
+	  if (e->graph_cs != -1 && FD_ISSET(e->graph_cs, &e->wrtefs))
+	    graph_take_objects(serv, player, e, id);
 	}
       else
 	write(player->cs, "ko\n", 3);
@@ -74,6 +76,8 @@ void	drop_object(t_desc *serv, t_play *player, t_env *e, char **cmd)
 	  if (update_exist_case(serv->map, player->x, player->y, id) < 0)
 	    fill_map(&serv->map, player->x, player->y, id);
 	  write(player->cs, "ok\n", 3);
+	  if (e->graph_cs != -1 && FD_ISSET(e->graph_cs, &e->wrtefs))
+	    graph_drop_objects(serv, player, e, id);
 	}
       else
 	write(player->cs, "ko\n", 3);

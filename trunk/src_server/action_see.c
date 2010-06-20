@@ -5,7 +5,7 @@
 ** Login   <milbau_a@epitech.net>
 ** 
 ** Started on  Tue Jun  1 12:05:51 2010 alexis milbault
-** Last update Thu Jun 17 17:18:18 2010 alexis milbault
+** Last update Sun Jun 20 22:39:57 2010 alexandra ekra
 */
 
 #include "../includes/server.h"
@@ -93,7 +93,6 @@ static void	see_on_right(t_desc *serv, t_play *player)
       count2 = -1;
       while (++count2 < check)
 	{
-	  /*recuperation du contenu de la case*/
 	  aff_case(serv, player, x, y, count);
 	  if ((count == player->lvl) && ((count2 + 1) == check))
 	    write(player->cs, "}\n", 2);
@@ -127,7 +126,6 @@ static void	see_on_left(t_desc *serv, t_play *player)
       count2 = -1;
       while (++count2 < check)
 	{
-	  /*recuperation du contenu de la case*/
 	  aff_case(serv, player, x, y, count);
 	  if ((count == player->lvl) && ((count2 + 1) == check))
 	    write(player->cs, "}\n", 2);
@@ -162,7 +160,6 @@ static void	see_on_up(t_desc *serv, t_play *player)
       count2 = -1;
       while (++count2 < check)
 	{
-	  /*recuperation du contenu de la case*/
 	  aff_case(serv, player, x, y, count);
 	  if ((count == player->lvl) && ((count2 + 1) == check))
 	    write(player->cs, "}\n", 2);
@@ -197,7 +194,6 @@ static void	see_on_down(t_desc *serv, t_play *player)
       count2 = -1;
       while (++count2 < check)
 	{
-	  /*recuperation du contenu de la case*/
 	  aff_case(serv, player, x, y, count);
 	  if ((count == player->lvl) && ((count2 + 1) == check))
 	    write(player->cs, "}\n", 2);

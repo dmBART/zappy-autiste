@@ -5,6 +5,7 @@
 ## Login   <milbau_a@epitech.net>
 ## 
 ## Started on  Wed Apr 14 17:36:07 2010 alexis milbault
+## Last update Mon Jun 21 00:22:12 2010 alexandra ekra
 ## Last update Sun Jun 20 22:26:37 2010 aime-bijou iniongo
 ##
 
@@ -37,6 +38,7 @@ SRC_SERVER	=	src_server/main.c			\
 			src_server/send_player_info.c		\
 			src_server/graph_commands_player.c	\
 			src_server/graph_commands_cases.c	\
+			src_server/events_to_graph.c		\
 
 
 SRC_COMMON	=	common/utils.c 			\
