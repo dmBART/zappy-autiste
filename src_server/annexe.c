@@ -5,7 +5,7 @@
 ** Login   <iniong_a@epitech.net>
 ** 
 ** Started on  Mon Jun 14 17:33:41 2010 aime-bijou iniongo
-** Last update Sun Jun 20 20:58:11 2010 aime-bijou iniongo
+** Last update Mon Jun 21 00:00:12 2010 aime-bijou iniongo
 */
 
 #include <stdio.h>
@@ -27,15 +27,12 @@ int	count_elem_timer(t_timev *eve, int fd)
   return (count);
 }
 
-char		*get_buf(char *buffer, int len, t_play *player)
+char		*get_true_buf(char *buffer, int len, t_play *player)
 {
   void		*save;
   char		*tmp;
   int		n;
-  int		l;
 
-  if (buffer[0] == '\n' || buffer[0] == 13)
-    return (NULL);
   tmp = xmalloc(sizeof(char *) * len);
   strcpy(tmp, buffer);
   n = len;
@@ -54,7 +51,20 @@ char		*get_buf(char *buffer, int len, t_play *player)
        else
  	break;
     }
+  return (tmp);
+}
+
+char		*get_buf(char *buffer, int len, t_play *player)
+{
+  int		l;
+  int		n;
+  char		*tmp;
+
   l = 0;
+  if (buffer[0] == '\n' || buffer[0] == 13)
+    return (NULL);
+  tmp = get_true_buf(buffer, len, player);
+  n = my_strlen(tmp);
   while (l < n)
     {
       if (tmp[l] == 13 || tmp[l] == '\n')
@@ -67,13 +77,11 @@ char		*get_buf(char *buffer, int len, t_play *player)
 void		manage_buff(t_play *player, char *buffer, int len)
 {
   int		i;
-  int		x;
-  char		a;
   char		*tmp;
 
   tmp = get_buf(buffer, len, player);
   i = player->end  % 100;
-  if (player->action!= NULL)
+  if (player->action != NULL)
     {
       free(player->action);
       player->action = NULL;

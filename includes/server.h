@@ -6,7 +6,7 @@
 ** 
 ** Started on  Sat May 22 03:27:51 2010 alexis milbault
 <<<<<<< .mine
-** Last update Sun Jun 20 22:42:56 2010 aime-bijou iniongo
+** Last update Sun Jun 20 23:46:14 2010 aime-bijou iniongo
 =======
 ** Last update Sun Jun 20 16:50:41 2010 alexandra ekra
 >>>>>>> .r61
@@ -181,8 +181,6 @@ void	start_server(t_desc *serv);
 **----------> ghost_mode.c  <----------
 */
 void	ghost_mode(t_timev *eve, t_play *player, t_env *e);
-void	temp_life(t_play *player, t_env *e, t_desc *serv, t_timev t);
-
 
 /*
 **----------> client_state.c  <----------

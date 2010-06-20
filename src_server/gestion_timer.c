@@ -5,13 +5,31 @@
 ** Login   <iniong_a@epitech.net>
 ** 
 ** Started on  Sat May 29 22:35:24 2010 aime-bijou iniongo
-** Last update Sun Jun 20 22:28:59 2010 aime-bijou iniongo
+** Last update Mon Jun 21 00:01:23 2010 aime-bijou iniongo
 */
 
 #include <sys/time.h>
 #include <string.h>
 #include <stdio.h>
 #include "../includes/server.h"
+
+void	get_another(t_timev *t, t_timev *id, int i)
+{
+  i = -1;
+  while (++i < MAX_IN)
+    if(t->t_old.tv_sec == id[i].t_old.tv_sec &&
+       t->t_old.tv_usec == id[i].t_old.tv_usec
+       && id[i].d > 0)
+      {
+	t->d = 1;
+	t->cs = id[i].cs;
+	t->t_new = id[i].t_new;
+	t->t = id[i].t;
+	t->action = xmalloc(sizeof(char *) * my_strlen(id[i].action));
+	strcpy(t->action, id[i].action);
+	break;
+      }
+}
 
 void	get_small_time(t_timev *t, t_timev *id, int i, t_timev t_life)
 {
@@ -29,7 +47,7 @@ void	get_small_time(t_timev *t, t_timev *id, int i, t_timev t_life)
     if(t->t_old.tv_sec == id[i].t_old.tv_sec && id[i].d != 1000000000)
       t->t_old.tv_usec = MIN_NB(id[i].t_old.tv_usec, t->t_old.tv_usec);
   i = -1;
-  if (t->t_old.tv_sec  >= t_life.t_old.tv_sec)
+  if (t->t_old.tv_sec >= t_life.t_old.tv_sec)
     {
        t->d = 1;
        t->cs = t_life.cs;
@@ -40,21 +58,7 @@ void	get_small_time(t_timev *t, t_timev *id, int i, t_timev t_life)
        strcpy(t->action, "vie");
     }
   else
-    {
-    while (i++ < MAX_IN)
-      if(t->t_old.tv_sec == id[i].t_old.tv_sec &&
-	 t->t_old.tv_usec == id[i].t_old.tv_usec
-	 && id[i].d > 0)
-	{
-	  t->d = 1;
-	  t->cs = id[i].cs;
-	  t->t_new = id[i].t_new;
-	  t->t = id[i].t;
-	  t->action = xmalloc(sizeof(char *) * my_strlen(id[i].action));
-	  strcpy(t->action, id[i].action);
-	  break;
-	}
-    }
+    get_another(t, id, i);
 }
 
 void		get_small_life(t_timev *life, t_timev *t_life)
@@ -64,16 +68,16 @@ void		get_small_life(t_timev *life, t_timev *t_life)
   i = -1;
   t_life->t_old.tv_sec = 2000000000;
   t_life->t_old.tv_usec = 2000000000;
-  while (i++ < MAX_IN)
+  while (++i < MAX_IN)
     if (life[i].t_old.tv_sec != 2000000000)
       t_life->t_old.tv_sec = MIN_NB(t_life->t_old.tv_sec, life[i].t_old.tv_sec);
   i = -1;
-  while (i++ < MAX_IN)
+  while (++i < MAX_IN)
     if(t_life->t_old.tv_sec == life[i].t_old.tv_sec && life[i].d != 60000000)
       t_life->t_old.tv_usec = MIN_NB(life[i].t_old.tv_usec, t_life->t_old.tv_usec);
   i = -1;
   if (t_life->t_old.tv_sec  != 2000000000)
-    while (i++ < MAX_IN)
+    while (++i < MAX_IN)
       if(t_life->t_old.tv_sec == life[i].t_old.tv_sec &&
 	 t_life->t_old.tv_usec == life[i].t_old.tv_usec
 	 && life[i].d > 0)
@@ -170,10 +174,8 @@ void		update_time_struct(t_timev *time, t_env *e)
 void		get_life(t_timev *life, t_timev *time)
 {
   int		x;
-  void		*save;
 
   x = 0;
-/*   save = time; */
   while (time)
     {
       x = time->cs;
@@ -189,7 +191,6 @@ void		get_life(t_timev *life, t_timev *time)
 	}
       time = time->next;
     }
-/*   time = save; */
 }
 
 void		free_time(t_timev *life, t_timev *id)
