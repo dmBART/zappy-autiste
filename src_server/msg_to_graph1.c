@@ -5,7 +5,7 @@
 ** Login   <ekra_a@epitech.net>
 ** 
 ** Started on  Thu Jun 17 02:58:36 2010 alexandra ekra
-** Last update Sun Jun 20 16:57:44 2010 alexandra ekra
+** Last update Sun Jun 20 23:08:15 2010 alexandra ekra
 */
 
 #include "../includes/server.h"
@@ -21,12 +21,9 @@ void	send_map_size(t_desc *serv, t_play *players, t_env *e)
 
 void	send_time_unit(t_desc *serv, t_play *players, t_env *e)
 {
-  if (!gettimeofday(&e->tv, NULL))
-    {
-      write(players[e->i].cs, "sgt ", 4);
-      my_putnbr_fd(players[e->i].cs, e->tv.tv_sec);
-      write(players[e->i].cs, "\n", 1);
-    }
+  write(players[e->i].cs, "sgt ", 4);
+  my_putnbr_fd(players[e->i].cs, serv->t);
+  write(players[e->i].cs, "\n", 1);
 }
 
 void	send_teams_names(t_desc *serv, t_play *players, t_env *e)
@@ -46,9 +43,12 @@ void	send_teams_names(t_desc *serv, t_play *players, t_env *e)
 void	graphic_write(t_desc *serv, t_play *players, t_env *e)
 {
   my_putstr("Graphic client connected.\nSending informations on the map...\n");
-  send_map_size(serv, players, e);
-  send_time_unit(serv, players, e);
-  send_cases_content(serv, players, e);
-  send_teams_names(serv, players, e);
-  my_putstr("Informations sent to graphic client.\n");
+  if (FD_ISSET(players[e->i].cs, &e->wrtefs))
+    {
+      send_map_size(serv, players, e);
+      send_time_unit(serv, players, e);
+      send_cases_content(serv, players, e);
+      send_teams_names(serv, players, e);
+      my_putstr("Informations sent to graphic client.\n");
+    }
 }

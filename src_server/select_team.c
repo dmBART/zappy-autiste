@@ -5,7 +5,7 @@
 ** Login   <iniong_a@epitech.net>
 ** 
 ** Started on  Sat May 29 21:29:53 2010 aime-bijou iniongo
-** Last update Sun Jun 20 23:54:03 2010 aime-bijou iniongo
+** Last update Mon Jun 21 00:48:09 2010 alexandra ekra
 */
 
 #include <stdio.h>
@@ -141,6 +141,8 @@ int		choose_a_team(t_desc *serv, t_play *players, char *buff, t_env *e)
       }
   if (chop_flags(serv, players, e, flags, t) == -1)
     return (-1);
+  players[e->i].n = serv->nj;
+  serv->nj++;
   return (0);
 }
 

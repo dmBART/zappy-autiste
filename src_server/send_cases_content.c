@@ -5,7 +5,7 @@
 ** Login   <ekra_a@epitech.net>
 ** 
 ** Started on  Sun Jun 20 15:45:25 2010 alexandra ekra
-** Last update Sun Jun 20 15:45:56 2010 alexandra ekra
+** Last update Mon Jun 21 00:50:04 2010 alexandra ekra
 */
 
 #include "../includes/server.h"
@@ -35,17 +35,17 @@ int	aff_ressources(t_desc *serv, t_env *e, int x, int y)
   return (f);
 }
 
-void	aff_empty_cases(t_play *players, t_env *e)
+void	aff_empty_cases(int cs)
 {
   int	f;
 
   f = 0;
   while (f < 7)
     {
-      my_putnbr_fd(players[e->i].cs, 0);
+      my_putnbr_fd(cs, 0);
       f++;
       if (f < 7)
-	write(players[e->i].cs, " ", 1);
+	write(cs, " ", 1);
     }
 }
 
@@ -67,7 +67,7 @@ void	send_cases_content(t_desc *serv, t_play *players, t_env *e)
 	  my_putnbr_fd(players[e->i].cs, y);
 	  write(players[e->i].cs, " ", 1);
 	  if ((f = aff_ressources(serv, e, x, y)) == 0)
-	    aff_empty_cases(players, e);
+	    aff_empty_cases(players[e->i].cs);
 	  write(players[e->i].cs, "\n", 1);
 	  y++;
 	}

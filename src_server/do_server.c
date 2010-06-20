@@ -5,7 +5,11 @@
 ** Login   <iniong_a@epitech.net>
 ** 
 ** Started on  Wed May 26 14:14:09 2010 aime-bijou iniongo
+<<<<<<< .mine
+** Last update Sun Jun 20 22:26:13 2010 alexandra ekra
+=======
 ** Last update Sun Jun 20 22:46:37 2010 aime-bijou iniongo
+>>>>>>> .r64
 */
 
 #include <sys/select.h>
@@ -23,7 +27,8 @@ int	search_max_fd(t_play *players, int fd_max)
   x = 0;
   while (x < MAX_FD)
     {
-      if (players[x].type == FD_CLIENT)
+      if (players[x].type == FD_CLIENT ||
+	  players[x].type == FD_GRAPHIC)
 	fd_max = MAX_NB(fd_max, players[x].cs);
       x++;
     }
@@ -55,7 +60,7 @@ void			manage_serveur(t_desc *serv, t_env *e)
   FD_SET(serv->s, &e->readfs);
   t = manage_time(serv);
   while (++i < MAX_FD)
-    if (serv->players[i].type == FD_CLIENT || serv->players[i].type == FD_GRAPHIC)
+    if (serv->players[i].type != FD_FREE)
       {
 	FD_SET(serv->players[i].cs, &e->readfs);
 	FD_SET(serv->players[i].cs, &e->wrtefs);
@@ -107,6 +112,7 @@ void			start_server(t_desc *serv)
   e.fd_max = serv->s;
   e.team = NULL;
   e.t = 0;
+  e.graph_cs = -1;
   serv->tv = NULL;
   while (serv->team[x] != NULL)
     add_elem_in_team(serv, &e.team, x++);

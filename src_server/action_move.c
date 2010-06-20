@@ -5,7 +5,7 @@
 ** Login   <milbau_a@epitech.net>
 ** 
 ** Started on  Tue Jun  1 11:24:02 2010 alexis milbault
-** Last update Thu Jun 17 03:15:03 2010 alexis milbault
+** Last update Sun Jun 20 23:55:00 2010 alexandra ekra
 */
 
 #include "../includes/server.h"
@@ -48,6 +48,8 @@ static void	move_on_y(t_desc *serv, t_play *player)
 
 void	move_forward(t_desc *serv, t_play *player, t_env *e, char **cmd)
 {
+  int	cs;
+
   if (cmd[0] && e->team)
     {
       if ((player->dir == RIGHT) || (player->dir == LEFT))
@@ -55,6 +57,8 @@ void	move_forward(t_desc *serv, t_play *player, t_env *e, char **cmd)
       else
 	move_on_y(serv, player);
       write(player->cs, "ok\n", 3);
+      if (e->graph_cs != -1 && FD_ISSET(e->graph_cs, &e->wrtefs))
+	send_new_pos(player, e);
     }
 }
 
@@ -71,6 +75,8 @@ void	turn_right(t_desc *serv, t_play *player, t_env *e, char **cmd)
       else
 	player->dir = LEFT;
       write(player->cs, "ok\n", 3);
+      if (e->graph_cs != -1 && FD_ISSET(e->graph_cs, &e->wrtefs))
+	send_new_pos(player, e);
     }
 }
 
@@ -87,5 +93,7 @@ void	turn_left(t_desc *serv, t_play *player, t_env *e, char **cmd)
       else
 	player->dir = RIGHT;
       write(player->cs, "ok\n", 3);
+      if (e->graph_cs != -1 && FD_ISSET(e->graph_cs, &e->wrtefs))
+	send_new_pos(player, e);
     }
 }

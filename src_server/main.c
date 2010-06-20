@@ -5,7 +5,7 @@
 ** Login   <milbau_a@epitech.net>
 ** 
 ** Started on  Sat May 22 02:33:22 2010 alexis milbault
-** Last update Fri Jun 18 03:28:17 2010 alexis milbault
+** Last update Mon Jun 21 00:19:29 2010 alexandra ekra
 */
 
 #include <stdio.h>
@@ -46,6 +46,7 @@ static void	tzero_serv(t_desc *serv)
   serv->nb_sock = 0;
   serv->t = 0;
   serv->team = NULL;
+  serv->nj = 0;
 }
 
 int		main(int argc, char **argv)

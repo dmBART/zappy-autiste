@@ -5,7 +5,6 @@
 ** Login   <iniong_a@epitech.net>
 ** 
 ** Started on  Fri May 28 00:49:11 2010 aime-bijou iniongo
-** Last update Sun Jun 20 23:49:21 2010 aime-bijou iniongo
 */
 
 #include <sys/socket.h>
@@ -133,6 +132,7 @@ void	treat_temp(t_desc *serv, t_env *e, int n, char *buff)
       if (!my_strcmp(serv->players[e->i].action, "GRAPHIC"))
 	{
 	  serv->players[e->i].type = FD_GRAPHIC;
+	  e->graph_cs = serv->players[e->i].cs;
 	  graphic_write(serv, serv->players, e);
 	}
       else
@@ -154,7 +154,8 @@ void	manage_client(t_desc *serv, t_env *e, t_timev t)
   i = MAX_FD;
   while (e->i++ < MAX_FD)
     {
-      if (serv->players[e->i].type == FD_CLIENT &&
+      if ((serv->players[e->i].type == FD_CLIENT ||
+	   serv->players[e->i].type == FD_GRAPHIC) &&
 	  FD_ISSET(serv->players[e->i].cs, &e->readfs))
 	{
 	  n = xrecv(serv->players[e->i].cs, buff, 4090, 0);
@@ -162,12 +163,13 @@ void	manage_client(t_desc *serv, t_env *e, t_timev t)
 	  memset(buff, 0, 4091);
 	}
       if (serv->players[e->i].type == FD_CLIENT)
-	{
+ 	{
 	  if (serv->players[e->i].cs == t.cs && FD_ISSET(t.cs, &e->wrtefs))
 	    treat_command(serv, e, &serv->players[e->i], t);
 	}
-      else if (serv->players[e->i].type == FD_GRAPHIC)
-	read_graph(serv, serv->players, e);
+      if (serv->players[e->i].type == FD_GRAPHIC &&
+	  FD_ISSET(serv->players[e->i].cs, &e->readfs))
+	graph_command(serv, serv->players, e);
     }
 }
 

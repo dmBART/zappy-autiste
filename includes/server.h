@@ -5,12 +5,7 @@
 ** Login   <milbau_a@epitech.net>
 ** 
 ** Started on  Sat May 22 03:27:51 2010 alexis milbault
-<<<<<<< .mine
-** Last update Sun Jun 20 23:46:14 2010 aime-bijou iniongo
-=======
-** Last update Sun Jun 20 16:50:41 2010 alexandra ekra
->>>>>>> .r61
-** Last update Thu Jun  3 15:04:16 2010 alexis milbault
+** Last update Mon Jun 21 00:50:43 2010 alexandra ekra
 */
 
 
@@ -85,6 +80,7 @@ typedef struct	s_play
   int		begin;
   int		end;
   int		*inv;
+  int		n;
   int		type;
   char		*team;
   char		*ip;
@@ -98,6 +94,7 @@ typedef struct	s_desc
   int		t;
   int		s;
   int		port;
+  int		nj;
   int		nb_sock;
   char		**team;
   t_map		*map;
@@ -194,6 +191,7 @@ void	manage_life(t_play *player, t_env *e, t_desc *serv, t_timev t);
 **----------> utils_2.c  <----------
 */
 int	count_tab(char **tab);
+void	free_tab(char **tab);
 char	**my_str_to_wordtab(char *str);
 void	my_putchar_fd(int fd, char c);
 void	my_putnbr_fd(int fd, int nbr);
@@ -285,7 +283,7 @@ void	send_map_size(t_desc *serv, t_play *players, t_env *e);
 **----------> send_cases_content.c  <----------
 */
 void	send_cases_content(t_desc *serv, t_play *players, t_env *e);
-void	aff_empty_cases(t_play *players, t_env *e);
+void	aff_empty_cases(int cs);
 int	aff_ressources(t_desc *serv, t_env *e, int x, int y);
 
 /*
@@ -294,11 +292,11 @@ int	aff_ressources(t_desc *serv, t_env *e, int x, int y);
 void	send_player_position(t_desc *serv, t_env *e, int n);
 void	send_player_level(t_desc *serv, t_env *e, int n);
 void	send_player_inv(t_desc *serv, t_env *e, int n);
+void	aff_inv(int cs, int *inv);
 
 /*
 **----------> graph_commands.c  <----------
 */
-void	read_graph(t_desc *serv, t_play *players, t_env *e);
 void	graph_command(t_desc *serv, t_play *players, t_env *e);
 void	msz(t_desc *serv, t_play *players, t_env *e, char **cmd);
 void	sgt(t_desc *serv, t_play *players, t_env *e, char **cmd);
@@ -317,5 +315,12 @@ void	tna(t_desc *serv, t_play *players, t_env *e, char **cmd);
 */
 void	bct(t_desc *serv, t_play *players, t_env *e, char **cmd);
 void	mct(t_desc *serv, t_play *players, t_env *e, char **cmd);
+
+/*
+**----------> graph_commands_cases.c  <----------
+*/
+void	send_new_pos(t_play *player, t_env *e);
+void	graph_drop_objects(t_desc *serv, t_play *player, t_env *e, int id);
+void	graph_take_objects(t_desc *serv, t_play *player, t_env *e, int id);
 
 #endif /*_SERVER_H_*/
