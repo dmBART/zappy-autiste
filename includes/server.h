@@ -5,7 +5,7 @@
 ** Login   <milbau_a@epitech.net>
 ** 
 ** Started on  Sat May 22 03:27:51 2010 alexis milbault
-** Last update Sun Jun 20 00:26:28 2010 aime-bijou iniongo
+** Last update Sun Jun 20 16:50:41 2010 alexandra ekra
 ** Last update Thu Jun  3 15:04:16 2010 alexis milbault
 */
 
@@ -108,6 +108,7 @@ typedef	struct		s_env
   int			t;
   int			end;
   int			cs;
+  int			graph_cs;
   int			state;
   int			fd_max;
   t_team		*team;
@@ -117,7 +118,11 @@ typedef	struct		s_env
   struct timezone	ts;
 }			t_env;
 
-
+typedef struct		s_graph
+{
+  char			*com;
+  void			(*f)();
+}			t_graph;
 
 /*
 **----------> xfunc.c  <----------
@@ -261,6 +266,49 @@ void	show_player_buffer(char **buffer);
 
 void	print_desc(t_desc *serv);
 
+/*
+**----------> msg_to_graph1.c  <----------
+*/
 void	graphic_write(t_desc *serv, t_play *players, t_env *e);
+void	send_teams_names(t_desc *serv, t_play *players, t_env *e);
+void	send_time_unit(t_desc *serv, t_play *players, t_env *e);
+void	send_map_size(t_desc *serv, t_play *players, t_env *e);
+
+/*
+**----------> send_cases_content.c  <----------
+*/
+void	send_cases_content(t_desc *serv, t_play *players, t_env *e);
+void	aff_empty_cases(t_play *players, t_env *e);
+int	aff_ressources(t_desc *serv, t_env *e, int x, int y);
+
+/*
+**----------> send_player_info.c  <----------
+*/
+void	send_player_position(t_desc *serv, t_env *e, int n);
+void	send_player_level(t_desc *serv, t_env *e, int n);
+void	send_player_inv(t_desc *serv, t_env *e, int n);
+
+/*
+**----------> graph_commands.c  <----------
+*/
+void	read_graph(t_desc *serv, t_play *players, t_env *e);
+void	graph_command(t_desc *serv, t_play *players, t_env *e);
+void	msz(t_desc *serv, t_play *players, t_env *e, char **cmd);
+void	sgt(t_desc *serv, t_play *players, t_env *e, char **cmd);
+void	sst(t_desc *serv, t_play *players, t_env *e, char **cmd);
+
+/*
+**----------> graph_commands_player.c  <----------
+*/
+void	ppo(t_desc *serv, t_play *players, t_env *e, char **cmd);
+void	plv(t_desc *serv, t_play *players, t_env *e, char **cmd);
+void	pin(t_desc *serv, t_play *players, t_env *e, char **cmd);
+void	tna(t_desc *serv, t_play *players, t_env *e, char **cmd);
+
+/*
+**----------> graph_commands_cases.c  <----------
+*/
+void	bct(t_desc *serv, t_play *players, t_env *e, char **cmd);
+void	mct(t_desc *serv, t_play *players, t_env *e, char **cmd);
 
 #endif /*_SERVER_H_*/

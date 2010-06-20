@@ -5,7 +5,7 @@
 ** Login   <iniong_a@epitech.net>
 ** 
 ** Started on  Sat May 29 22:35:24 2010 aime-bijou iniongo
-** Last update Fri Jun 18 11:23:28 2010 aime-bijou iniongo
+** Last update Sun Jun 20 16:56:03 2010 alexandra ekra
 */
 
 #include <sys/time.h>
@@ -255,7 +255,7 @@ t_timev		manage_time(t_desc *serv)
       get_time_exec(id, serv->tv);
       get_time_exec_2(id, serv->tv);
       t = take_first_action(id, life);
-      free_time(life, id);
+      /* free_time(life, id);*/
       if (t.t_old.tv_sec == 2000000000)
 	{
 	  t.d = 0;

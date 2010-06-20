@@ -5,7 +5,7 @@
 ** Login   <iniong_a@epitech.net>
 ** 
 ** Started on  Fri May 28 00:49:11 2010 aime-bijou iniongo
-** Last update Sun Jun 20 13:13:57 2010 aime-bijou iniongo
+** Last update Sun Jun 20 16:46:45 2010 alexandra ekra
 */
 
 #include <sys/socket.h>
@@ -93,7 +93,6 @@ void	first_read(t_play *players, t_env *e)
 void	manage_client(t_desc *serv, t_env *e, t_timev t)
 {
   int	n;
-  int	x;
   char	buff[4091];
 
   e->i = -1;
@@ -127,6 +126,8 @@ void	manage_client(t_desc *serv, t_env *e, t_timev t)
 	  if (serv->players[e->i].cs == t.cs && FD_ISSET(t.cs, &e->wrtefs))
 	    treat_command(serv, e, &serv->players[e->i], t);
 	}
+      else if (serv->players[e->i].type == FD_GRAPHIC)
+	read_graph(serv, serv->players, e);
       /*       else if (serv->players[e->i].type == FD_GHOST) */
       /*  	temp_life(&serv->players[e->i],  e, serv, t); */
     }
