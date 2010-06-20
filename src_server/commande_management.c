@@ -5,10 +5,25 @@
 ** Login   <milbau_a@epitech.net>
 ** 
 ** Started on  Thu Jun  3 16:15:08 2010 alexis milbault
-** Last update Thu Jun 17 03:11:06 2010 alexis milbault
+** Last update Sun Jun 20 19:51:22 2010 aime-bijou iniongo
 */
 
+#include <stdlib.h>
 #include "../includes/commandes.h"
+
+void	free_tab(char **tab)
+{
+  int	x;
+
+  x = 0;
+  while (tab[x] != NULL)
+    {
+      free(tab[x]);
+      x++;
+    }
+  if (tab[0] != NULL)
+    free(tab);
+}
 
 void	manage_commande(t_desc *serv, t_play *player, t_env *e, char *cmd)
 {

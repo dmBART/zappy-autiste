@@ -5,7 +5,7 @@
 ** Login   <iniong_a@epitech.net>
 ** 
 ** Started on  Sat May 29 22:35:24 2010 aime-bijou iniongo
-** Last update Sun Jun 20 16:56:03 2010 alexandra ekra
+** Last update Sun Jun 20 20:03:32 2010 aime-bijou iniongo
 */
 
 #include <sys/time.h>
@@ -97,6 +97,8 @@ t_timev		take_first_action(t_timev *id, t_timev *life)
   i = 0;
   get_small_life(life, &t_life);
   get_small_time(&t, id, i, t_life);
+  if (t_life.action != NULL)
+    free(t_life.action);
   return (t);
 }
 
@@ -200,12 +202,10 @@ void		free_time(t_timev *life, t_timev *id)
       if(id[x].action != NULL)
 	{
 	  free(id[x].action);
-	  id[x].action = NULL;
 	}
       if(life[x].action != NULL)
 	{
 	  free(life[x].action);
-	  life[x].action = NULL;
 	}
     }
 }
@@ -255,7 +255,7 @@ t_timev		manage_time(t_desc *serv)
       get_time_exec(id, serv->tv);
       get_time_exec_2(id, serv->tv);
       t = take_first_action(id, life);
-      /* free_time(life, id);*/
+/*       free_time(life, id); */
       if (t.t_old.tv_sec == 2000000000)
 	{
 	  t.d = 0;

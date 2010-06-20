@@ -5,7 +5,7 @@
 ** Login   <iniong_a@epitech.net>
 ** 
 ** Started on  Fri May 28 00:49:11 2010 aime-bijou iniongo
-** Last update Sun Jun 20 16:46:45 2010 alexandra ekra
+** Last update Sun Jun 20 20:35:50 2010 aime-bijou iniongo
 */
 
 #include <sys/socket.h>
@@ -29,19 +29,41 @@ void		ghost_mode(t_play *player, t_env *e)
   FD_CLR(player[e->i].cs, &e->wrtefs);
 }
 
-void		close_client(t_play *player, t_env *e)
+int	count_elem_timer(t_timev *eve, int fd)
 {
-  player[e->i].type = FD_FREE;
-  close(player[e->i].cs);
-  if (player[e->i].team != NULL)
+  int	count;
+
+  count = 0;
+  while (eve)
     {
-      return_place_on_team(&player[e->i], e->team);
-      free(player[e->i].team);
+      if (eve->cs == fd)
+	if (my_strcmp(eve->action, "vie") != 0)
+	  count++;
+      eve = eve->next;
     }
-  player[e->i].team = NULL;
-  printf("client %d disconnected\n", player[e->i].cs);
-  FD_CLR(player[e->i].cs, &e->readfs);
-  FD_CLR(player[e->i].cs, &e->wrtefs);
+  return (count);
+}
+
+void		close_client(t_timev *eve, t_play *player, t_env *e)
+{
+  int		x;
+  int		size;
+
+  x = 0;
+  player->type = FD_FREE;
+  size = count_elem_timer(eve, player->cs);
+  close(player->cs);
+  if (size > 0)
+    del_elem_player(&eve, player->cs, size);
+  if (player->team != NULL)
+    {
+      return_place_on_team(player, e->team);
+      free(player->team);
+    }
+  player->team = NULL;
+  printf("client %d disconnected\n", player->cs);
+  FD_CLR(player->cs, &e->readfs);
+  FD_CLR(player->cs, &e->wrtefs);
 }
 
 void	treat_command(t_desc *serv, t_env *e, t_play *player, t_timev t)
@@ -76,18 +98,18 @@ void	treat_command(t_desc *serv, t_env *e, t_play *player, t_timev t)
     }
 }
 
-void	first_read(t_play *players, t_env *e)
+void	first_read(t_timev *eve, t_play *players, t_env *e, int now)
 {
-/*   if (players[e->i].inv[0] > 0) */
-/*     { */
-/*       ghost_mode(players, e); */
-/*       printf("client in ghost mode\n"); */
-/*     } */
-/*   else */
-/*     { */
-      close_client(players, e);
-      printf("deleting client %d\n", players[e->i].cs);
-/*     } */
+  /*   if (players[e->i].inv[0] > 0) */
+  /*     { */
+  /*       ghost_mode(eve, players, e); */
+  /*       printf("client in ghost mode\n"); */
+  /*     } */
+  /*   else */
+  /*     { */
+  close_client(eve, &players[now],  e);
+  printf("deleting client %d\n", players[now].cs);
+  /*     } */
 }
 
 void	manage_client(t_desc *serv, t_env *e, t_timev t)
@@ -103,11 +125,11 @@ void	manage_client(t_desc *serv, t_env *e, t_timev t)
 	{
 	  n = xrecv(serv->players[e->i].cs, buff, 4090, 0);
 	  if (n == 0)
-	    first_read(serv->players, e);
+	    first_read(serv->tv, serv->players, e, e->i);
 	  else if (n > 0)
 	    {
 	      manage_buff(&serv->players[e->i], buff, n);
-	      if (!my_strcmp(serv->players[e->i].action[serv->players[e->i].end - 1], "GRAPHIC"))
+	      if (!my_strcmp(serv->players[e->i].action, "GRAPHIC"))
 		{
 		  serv->players[e->i].type = FD_GRAPHIC;
 		  graphic_write(serv, serv->players, e);

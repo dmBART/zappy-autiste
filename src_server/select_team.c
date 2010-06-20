@@ -5,7 +5,7 @@
 ** Login   <iniong_a@epitech.net>
 ** 
 ** Started on  Sat May 29 21:29:53 2010 aime-bijou iniongo
-** Last update Sun Jun 20 12:46:55 2010 aime-bijou iniongo
+** Last update Sun Jun 20 18:44:33 2010 aime-bijou iniongo
 */
 
 #include <stdio.h>
@@ -55,7 +55,7 @@ int		ghost_player(t_play *players, char *team_name)
   return (-1);
 }
 
-void		take_a_team(t_play *player, char *team, t_env *e, t_team *myteam)
+int		take_a_team(t_play *player, char *team, t_env *e, t_team *myteam)
 {
   int		len;
   int		ghost;
@@ -82,16 +82,12 @@ void		take_a_team(t_play *player, char *team, t_env *e, t_team *myteam)
 		strcpy(player[e->i].team, team);
 		myteam->place--;
 		printf("client %d choose ' %s ' as his team\n", player[e->i].cs, team);
-		break;
-	      }
-	    else
-	      {
-		close_client(player, e);
-		break;
+		return (0);
 	      }
 	  }
 	myteam = myteam->next;
       }
+      return (-1);
 }
 
 int		choose_a_team(t_desc *serv, t_play *players, char *buff, t_env *e)
@@ -116,11 +112,17 @@ int		choose_a_team(t_desc *serv, t_play *players, char *buff, t_env *e)
       }
   if (flags == 0)
     {
-      close_client(players, e);
+      close_client(serv->tv, &players[e->i], e);
       return (-1);
     }
   else
-    take_a_team(players, serv->team[t], e, e->team);
+    {
+      if (take_a_team(players, serv->team[t], e, e->team) == -1)
+	{
+	  close_client(serv->tv, &players[e->i], e);
+	  return (-1);
+	}
+    }
   return (0);
 }
 

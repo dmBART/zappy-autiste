@@ -5,6 +5,7 @@
 ** Login   <iniong_a@epitech.net>
 ** 
 ** Started on  Sat Jun 19 18:11:37 2010 aime-bijou iniongo
+** Last update Sun Jun 20 18:41:17 2010 aime-bijou iniongo
 ** Last update Sun Jun 20 16:39:20 2010 alexandra ekra
 */
 
@@ -35,16 +36,16 @@ void		client_write(t_desc *serv, t_env *e, int n)
   e->end = serv->players[e->i].end;
   if (serv->players[e->i].team == NULL && n > 1)
     {
-      if (choose_a_team(serv, serv->players, serv->players[e->i].action[0], e) == 0)
+      if (choose_a_team(serv, serv->players, serv->players[e->i].action, e) == 0)
 	{
-	  welcome_client(serv, e, serv->players[e->i].action[0]);
+	  welcome_client(serv, e, serv->players[e->i].action);
 	  add_elem(&serv->tv, "vie", serv->players[e->i].cs, e);
 	  serv->players[e->i].state = 1;
 	}
     }
   else
     {
-      add_elem(&serv->tv, serv->players[e->i].action[x], serv->players[e->i].cs, e);
+      add_elem(&serv->tv, serv->players[e->i].action, serv->players[e->i].cs, e);
     }
 }
 
@@ -62,6 +63,6 @@ void	manage_life(t_play *player, t_env *e, t_desc *serv, t_timev t)
     {
       del_elem_to_queu(&serv->tv, t);
       write(player->cs, "mort\n", 5);
-      close_client(player, e);
+      close_client(serv->tv, player, e);
     }
 }

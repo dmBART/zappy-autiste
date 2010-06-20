@@ -5,9 +5,10 @@
 ** Login   <iniong_a@epitech.net>
 ** 
 ** Started on  Sat Jun 19 18:02:32 2010 aime-bijou iniongo
-** Last update Sun Jun 20 12:48:50 2010 aime-bijou iniongo
+** Last update Sun Jun 20 17:43:01 2010 aime-bijou iniongo
 */
 
+#include <stdio.h>
 #include "../includes/server.h"
 
 void	temp_life(t_play *player, t_env *e, t_desc *serv, t_timev t)
