@@ -5,7 +5,7 @@
 ** Login   <iniong_a@epitech.net>
 ** 
 ** Started on  Sat May 29 21:29:53 2010 aime-bijou iniongo
-** Last update Sun Jun 20 18:44:33 2010 aime-bijou iniongo
+** Last update Sun Jun 20 23:07:33 2010 aime-bijou iniongo
 */
 
 #include <stdio.h>
@@ -44,15 +44,39 @@ int		ghost_player(t_play *players, char *team_name)
 {
   int		ghost;
 
-  ghost = 0;
-  while (ghost < MAX_FD)
+  ghost = MAX_FD + 1;
+  while (ghost < MAX_GHOST)
     {
       if (players[ghost].type == FD_GHOST)
 	if (my_strcmp(players[ghost].team, team_name) == 0)
-	  return (ghost);
+	  {
+	    printf("ghost you are a bich = %d\n", ghost);
+	    return (ghost);
+	  }
       ghost++;
     }
   return (-1);
+}
+
+void		re_init_player(t_play *ghost, t_play *player)
+{
+  int		x;
+
+  x = 0;
+  player->type = FD_CLIENT;
+  ghost->type = FD_FREE;
+  player->inv = xmalloc(sizeof(int *) * 7);
+  player->dir = ghost->dir;
+  player->lvl = ghost->lvl;
+  player->x = ghost->x;
+  player->y = ghost->y;
+  while (x < 7)
+    {
+      player->inv[x] = ghost->inv[x];
+      x++;
+    }
+  printf("player who get the ghost inv = %d\n", player->inv[0]);
+  free(ghost->inv);
 }
 
 int		take_a_team(t_play *player, char *team, t_env *e, t_team *myteam)
@@ -61,33 +85,26 @@ int		take_a_team(t_play *player, char *team, t_env *e, t_team *myteam)
   int		ghost;
 
   len = my_strlen(team);
-/*    if ((ghost = ghost_player(player, team)) == 0) */
-/*      { */
-/*        printf("in the ghost\n"); */
-/*        player[e->i].type = FD_CLIENT; */
-/*        player[ghost].type = FD_FREE; */
-/*        player[e->i].inv = player[ghost].inv; */
-/*        player[e->i].dir = player[ghost].dir; */
-/*        player[e->i].lvl = player[ghost].lvl; */
-/*        player[e->i].x = player[ghost].x; */
-/*        player[e->i].y = player[ghost].y; */
-/*      } */
-    while (myteam)
-      {
-	if (my_strcmp(myteam->name, team) == 0)
-	  {
-	    if (myteam->place > 0)
-	      {
-		player[e->i].team = xmalloc(sizeof(char*) * len);
-		strcpy(player[e->i].team, team);
-		myteam->place--;
-		printf("client %d choose ' %s ' as his team\n", player[e->i].cs, team);
-		return (0);
-	      }
-	  }
-	myteam = myteam->next;
-      }
-      return (-1);
+  if ((ghost = ghost_player(player, team)) >= 0)
+    {
+      re_init_player(&player[ghost], &player[e->i]);
+    }
+  while (myteam)
+    {
+      if (my_strcmp(myteam->name, team) == 0)
+	{
+	  if (myteam->place > 0)
+	    {
+	      player[e->i].team = xmalloc(sizeof(char*) * len);
+	      strcpy(player[e->i].team, team);
+	      myteam->place--;
+	      printf("client %d choose ' %s ' as his team\n", player[e->i].cs, team);
+	      return (0);
+	    }
+	}
+      myteam = myteam->next;
+    }
+  return (-1);
 }
 
 int		choose_a_team(t_desc *serv, t_play *players, char *buff, t_env *e)

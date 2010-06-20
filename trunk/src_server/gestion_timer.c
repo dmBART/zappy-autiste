@@ -5,7 +5,7 @@
 ** Login   <iniong_a@epitech.net>
 ** 
 ** Started on  Sat May 29 22:35:24 2010 aime-bijou iniongo
-** Last update Sun Jun 20 20:03:32 2010 aime-bijou iniongo
+** Last update Sun Jun 20 22:28:59 2010 aime-bijou iniongo
 */
 
 #include <sys/time.h>
@@ -177,7 +177,7 @@ void		get_life(t_timev *life, t_timev *time)
   while (time)
     {
       x = time->cs;
-      if (time->action != NULL && time->d == 1/* my_strcmp(time->action, "vie") == 0 */)
+      if (time->action != NULL && time->d == 1)
 	{
 	  life[x].d = time->d;
 	  life[x].cs = x;

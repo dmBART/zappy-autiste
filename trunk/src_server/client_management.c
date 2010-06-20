@@ -5,7 +5,7 @@
 ** Login   <iniong_a@epitech.net>
 ** 
 ** Started on  Fri May 28 00:49:11 2010 aime-bijou iniongo
-** Last update Sun Jun 20 20:35:50 2010 aime-bijou iniongo
+** Last update Sun Jun 20 22:50:42 2010 aime-bijou iniongo
 */
 
 #include <sys/socket.h>
@@ -18,30 +18,6 @@
 void		my_putchar(char c)
 {
   write(1, &c, 1);
-}
-
-void		ghost_mode(t_play *player, t_env *e)
-{
-  return_place_on_team(&player[e->i], e->team);
-  close(player[e->i].cs);
-  player[e->i].type = FD_GHOST;
-  FD_CLR(player[e->i].cs, &e->readfs);
-  FD_CLR(player[e->i].cs, &e->wrtefs);
-}
-
-int	count_elem_timer(t_timev *eve, int fd)
-{
-  int	count;
-
-  count = 0;
-  while (eve)
-    {
-      if (eve->cs == fd)
-	if (my_strcmp(eve->action, "vie") != 0)
-	  count++;
-      eve = eve->next;
-    }
-  return (count);
 }
 
 void		close_client(t_timev *eve, t_play *player, t_env *e)
@@ -60,10 +36,56 @@ void		close_client(t_timev *eve, t_play *player, t_env *e)
       return_place_on_team(player, e->team);
       free(player->team);
     }
+  free(player->inv);
   player->team = NULL;
   printf("client %d disconnected\n", player->cs);
   FD_CLR(player->cs, &e->readfs);
   FD_CLR(player->cs, &e->wrtefs);
+}
+
+void		init_ghost(t_play *ghost_player, t_play *player)
+{
+  int		i;
+
+  i = -1;
+  ghost_player->type = FD_GHOST;
+  ghost_player->x = player->x;
+  ghost_player->y = player->y;
+  ghost_player->dir = player->x;
+  ghost_player->lvl = player->lvl;
+  ghost_player->state = player->state;
+  ghost_player->end = player->end;
+  ghost_player->cs = player->cs;
+  printf("ghost = %d\n", ghost_player->cs);
+  ghost_player->team = strdup(player->team);
+  ghost_player->inv = xmalloc(sizeof(int *) * 7);
+  while (i++ < 7)
+    ghost_player->inv[i] = player->inv[i];
+}
+
+
+void		ghost_mode(t_timev *eve, t_play *player, t_env *e)
+{
+  int		size;
+  int		i;
+
+  size = count_elem_timer(eve, player->cs);
+  i = MAX_FD + 1;
+  while (i < MAX_GHOST)
+    {
+      if (player[e->i].type !=  FD_GHOST)
+	{
+	  printf("i in ta soeur = %d\n", i);
+	  break;
+	}
+      i++;
+    }
+  init_ghost(&player[i], &player[e->i]);
+  FD_CLR(player[e->i].cs, &e->readfs);
+  FD_CLR(player[e->i].cs, &e->wrtefs);
+  close(player[e->i].cs);
+  player[e->i].type = FD_FREE;
+  close_client(eve, &player[e->i], e);
 }
 
 void	treat_command(t_desc *serv, t_env *e, t_play *player, t_timev t)
@@ -100,24 +122,26 @@ void	treat_command(t_desc *serv, t_env *e, t_play *player, t_timev t)
 
 void	first_read(t_timev *eve, t_play *players, t_env *e, int now)
 {
-  /*   if (players[e->i].inv[0] > 0) */
-  /*     { */
-  /*       ghost_mode(eve, players, e); */
-  /*       printf("client in ghost mode\n"); */
-  /*     } */
-  /*   else */
-  /*     { */
-  close_client(eve, &players[now],  e);
-  printf("deleting client %d\n", players[now].cs);
-  /*     } */
+  if (players[e->i].inv[0] > 0)
+    {
+      ghost_mode(eve, players, e);
+      printf("client in ghost mode\n");
+    }
+  else
+    {
+      close_client(eve, &players[now],  e);
+      printf("deleting client %d\n", players[now].cs);
+    }
 }
 
 void	manage_client(t_desc *serv, t_env *e, t_timev t)
 {
   int	n;
+  int	i;
   char	buff[4091];
 
   e->i = -1;
+  i = MAX_FD;
   while (e->i++ < MAX_FD)
     {
       if (serv->players[e->i].type == FD_CLIENT &&
@@ -150,9 +174,12 @@ void	manage_client(t_desc *serv, t_env *e, t_timev t)
 	}
       else if (serv->players[e->i].type == FD_GRAPHIC)
 	read_graph(serv, serv->players, e);
-      /*       else if (serv->players[e->i].type == FD_GHOST) */
-      /*  	temp_life(&serv->players[e->i],  e, serv, t); */
     }
+  while (i++ < MAX_GHOST)
+    if (serv->players[i].type == FD_GHOST)
+      {
+	temp_life(&serv->players[e->i],  e, serv, t);
+      }
 }
 
 void			add_players(t_desc *serv, t_env *e)
