@@ -5,7 +5,7 @@
 ** Login   <iniong_a@epitech.net>
 ** 
 ** Started on  Fri May 28 00:49:11 2010 aime-bijou iniongo
-** Last update Sat Jun 19 22:21:05 2010 aime-bijou iniongo
+** Last update Sun Jun 20 13:13:57 2010 aime-bijou iniongo
 */
 
 #include <sys/socket.h>
@@ -18,6 +18,30 @@
 void		my_putchar(char c)
 {
   write(1, &c, 1);
+}
+
+void		ghost_mode(t_play *player, t_env *e)
+{
+  return_place_on_team(&player[e->i], e->team);
+  close(player[e->i].cs);
+  player[e->i].type = FD_GHOST;
+  FD_CLR(player[e->i].cs, &e->readfs);
+  FD_CLR(player[e->i].cs, &e->wrtefs);
+}
+
+void		close_client(t_play *player, t_env *e)
+{
+  player[e->i].type = FD_FREE;
+  close(player[e->i].cs);
+  if (player[e->i].team != NULL)
+    {
+      return_place_on_team(&player[e->i], e->team);
+      free(player[e->i].team);
+    }
+  player[e->i].team = NULL;
+  printf("client %d disconnected\n", player[e->i].cs);
+  FD_CLR(player[e->i].cs, &e->readfs);
+  FD_CLR(player[e->i].cs, &e->wrtefs);
 }
 
 void	treat_command(t_desc *serv, t_env *e, t_play *player, t_timev t)
@@ -52,6 +76,20 @@ void	treat_command(t_desc *serv, t_env *e, t_play *player, t_timev t)
     }
 }
 
+void	first_read(t_play *players, t_env *e)
+{
+/*   if (players[e->i].inv[0] > 0) */
+/*     { */
+/*       ghost_mode(players, e); */
+/*       printf("client in ghost mode\n"); */
+/*     } */
+/*   else */
+/*     { */
+      close_client(players, e);
+      printf("deleting client %d\n", players[e->i].cs);
+/*     } */
+}
+
 void	manage_client(t_desc *serv, t_env *e, t_timev t)
 {
   int	n;
@@ -64,21 +102,10 @@ void	manage_client(t_desc *serv, t_env *e, t_timev t)
       if (serv->players[e->i].type == FD_CLIENT &&
 	  FD_ISSET(serv->players[e->i].cs, &e->readfs))
 	{
-	  n = xread(serv->players[e->i].cs, buff, 4090);
+	  n = xrecv(serv->players[e->i].cs, buff, 4090, 0);
 	  if (n == 0)
-	    {
-	      if (serv->players[e->i].inv[0] > 0)
-		{
- 		  ghost_mode(serv->players, e);
-		  printf("client in ghost mode\n");
-		}
-	      else
-		{
-		  close_client(serv->players, e);
-		  printf("deleting client %d\n", serv->players[e->i].cs);
-		}
-	    }
-	  else
+	    first_read(serv->players, e);
+	  else if (n > 0)
 	    {
 	      manage_buff(&serv->players[e->i], buff, n);
 	      if (!my_strcmp(serv->players[e->i].action[serv->players[e->i].end - 1], "GRAPHIC"))
@@ -87,7 +114,11 @@ void	manage_client(t_desc *serv, t_env *e, t_timev t)
 		  graphic_write(serv, serv->players, e);
 		}
 	      else
-		client_write(serv, e, n);
+		{
+ 		  if ((serv->players[e->i].end % 100) == 0)
+ 		    serv->players[e->i].end++;
+		  client_write(serv, e, n);
+		}
 	    }
 	  memset(buff, 0, 4091);
 	}
@@ -96,8 +127,8 @@ void	manage_client(t_desc *serv, t_env *e, t_timev t)
 	  if (serv->players[e->i].cs == t.cs && FD_ISSET(t.cs, &e->wrtefs))
 	    treat_command(serv, e, &serv->players[e->i], t);
 	}
-      else if (serv->players[e->i].type == FD_GHOST)
- 	temp_life(&serv->players[e->i],  e, serv, t);
+      /*       else if (serv->players[e->i].type == FD_GHOST) */
+      /*  	temp_life(&serv->players[e->i],  e, serv, t); */
     }
 }
 

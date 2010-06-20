@@ -5,26 +5,10 @@
 ** Login   <iniong_a@epitech.net>
 ** 
 ** Started on  Sat Jun 19 18:11:37 2010 aime-bijou iniongo
-** Last update Sat Jun 19 18:25:42 2010 aime-bijou iniongo
+** Last update Sun Jun 20 12:49:25 2010 aime-bijou iniongo
 */
 
 #include "../includes/server.h"
-
-void		close_client(t_play *player, t_env *e)
-{
-  player[e->i].type = FD_FREE;
-  write(player[e->i].cs, "ko\n", 3);
-  close(player[e->i].cs);
-  if (player[e->i].team != NULL)
-    {
-      return_place_on_team(&player[e->i], e->team);
-      free(player[e->i].team);
-    }
-  player[e->i].team = NULL;
-  printf("client %d disconnected\n", player[e->i].cs);
-  FD_CLR(player[e->i].cs, &e->readfs);
-  FD_CLR(player[e->i].cs, &e->wrtefs);
-}
 
 void		welcome_client(t_desc *serv, t_env *e, char *team_name)
 {

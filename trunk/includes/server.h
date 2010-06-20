@@ -5,7 +5,7 @@
 ** Login   <milbau_a@epitech.net>
 ** 
 ** Started on  Sat May 22 03:27:51 2010 alexis milbault
-** Last update Sat Jun 19 18:25:51 2010 aime-bijou iniongo
+** Last update Sun Jun 20 00:26:28 2010 aime-bijou iniongo
 ** Last update Thu Jun  3 15:04:16 2010 alexis milbault
 */
 
@@ -130,6 +130,7 @@ void	xbind(int s, struct sockaddr_in addr);
 void	*xmalloc(size_t size);
 void	*xrealloc(void *ptr, size_t size);
 ssize_t	xread(int d, void *buf, size_t nbytes);
+ssize_t xrecv(int s, void *buf, size_t len, int flags);
 
 /*
 **----------> utils.c  <----------
@@ -178,8 +179,9 @@ void	temp_life(t_play *player, t_env *e, t_desc *serv, t_timev t);
 /*
 **----------> client_state.c  <----------
 */
- void	welcome_client(t_desc *serv, t_env *e, char *team_name);
+void	welcome_client(t_desc *serv, t_env *e, char *team_name);
 void	client_write(t_desc *serv, t_env *e, int n);
+void	manage_life(t_play *player, t_env *e, t_desc *serv, t_timev t);
 
 
 /*

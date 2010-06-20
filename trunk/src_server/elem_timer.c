@@ -5,7 +5,7 @@
 ** Login   <iniong_a@epitech.net>
 ** 
 ** Started on  Mon Jun 14 17:19:31 2010 aime-bijou iniongo
-** Last update Sat Jun 19 03:56:20 2010 aime-bijou iniongo
+** Last update Sun Jun 20 12:41:39 2010 aime-bijou iniongo
 */
 
 #include <sys/time.h>
@@ -20,6 +20,7 @@ typedef struct	s_str
 }		t_str;
 
 t_str	str_tab[]= {
+  {"connect_nbr", 1},
   {"inventaire", 1},
   {"avance", 7},
   {"droite", 7},
@@ -27,6 +28,7 @@ t_str	str_tab[]= {
   {"prend", 7},
   {"voir", 7},
   {"pose", 7},
+  {"incantation", 300},
   {NULL, 0}
 };
 
