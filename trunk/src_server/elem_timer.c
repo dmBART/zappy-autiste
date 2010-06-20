@@ -5,7 +5,7 @@
 ** Login   <iniong_a@epitech.net>
 ** 
 ** Started on  Mon Jun 14 17:19:31 2010 aime-bijou iniongo
-** Last update Sun Jun 20 12:41:39 2010 aime-bijou iniongo
+** Last update Sun Jun 20 19:59:02 2010 aime-bijou iniongo
 */
 
 #include <sys/time.h>
@@ -90,6 +90,42 @@ void		add_elem(t_timev **player, char *action, int id, t_env *e)
 
 }
 
+void	del_elem_zero(void *save, t_timev **time)
+{
+}
+
+void	del_elem_other(int cpt, void *save, void *tmp, t_timev **time)
+{
+  int	i;
+
+  i = 0;
+  tmp = *time;
+  *time = save;
+  printf("in del struct action = %s\n", (*time)->action);
+  if (cpt == 0)
+    {
+      free((*time)->action);
+      *time = (*time)->next;
+    }
+  else
+    {
+      *time = save;
+      while (i < (cpt - 1))
+	{
+	  *time = (*time)->next;
+	  i++;
+	}
+      if (*time != NULL)
+	{
+/* 	  if ((*time)->action != NULL) */
+	  free((*time)->action);
+	  (*time)->next = (*time)->next->next;
+	  *time = save;
+	}
+    }
+}
+
+
 void	del_elem_to_queu(t_timev **time, t_timev t)
 {
   void	*save;
@@ -100,6 +136,7 @@ void	del_elem_to_queu(t_timev **time, t_timev t)
   i = 0;
   cpt = i;
   save = *time;
+  tmp = *time;
   while (*time)
     {
       if (my_strcmp((*time)->action, t.action) == 0 &&
@@ -112,32 +149,35 @@ void	del_elem_to_queu(t_timev **time, t_timev t)
       *time = (*time)->next;
       i++;
     }
-  tmp = *time;
-  *time = save;
-  if (cpt == 0)
-    {
-      printf("in del struct action = %s\n", (*time)->action);
-      free((*time)->action);
-      *time = (*time)->next;
-      free(save);
-    }
-  else
-    {
-      *time = save;
-      i = 0;
-      while (i < (cpt - 1))
-	{
-	  *time = (*time)->next;
-	  i++;
-	}
-      if (*time != NULL)
-	{
-	  free((*time)->action);
-	  (*time)->next = (*time)->next->next;
-	  free(tmp);
-	  *time = save;
-	}
-    }
-/*   t.t = 0; */
+  del_elem_other(cpt, save, tmp, time);
 }
 
+void	del_elem_player(t_timev **eve, int fd, int size)
+{
+  int	i;
+  int	x;
+  int	*cpt;
+  void	*save;
+  void	*tmp;
+
+  i = 0;
+  x = 0;
+  printf("size = %d\n", size);
+  cpt = xmalloc(sizeof(*cpt) * size);
+  save = *eve;
+  tmp = *eve;
+  while (*eve)
+    {
+      if (my_strcmp((*eve)->action, "vie") == 0 &&
+	  (*eve)->cs == fd)
+	{
+	  cpt[x] = i;
+	  x++;
+	}
+      *eve = (*eve)->next;
+      i++;
+    }
+  x = -1;
+  while (x++ < size)
+    del_elem_other(cpt[x], save, tmp, eve);
+}

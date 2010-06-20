@@ -5,25 +5,12 @@
 ** Login   <iniong_a@epitech.net>
 ** 
 ** Started on  Mon Jun 14 17:33:41 2010 aime-bijou iniongo
-** Last update Sun Jun 20 14:58:44 2010 aime-bijou iniongo
+** Last update Sun Jun 20 19:52:11 2010 aime-bijou iniongo
 */
 
 #include <stdio.h>
 #include <string.h>
 #include "../includes/server.h"
-
-void		free_tab(char **tab)
-{
-  int		x;
-
-  x = -1;
-  while (x++ < 100)
-    if (tab[x] != NULL)
-      {
-	free(tab[x]);
-	tab[x] = NULL;
-      }
-}
 
 char		*get_buf(char *buffer, int len, t_play *player)
 {
@@ -71,23 +58,23 @@ void		manage_buff(t_play *player, char *buffer, int len)
 
   tmp = get_buf(buffer, len, player);
   i = player->end  % 100;
-  if (player->action[i] != NULL)
+  if (player->action!= NULL)
     {
-      free(player->action[i]);
-      player->action[i] = NULL;
+      free(player->action);
+      player->action = NULL;
     }
   if (tmp == NULL)
     {
-      if (player->action[i] == NULL)
-	player->action[i] = xmalloc(sizeof(char *) * my_strlen("empty"));
-      strcpy(player->action[i], "empty");
+      if (player->action == NULL)
+	player->action = xmalloc(sizeof(char *) * my_strlen("empty"));
+      strcpy(player->action, "empty");
     }
   else
     {
-      player->action[i] = xmalloc(sizeof(char *) * my_strlen(tmp));
-      strcpy(player->action[i], tmp);
+      player->action = xmalloc(sizeof(char *) * my_strlen(tmp));
+      strcpy(player->action, tmp);
     }
-  printf("client %d send : ' %s'\n", player->cs, player->action[i]);
+  printf("client %d send : ' %s'\n", player->cs, player->action);
   if (tmp != NULL)
     free(tmp);
   player->end++;

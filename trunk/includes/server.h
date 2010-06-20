@@ -5,7 +5,11 @@
 ** Login   <milbau_a@epitech.net>
 ** 
 ** Started on  Sat May 22 03:27:51 2010 alexis milbault
+<<<<<<< .mine
+** Last update Sun Jun 20 19:28:51 2010 aime-bijou iniongo
+=======
 ** Last update Sun Jun 20 16:50:41 2010 alexandra ekra
+>>>>>>> .r61
 ** Last update Thu Jun  3 15:04:16 2010 alexis milbault
 */
 
@@ -19,11 +23,11 @@
 #define DEFAULT_TIME 100
 #define DEFAULT_TEAM1 "Team 1"
 #define DEFAULT_TEAM2 "Team 2"
-
-# define MAX_FD		40
-# define MAX_IN		200
-# define MAX_NB(a, b)	(a > b ? a : b)
-# define MIN_NB(a, b)	(a < b ? a : b)
+#define MAX_FD		40
+#define MAX_IN		200
+#define MAX_GHOST	250
+#define MAX_NB(a, b)	(a > b ? a : b)
+#define MIN_NB(a, b)	(a < b ? a : b)
 
 #include <sys/time.h>
 #include <netinet/in.h>
@@ -84,7 +88,7 @@ typedef struct	s_play
   char		type;
   char		*team;
   char		*ip;
-  char		*action[100];
+  char		*action;
   t_timev	*t;
 }		t_play;
 
@@ -98,7 +102,7 @@ typedef struct	s_desc
   int		nb_sock;
   char		**team;
   t_map		*map;
-  t_play	players[MAX_FD];
+  t_play	players[MAX_GHOST];
   t_timev	*tv;
 }		t_desc;
 
@@ -202,8 +206,7 @@ void	my_putnbr_fd(int fd, int nbr);
 */
 void	add_players(t_desc *serv, t_env *e);
 void	manage_client(t_desc *serv, t_env *e, t_timev t);
-void	close_client(t_play *player, t_env *e);
-void	take_a_team(t_play *player, char *team, t_env *e, t_team *myteam);
+void	close_client(t_timev *eve, t_play *player, t_env *e);
 
 void	init_client(t_play *player, int fd, char *ip, t_desc *serv);
 
@@ -213,17 +216,23 @@ void	init_client(t_play *player, int fd, char *ip, t_desc *serv);
 */
 int	place_in_the_team(t_team *team, char *team_name);
 int	choose_a_team(t_desc *serv, t_play *players, char *buff, t_env *e);
+int	take_a_team(t_play *player, char *team, t_env *e, t_team *myteam);
 void	add_elem_in_team(t_desc *serv, t_team **team, int i);
 void	return_place_on_team(t_play *player, t_team *team);
 
 /*
 **----------> gestion_timer.c  <----------
 */
-void	add_elem(t_timev **player, char *action, int id, t_env *e);
 void	manage_time_in_select(t_timev t, struct timeval *tv);
 void	update_time_struct(t_timev *time, t_env *e);
-void	del_elem_to_queu(t_timev **time, t_timev t);
 t_timev	manage_time(t_desc *serv);
+
+/*
+**----------> elem_timer_timer.c  <----------
+*/
+void	del_elem_player(t_timev **eve, int fd, int size);
+void	del_elem_to_queu(t_timev **time, t_timev t);
+void	add_elem(t_timev **player, char *action, int id, t_env *e);
 
 /*
 **----------> Gestion map  <----------
