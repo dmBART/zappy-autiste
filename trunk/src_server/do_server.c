@@ -5,7 +5,7 @@
 ** Login   <iniong_a@epitech.net>
 ** 
 ** Started on  Wed May 26 14:14:09 2010 aime-bijou iniongo
-** Last update Sat Jun 19 05:30:30 2010 aime-bijou iniongo
+** Last update Sun Jun 20 16:58:07 2010 alexandra ekra
 */
 
 #include <sys/select.h>
@@ -55,7 +55,7 @@ void			manage_serveur(t_desc *serv, t_env *e)
   FD_SET(serv->s, &e->readfs);
   t = manage_time(serv);
   while (++i < MAX_FD)
-    if (serv->players[i].type == FD_CLIENT)
+    if (serv->players[i].type == FD_CLIENT || serv->players[i].type == FD_GRAPHIC)
       {
 	FD_SET(serv->players[i].cs, &e->readfs);
 	FD_SET(serv->players[i].cs, &e->wrtefs);
