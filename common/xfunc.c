@@ -5,7 +5,7 @@
 ** Login   <milbau_a@epitech.net>
 ** 
 ** Started on  Wed Apr 28 23:26:09 2010 alexis milbault
-** Last update Wed Jun 16 01:21:33 2010 aime-bijou iniongo
+** Last update Sun Jun 20 00:26:05 2010 aime-bijou iniongo
 */
 
 #include <sys/socket.h>
@@ -36,6 +36,15 @@ ssize_t	xread(int d, void *buf, size_t nbytes)
       write (2, "Can't read file.\n", 17);
       exit(EXIT_FAILURE);
     }
+  return (n);
+}
+
+ssize_t xrecv(int s, void *buf, size_t len, int flags)
+{
+  int	n;
+
+  if ((n = recv(s, buf, len, flags)) == -1)
+    perror("recv");
   return (n);
 }
 

@@ -5,19 +5,10 @@
 ** Login   <iniong_a@epitech.net>
 ** 
 ** Started on  Sat Jun 19 18:02:32 2010 aime-bijou iniongo
-** Last update Sat Jun 19 18:08:58 2010 aime-bijou iniongo
+** Last update Sun Jun 20 12:48:50 2010 aime-bijou iniongo
 */
 
 #include "../includes/server.h"
-
-void		ghost_mode(t_play *player, t_env *e)
-{
-  return_place_on_team(&player[e->i], e->team);
-  close(player[e->i].cs);
-  player[e->i].type = FD_GHOST;
-  FD_CLR(player[e->i].cs, &e->readfs);
-  FD_CLR(player[e->i].cs, &e->wrtefs);
-}
 
 void	temp_life(t_play *player, t_env *e, t_desc *serv, t_timev t)
 {

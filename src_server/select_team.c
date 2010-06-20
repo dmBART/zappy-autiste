@@ -5,7 +5,7 @@
 ** Login   <iniong_a@epitech.net>
 ** 
 ** Started on  Sat May 29 21:29:53 2010 aime-bijou iniongo
-** Last update Sat Jun 19 16:11:26 2010 aime-bijou iniongo
+** Last update Sun Jun 20 12:46:55 2010 aime-bijou iniongo
 */
 
 #include <stdio.h>
@@ -61,17 +61,17 @@ void		take_a_team(t_play *player, char *team, t_env *e, t_team *myteam)
   int		ghost;
 
   len = my_strlen(team);
-   if ((ghost = ghost_player(player, team)) == 0)
-     {
-       printf("in the ghost\n");
-       player[e->i].type = FD_CLIENT;
-       player[ghost].type = FD_FREE;
-       player[e->i].inv = player[ghost].inv;
-       player[e->i].dir = player[ghost].dir;
-       player[e->i].lvl = player[ghost].lvl;
-       player[e->i].x = player[ghost].x;
-       player[e->i].y = player[ghost].y;
-     }
+/*    if ((ghost = ghost_player(player, team)) == 0) */
+/*      { */
+/*        printf("in the ghost\n"); */
+/*        player[e->i].type = FD_CLIENT; */
+/*        player[ghost].type = FD_FREE; */
+/*        player[e->i].inv = player[ghost].inv; */
+/*        player[e->i].dir = player[ghost].dir; */
+/*        player[e->i].lvl = player[ghost].lvl; */
+/*        player[e->i].x = player[ghost].x; */
+/*        player[e->i].y = player[ghost].y; */
+/*      } */
     while (myteam)
       {
 	if (my_strcmp(myteam->name, team) == 0)
