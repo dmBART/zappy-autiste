@@ -5,7 +5,28 @@
 ** Login   <milbau_a@epitech.net>
 ** 
 ** Started on  Sat May 22 03:27:51 2010 alexis milbault
+<<<<<<< .mine
+<<<<<<< .mine
+<<<<<<< .mine
+<<<<<<< .mine
+** Last update Sun Jun 20 18:42:37 2010 alexis milbault
+=======
+<<<<<<< .mine
+** Last update Sun Jun 20 19:28:51 2010 aime-bijou iniongo
+=======
+** Last update Sun Jun 20 22:42:56 2010 aime-bijou iniongo
+=======
+** Last update Sun Jun 20 23:46:14 2010 aime-bijou iniongo
+>>>>>>> .r64
+>>>>>>> .r63
+=======
+** Last update Sun Jun 20 16:50:41 2010 alexandra ekra
+>>>>>>> .r61
+** Last update Thu Jun  3 15:04:16 2010 alexis milbault
+=======
 ** Last update Mon Jun 21 00:50:43 2010 alexandra ekra
+>>>>>>> .r65
+>>>>>>> .r62
 */
 
 
@@ -93,9 +114,11 @@ typedef struct	s_desc
   int		y;
   int		t;
   int		s;
+  int		buf;
   int		port;
   int		nj;
   int		nb_sock;
+  char		buffer[4091];
   char		**team;
   t_map		*map;
   t_play	players[MAX_GHOST];
@@ -223,6 +246,9 @@ void	update_time_struct(t_timev *time, t_env *e);
 t_timev	manage_time(t_desc *serv);
 
 /*
+<<<<<<< .mine
+**----------> Gestion map <----------
+=======
 **----------> elem_timer_timer.c  <----------
 */
 void	del_elem_player(t_timev **eve, int fd, int size);
@@ -231,6 +257,7 @@ void	add_elem(t_timev **player, char *action, int id, t_env *e);
 
 /*
 **----------> Gestion map  <----------
+>>>>>>> .r62
 */
 char	*get_ressource_name(int id);
 void	init_map(t_desc *serv);
@@ -241,7 +268,15 @@ int	take_ressource_on_map(t_map *map, int x, int y, int id);
 int	get_players_on_map(t_play *players, int x, int y);
 
 /*
-**----------> Action Function  <----------
+**----------> Buffer write <----------
+*/
+void	add_cto_buffer(t_desc *serv, char c);
+void	add_sto_buffer(t_desc *serv, char *str);
+void	add_nto_buffer(t_desc *serv, int nbr);
+void	write_to_client(t_desc *serv, int fd);
+
+/*
+**----------> Action Function <----------
 */
 void	see(t_desc *serv, t_play *player, t_env *e, char **cmd);
 void	move_forward(t_desc *serv, t_play *player, t_env *e, char **cmd);
@@ -254,6 +289,9 @@ void	drop_object(t_desc *serv, t_play *player, t_env *e, char **cmd);
 void	manage_commande(t_desc *serv, t_play *player, t_env *e, char *cmd);
 void	connect_nbr(t_desc *serv, t_play *player, t_env *e, char **cmd);
 void	lvl_up(t_desc *serv, t_play *player, t_env *e, char **cmd);
+void	expulse(t_desc *serv, t_play *player, t_env *e, char **cmd);
+void	duplicate_player(t_desc *serv, t_play *player, t_env *e, char **cmd);
+void	aff_case(t_desc *serv, int x, int y);
 
 /*
 **----------> annexe.c  <----------

@@ -6,9 +6,13 @@
 ** 
 ** Started on  Wed May 26 14:14:09 2010 aime-bijou iniongo
 <<<<<<< .mine
+** Last update Sun Jun 20 23:12:38 2010 alexis milbault
+=======
+<<<<<<< .mine
 ** Last update Sun Jun 20 22:26:13 2010 alexandra ekra
 =======
 ** Last update Sun Jun 20 22:46:37 2010 aime-bijou iniongo
+>>>>>>> .r65
 >>>>>>> .r64
 */
 

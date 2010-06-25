@@ -5,7 +5,15 @@
 ** Login   <iniong_a@epitech.net>
 ** 
 ** Started on  Mon Jun 14 16:53:09 2010 aime-bijou iniongo
+<<<<<<< .mine
+<<<<<<< .mine
+** Last update Sun Jun 20 15:27:02 2010 alexis milbault
+=======
+** Last update Sun Jun 20 16:36:46 2010 aime-bijou iniongo
+=======
 ** Last update Sun Jun 20 22:05:11 2010 alexandra ekra
+>>>>>>> .r65
+>>>>>>> .r62
 */
 
 #include <stdio.h>

@@ -5,7 +5,7 @@
 ## Login   <milbau_a@epitech.net>
 ## 
 ## Started on  Wed Apr 14 17:36:07 2010 alexis milbault
-## Last update Mon Jun 21 00:22:12 2010 alexandra ekra
+## Last update Fri Jun 25 21:42:28 2010 alexis milbault
 ## Last update Sun Jun 20 22:26:37 2010 aime-bijou iniongo
 ##
 
@@ -33,6 +33,9 @@ SRC_SERVER	=	src_server/main.c			\
 			src_server/msg_to_graph1.c		\
 			src_server/ghost_mode.c			\
 			src_server/client_state.c		\
+			src_server/action_expulse.c		\
+			src_server/write_to_client.c		\
+			src_server/aff_action_see.c		\
 			src_server/graph_commands.c		\
 			src_server/send_cases_content.c		\
 			src_server/send_player_info.c		\
@@ -57,7 +60,7 @@ CC		=	gcc
 
 
 INCLUDE		=	-I./includes
-CFLAGS		+=	$(INCLCUDE) -g3 -W -Wall -pedantic -ansi
+CFLAGS		+=	$(INCLUDE) -W -Wall -pedantic -ansi
 
 RM		=	rm -f
 

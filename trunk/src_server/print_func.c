@@ -5,7 +5,7 @@
 ** Login   <iniong_a@epitech.net>
 ** 
 ** Started on  Mon Jun 14 17:37:40 2010 aime-bijou iniongo
-** Last update Mon Jun 14 18:11:43 2010 aime-bijou iniongo
+** Last update Sun Jun 20 23:39:44 2010 alexis milbault
 */
 
 #include <stdio.h>
@@ -27,7 +27,11 @@ void	show_player_buffer(char **buffer)
 {
   int	x;
 
-  for (x=0; buffer[x] != NULL; x++)
-    printf("buffer player = %s\n", buffer[x]);
+  x = 0;
+  while (buffer[x] != NULL)
+    {
+      printf("buffer player = %s\n", buffer[x]);
+      x++;
+    }
 }
 
