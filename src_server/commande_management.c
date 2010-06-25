@@ -5,7 +5,11 @@
 ** Login   <milbau_a@epitech.net>
 ** 
 ** Started on  Thu Jun  3 16:15:08 2010 alexis milbault
+<<<<<<< .mine
+** Last update Sun Jun 20 23:40:36 2010 alexis milbault
+=======
 ** Last update Sun Jun 20 20:54:01 2010 alexandra ekra
+>>>>>>> .r65
 */
 
 #include <stdlib.h>
@@ -37,7 +41,7 @@ void	manage_commande(t_desc *serv, t_play *player, t_env *e, char *cmd)
       if (my_strcmp(cmd_tab[i].cmd, tab[0]) == 0)
 	{
 	  cmd_tab[i].f(serv, player, e, tab);
-	  break ;
+	  break;
 	}
       i++;
     }
@@ -49,8 +53,6 @@ void	manage_commande(t_desc *serv, t_play *player, t_env *e, char *cmd)
   my_putnbr_fd(1, player->dir);
   my_putstr("\n");
   if (cmd_tab[i].cmd == NULL)
-    {
-      /*return KO to client*/
-      write(player->cs, "ko\n", 3);
-    }
+    add_sto_buffer(serv, "ko\n");
+  write_to_client(serv, player->cs);
 }

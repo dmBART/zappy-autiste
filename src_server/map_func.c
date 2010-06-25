@@ -5,7 +5,7 @@
 ** Login   <milbau_a@epitech.net>
 ** 
 ** Started on  Thu Jun  3 14:49:09 2010 alexis milbault
-** Last update Thu Jun 17 02:26:03 2010 alexis milbault
+** Last update Sun Jun 20 23:38:43 2010 alexis milbault
 */
 
 #include "../includes/server.h"
@@ -28,7 +28,7 @@ t_res	res_tab[]= {
 
 char	*get_ressource_name(int id)
 {
-  return(res_tab[id].res);
+  return (res_tab[id].res);
 }
 
 int	get_ressource_id(char *res)

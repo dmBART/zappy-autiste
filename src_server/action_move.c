@@ -5,7 +5,6 @@
 ** Login   <milbau_a@epitech.net>
 ** 
 ** Started on  Tue Jun  1 11:24:02 2010 alexis milbault
-** Last update Sun Jun 20 23:55:00 2010 alexandra ekra
 */
 
 #include "../includes/server.h"
@@ -56,7 +55,8 @@ void	move_forward(t_desc *serv, t_play *player, t_env *e, char **cmd)
 	move_on_x(serv, player);
       else
 	move_on_y(serv, player);
-      write(player->cs, "ok\n", 3);
+      add_sto_buffer(serv, "ok\n");
+      write_to_client(serv, player->cs);
       if (e->graph_cs != -1 && FD_ISSET(e->graph_cs, &e->wrtefs))
 	send_new_pos(player, e);
     }
@@ -74,7 +74,8 @@ void	turn_right(t_desc *serv, t_play *player, t_env *e, char **cmd)
 	player->dir = RIGHT;
       else
 	player->dir = LEFT;
-      write(player->cs, "ok\n", 3);
+      add_sto_buffer(serv, "ok\n");
+      write_to_client(serv, player->cs);
       if (e->graph_cs != -1 && FD_ISSET(e->graph_cs, &e->wrtefs))
 	send_new_pos(player, e);
     }
@@ -92,7 +93,8 @@ void	turn_left(t_desc *serv, t_play *player, t_env *e, char **cmd)
 	player->dir = LEFT;
       else
 	player->dir = RIGHT;
-      write(player->cs, "ok\n", 3);
+      add_sto_buffer(serv, "ok\n");
+      write_to_client(serv, player->cs);
       if (e->graph_cs != -1 && FD_ISSET(e->graph_cs, &e->wrtefs))
 	send_new_pos(player, e);
     }

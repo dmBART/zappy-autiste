@@ -5,7 +5,11 @@
 ** Login   <ekra_a@epitech.net>
 ** 
 ** Started on  Sun Jun 20 00:19:51 2010 alexandra ekra
+<<<<<<< .mine
+** Last update Sun Jun 20 21:56:52 2010 alexis milbault
+=======
 ** Last update Mon Jun 21 00:41:48 2010 alexandra ekra
+>>>>>>> .r65
 */
 
 #include <string.h>
